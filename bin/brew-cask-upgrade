@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'brew-cask-upgrade'
+
+installed.each do |app|
+  if app[:installed].include? app[:cask].version.to_s
+    puts "#{app[:name]}: up to date"
+  else
+    puts "Upgrading #{app[:name]} #{app[:installed]} -> #{app[:cask].version}"
+    system "brew cask install #{app[:name]} --force"
+    installed.each do |version|
+      system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
+    end
+  end
+end
