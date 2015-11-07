@@ -10,7 +10,7 @@ installed.each do |app|
   else
     puts "Upgrading #{app[:name]} #{app[:installed]} -> #{app[:cask].version}"
     system "brew cask install #{app[:name]} --force"
-    installed.each do |version|
+    app[:installed].each do |version|
       system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
     end
   end
