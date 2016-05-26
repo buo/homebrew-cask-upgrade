@@ -21,3 +21,5 @@ gem install brew-cask-upgrade
 ```
 brew-cask-upgrade
 ```
+
+[![asciicast](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz.png)](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz)
