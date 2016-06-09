@@ -4,11 +4,13 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'brew-cask-upgrade'
 
-each_installed do |app|
+count = Hbc.installed.length
+
+each_installed do |app, i|
   if app[:installed].include? app[:cask].version.to_s
-    puts "#{app[:name]}: up to date"
+    puts "(#{i+1}/#{count}) #{app[:name]}: up to date"
   else
-    puts "Upgrading #{app[:name]} #{app[:installed]} -> #{app[:cask].version}"
+    puts "(#{i+1}/#{count}) #{app[:name]}: #{app[:installed].join(', ')} -> #{app[:cask].version}"
     system "brew cask install #{app[:name]} --force"
     app[:installed].each do |version|
       system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
