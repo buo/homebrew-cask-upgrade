@@ -4,7 +4,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'brew-cask-upgrade'
 
-installed.each do |app|
+each_installed do |app|
   if app[:installed].include? app[:cask].version.to_s
     puts "#{app[:name]}: up to date"
   else

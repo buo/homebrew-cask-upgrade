@@ -7,17 +7,15 @@ require 'hbc'
 
 CASKROOM = "/opt/homebrew-cask/Caskroom"
 
-def installed
-  apps = []
+def each_installed
   Hbc.installed.each do |name|
     cask = Hbc.load name.to_s
-    apps << {
+    yield({
       :cask => cask,
       :name => name.to_s,
       :installed => installed_versions(name)
-    }
+    })
   end
-  apps
 end
 
 # Retrieves currently installed versions on the machine.
