@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "brew-cask-upgrade"
-  s.version     = "0.1.1"
+  s.version     = "0.2.0"
   s.summary     = "A command line tool for Homebrew Cask"
   s.description = "A command line tool for upgrading every outdated apps installed by Homebrew Cask"
   s.authors     = ["buo"]
