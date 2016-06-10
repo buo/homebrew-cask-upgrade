@@ -6,14 +6,20 @@ require 'brew-cask-upgrade'
 
 count = Hbc.installed.length
 
+outdated = []
 each_installed do |app, i|
   if app[:installed].include? app[:cask].version.to_s
     puts "(#{i+1}/#{count}) #{app[:name]}: up to date"
   else
     puts "(#{i+1}/#{count}) #{app[:name]}: #{app[:installed].join(', ')} -> #{app[:cask].version}"
-    system "brew cask install #{app[:name]} --force"
-    app[:installed].each do |version|
-      system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
-    end
+    outdated.push app
+  end
+end
+
+outdated.each do |app|
+  puts "==> Upgrading #{app[:name]}"
+  system "brew cask install #{app[:name]} --force"
+  app[:installed].each do |version|
+    system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
   end
 end
