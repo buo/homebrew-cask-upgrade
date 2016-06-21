@@ -23,7 +23,3 @@ brew-cask-upgrade
 ```
 
 [![asciicast](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz.png)](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/buo/brew-cask-upgrade/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
