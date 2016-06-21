@@ -5,7 +5,7 @@ $LOAD_PATH.unshift("#{CASK_HOME}/lib")
 require 'vendor/homebrew-fork/global'
 require 'hbc'
 
-CASKROOM = "/usr/local/Caskroom"
+CASKROOM = "/opt/homebrew-cask/Caskroom"
 
 def each_installed
   Hbc.installed.each_with_index do |name, i|

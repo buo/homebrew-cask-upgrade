@@ -20,6 +20,6 @@ outdated.each do |app|
   puts "==> Upgrading #{app[:name]}"
   system "brew cask install #{app[:name]} --force"
   app[:installed].each do |version|
-    system "rm -rf #{CASKROOM}/#{app[:name]}/#{version}"
+    system "rm -rf /opt/homebrew-cask/Caskroom/#{app[:name]}/#{version}"
   end
 end
