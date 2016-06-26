@@ -30,4 +30,4 @@ Upgrade outdated apps:
 brew-cask-upgrade
 ```
 
-[![asciicast](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz.png)](https://asciinema.org/a/2c2lcz9jp68dflgm3y0dclsaz)
+[![asciicast](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j.png)](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j)
