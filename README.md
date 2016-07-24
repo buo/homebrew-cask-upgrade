@@ -13,7 +13,7 @@ With `brew-cask-upgrade`, you just need to type one command to upgrade all the a
 ## Installation
 
 ```
-gem install brew-cask-upgrade
+brew tap buo/cask-upgrade
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ brew cask update
 Upgrade outdated apps:
 
 ```
-brew-cask-upgrade
+brew cu
 ```
 
 [![asciicast](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j.png)](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j)

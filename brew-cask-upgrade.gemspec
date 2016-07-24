@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors     = ["buo"]
   s.email       = "buo@users.noreply.github.com"
   s.files       = `git ls-files -z`.split("\x0").reject {|f| f.match(%r{^(test|spec|features)/}) }
-  s.homepage    = "https://github.com/buo/brew-cask-upgrade"
+  s.homepage    = "https://github.com/buo/homebrew-cask-upgrade"
   s.license     = "MIT"
 
   s.bindir      = "bin"
