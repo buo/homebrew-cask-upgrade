@@ -1,6 +1,5 @@
 $LOAD_PATH.unshift("#{HOMEBREW_PREFIX}/Library/Taps/caskroom/homebrew-cask/lib")
 
-require 'vendor/homebrew-fork/global'
 require 'hbc'
 
 CASKROOM = Hbc.caskroom
