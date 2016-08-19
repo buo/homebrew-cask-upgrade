@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift("#{HOMEBREW_PREFIX}/Library/Taps/caskroom/homebrew-cask/lib")
+$LOAD_PATH.unshift("#{HOMEBREW_PREFIX}/Library/Homebrew/cask/lib")
 
 require 'hbc'
 
