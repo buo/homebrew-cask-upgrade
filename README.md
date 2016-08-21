@@ -28,4 +28,10 @@ Upgrade outdated apps:
 brew cu
 ```
 
+(Optional) Force upgrade outdated apps including the ones marked as `latest`:
+
+```
+brew cu --all
+```
+
 [![asciicast](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j.png)](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j)
