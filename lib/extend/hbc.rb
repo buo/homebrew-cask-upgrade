@@ -21,12 +21,16 @@ module Hbc
 
   def self.each_installed
     Hbc.installed.each_with_index do |name, i|
-      cask = Hbc.load name.to_s
-      yield({
-        :name => name.to_s,
-        :latest => cask.version.to_s,
-        :installed => installed_versions(name)
-      }, i)
+      begin
+        cask = Hbc.load name.to_s
+        yield({
+          :name => name.to_s,
+          :latest => cask.version.to_s,
+          :installed => installed_versions(name)
+        }, i)
+      rescue Hbc::CaskUnavailableError => e
+        puts e
+      end
     end
   end
 
