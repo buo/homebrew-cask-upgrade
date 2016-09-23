@@ -7,15 +7,18 @@ CASKROOM = Hbc.caskroom
 module Hbc
   def self.outdated(including_latest=false)
     outdated = []
+    installed_count = Hbc.installed.length
+    zero_pad = installed_count.to_s.length
     each_installed do |app, i|
-      print "(#{i+1}/#{Hbc.installed.length}) #{app[:name]}: "
+      string_template = "(%0#{zero_pad}d/%d) #{app[:name]}: "
+      print string_template % [i + 1, installed_count]
       if including_latest && app[:latest] === "latest"
-        puts "latest but forced to upgrade"
+        puts "#{Tty.red}latest but forced to upgrade#{Tty.reset}"
         outdated.push app
       elsif app[:installed].include? app[:latest]
-        puts "up to date"
+        puts "#{Tty.green}up to date#{Tty.reset}"
       else
-        puts "#{app[:installed].join(', ')} -> #{app[:latest]}"
+        puts "#{Tty.red}#{app[:installed].join(', ')}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
         outdated.push app
       end
     end
