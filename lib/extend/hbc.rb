@@ -1,24 +1,24 @@
 $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 
-require 'hbc'
+require "hbc"
 
 CASKROOM = Hbc.caskroom
 
 module Hbc
-  def self.outdated(including_latest=false)
+  def self.outdated(including_latest = false)
     outdated = []
     installed_count = Hbc.installed.length
     zero_pad = installed_count.to_s.length
     each_installed do |app, i|
       string_template = "(%0#{zero_pad}d/%d) #{app[:name]}: "
-      print string_template % [i + 1, installed_count]
-      if including_latest && app[:latest] === "latest"
+      print format(string_template, i + 1, installed_count)
+      if including_latest && app[:latest] == "latest"
         puts "#{Tty.red}latest but forced to upgrade#{Tty.reset}"
         outdated.push app
       elsif app[:installed].include? app[:latest]
         puts "#{Tty.green}up to date#{Tty.reset}"
       else
-        puts "#{Tty.red}#{app[:installed].join(', ')}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
+        puts "#{Tty.red}#{app[:installed].join(", ")}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
         outdated.push app
       end
     end
@@ -33,7 +33,7 @@ module Hbc
           :cask => cask,
           :name => name.to_s,
           :latest => cask.version.to_s,
-          :installed => installed_versions(name)
+          :installed => installed_versions(name),
         }, i)
       rescue Hbc::CaskUnavailableError => e
         puts e
