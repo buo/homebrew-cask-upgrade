@@ -35,7 +35,7 @@ module Hbc
           :latest => cask.version.to_s,
           :installed => installed_versions(name),
         }, i)
-      rescue Hbc::CaskUnavailableError => e
+      rescue Hbc::CaskError => e
         puts e
       end
     end
