@@ -23,8 +23,14 @@ module Bcu
     options = parse(args)
     Hbc.outdated(options.all).each do |app|
       puts "==> Upgrading #{app[:name]} to #{app[:latest]}"
+
+      # Clean up the cask metadata container.
       system "rm -rf #{app[:cask].metadata_master_container_path}"
+
+      # Force to install the latest version.
       system "brew cask install #{app[:name]} --force"
+
+      # Remove the old versions.
       app[:installed].each do |version|
         unless version == "latest"
           system "rm -rf #{CASKROOM}/#{app[:name]}/#{version}"
