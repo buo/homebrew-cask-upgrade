@@ -30,6 +30,7 @@ module Hbc
       begin
         cask = Hbc.load name.to_s
         yield({
+          :cask => cask,
           :name => name.to_s,
           :latest => cask.version.to_s,
           :installed => installed_versions(name)
