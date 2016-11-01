@@ -17,6 +17,12 @@ module Bcu
       opts.on("--dry-run", "Print outdated apps without upgrading them") do
         options.dry_run = true
       end
+
+      # `-h` is not available since the Homebrew hijacks it.
+      opts.on_tail("--h", "Show this message") do
+        puts opts
+        exit
+      end
     end
 
     parser.parse!(args)
