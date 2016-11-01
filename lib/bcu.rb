@@ -13,6 +13,10 @@ module Bcu
       opts.on("-a", "--all", "Force upgrade outdated apps including the ones marked as latest") do
         options.all = true
       end
+
+      opts.on("--dry-run", "Print outdated apps without upgrading them") do
+        options.dry_run = true
+      end
     end
 
     parser.parse!(args)
@@ -22,6 +26,8 @@ module Bcu
   def self.process(args)
     options = parse(args)
     Hbc.outdated(options.all).each do |app|
+      next if options.dry_run
+
       puts "==> Upgrading #{app[:name]} to #{app[:latest]}"
 
       # Clean up the cask metadata container.
