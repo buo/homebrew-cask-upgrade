@@ -28,10 +28,13 @@ Upgrade outdated apps:
 brew cu
 ```
 
-(Optional) Force upgrade outdated apps including the ones marked as `latest`:
+Options:
 
 ```
-brew cu --all
+Usage: brew cu [options]
+    -a, --all      Force upgrade outdated apps including the ones marked as latest
+        --dry-run  Print outdated apps without upgrading them
+        --h        Show this message
 ```
 
 [![asciicast](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j.png)](https://asciinema.org/a/e5geldgvynjmf8f6uh2b8n74j)
