@@ -31,6 +31,11 @@ module Bcu
 
   def self.process(args)
     options = parse(args)
+    begin
+      Hbc::CLI::Update.run
+    rescue SystemExit
+      $stdout
+    end
     Hbc.outdated(options.all).each do |app|
       next if options.dry_run
 
