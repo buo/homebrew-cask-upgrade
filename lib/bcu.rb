@@ -47,7 +47,7 @@ module Bcu
   def self.process(args)
     options = parse(args)
     begin
-      Hbc::CLI::Update.run
+      system "#{HOMEBREW_BREW_FILE} update"
     rescue SystemExit
       $stdout
     end
