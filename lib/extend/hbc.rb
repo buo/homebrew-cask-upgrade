@@ -19,13 +19,13 @@ module Hbc
 
 
       print format(string_template, i + 1, installed_count)
-        puts "#{Tty.red}latest but forced to upgrade#{Tty.reset}"
       if options.all && app[:latest] == "latest"
+        ohai "#{Tty.red}latest but forced to upgrade#{Tty.reset}"
         outdated.push app
       elsif app[:installed].include? app[:latest]
-        puts "#{Tty.green}up to date#{Tty.reset}"
+        ohai "#{Tty.green}up to date#{Tty.reset}"
       else
-        puts "#{Tty.red}#{app[:installed].join(", ")}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
+        ohai "#{Tty.red}#{app[:installed].join(", ")}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
         outdated.push app
       end
     end
@@ -44,7 +44,7 @@ module Hbc
           :installed => installed_versions(name),
         }, i)
       rescue Hbc::CaskError => e
-        puts e unless suppress_errors
+        opoo e unless suppress_errors
       end
     end
   end
