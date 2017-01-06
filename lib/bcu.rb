@@ -28,7 +28,7 @@ module Bcu
         end
 
         if options.cask.nil?
-          puts "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
+          onoe "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
           exit(1)
         end
       end
@@ -55,7 +55,7 @@ module Bcu
     Hbc.outdated(options).each do |app|
       next if options.dry_run
 
-      puts "==> Upgrading #{app[:name]} to #{app[:latest]}"
+      ohai "Upgrading #{app[:name]} to #{app[:latest]}"
 
       # Clean up the cask metadata container.
       system "rm -rf #{app[:cask].metadata_master_container_path}"
