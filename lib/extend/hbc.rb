@@ -25,7 +25,7 @@ module Hbc
     outdated
   end
 
-  def self.each_installed
+  def self.each_installed(suppress_errors = false)
     Hbc.installed.each_with_index do |name, i|
       begin
         cask = Hbc.load name.to_s
@@ -36,7 +36,7 @@ module Hbc
           :installed => installed_versions(name),
         }, i)
       rescue Hbc::CaskError => e
-        puts e
+        puts e unless suppress_errors
       end
     end
   end

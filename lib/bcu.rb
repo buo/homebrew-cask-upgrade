@@ -6,6 +6,7 @@ module Bcu
   def self.parse(args)
     options = OpenStruct.new
     options.all = false
+    options.cask = nil
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [options]"
@@ -16,6 +17,17 @@ module Bcu
 
       opts.on("--dry-run", "Print outdated apps without upgrading them") do
         options.dry_run = true
+      end
+
+      opts.on("--cask [CASK]", "Specify a single cask for upgrade") do |cask_name|
+        Hbc.each_installed(true) do |app|
+          options.cask = app if cask_name == app[:name]
+        end
+
+        if options.cask.nil?
+          puts "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
+          exit(1)
+        end
       end
 
       # `-h` is not available since the Homebrew hijacks it.
