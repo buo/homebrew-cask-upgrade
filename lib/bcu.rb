@@ -48,7 +48,8 @@ module Bcu
     rescue SystemExit
       $stdout
     end
-    Hbc.outdated(options.all).each do |app|
+
+    Hbc.outdated(options).each do |app|
       next if options.dry_run
 
       puts "==> Upgrading #{app[:name]} to #{app[:latest]}"
