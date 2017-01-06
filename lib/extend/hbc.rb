@@ -1,7 +1,3 @@
-$LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
-
-require "hbc"
-
 CASKROOM = Hbc.caskroom
 
 module Hbc
