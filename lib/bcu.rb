@@ -1,3 +1,6 @@
+$LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
+
+require "hbc"
 require "extend/hbc"
 require "optparse"
 require "ostruct"
