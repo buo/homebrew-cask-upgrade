@@ -13,12 +13,12 @@ module Hbc
 
     each_installed(suppress_errors) do |app, i|
       counter = "(%0#{zero_pad}d/%d)"
+      string_template = "#{app[:full_name]} (#{app[:name]}): "
 
       if options.cask
         next unless options.cask[:name] == app[:name]
-        string_template = "#{app[:name]}: "
       else
-        string_template = "#{counter} #{app[:name]}: "
+        string_template = "#{counter} #{string_template}"
       end
 
 
@@ -43,6 +43,7 @@ module Hbc
         yield({
           :cask => cask,
           :name => name.to_s,
+          :full_name => cask.name.first,
           :latest => cask.version.to_s,
           :installed => installed_versions(name),
         }, i)
