@@ -67,7 +67,7 @@ module Bcu
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
-      if options.all && app[:version] == "latest"
+      if options.all && (app[:version] == "latest" || app[:auto_updates])
         row << "forced to upgrade"
         outdated.push app
       elsif app[:outdated?]
@@ -92,7 +92,7 @@ module Bcu
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
-      if options.all && app[:version] == "latest"
+      if options.all && (app[:version] == "latest" || app[:auto_updates])
         row << "forced to upgrade"
       elsif app[:outdated?]
         row << "outdated"

@@ -14,7 +14,7 @@ module Bcu
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
 
-      opts.on("-a", "--all", "Force upgrade outdated apps including the ones marked as latest") do
+      opts.on("-a", "--all", "Force upgrade outdated apps including those marked as latest and those that auto-update") do
         options.all = true
       end
 
