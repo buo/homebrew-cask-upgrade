@@ -24,6 +24,11 @@ module Hbc
         outdated.push app
       elsif app[:installed].include? app[:latest]
         ohai "#{Tty.green}up to date#{Tty.reset}"
+      elsif options.all && app[:auto_updates]
+        ohai "#{Tty.red}auto updates but forced to upgrade#{Tty.reset}"
+        outdated.push app
+      elsif app[:auto_updates]
+        ohai "#{Tty.green}auto updates#{Tty.reset}"
       else
         ohai "#{Tty.red}#{app[:installed].join(", ")}#{Tty.reset} -> #{Tty.green}#{app[:latest]}#{Tty.reset}"
         outdated.push app
@@ -42,6 +47,7 @@ module Hbc
           :full_name => cask.name.first,
           :latest => cask.version.to_s,
           :installed => installed_versions(name),
+          :auto_updates => cask.auto_updates
         }, i)
       rescue Hbc::CaskError => e
         opoo e unless suppress_errors
