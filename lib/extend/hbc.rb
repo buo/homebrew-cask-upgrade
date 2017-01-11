@@ -17,6 +17,7 @@ module Hbc
           :version => cask.version.to_s,
           :current => versions,
           :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
+          :auto_updates => cask.auto_updates,
         }
       rescue Hbc::CaskUnavailableError
         {
@@ -26,6 +27,7 @@ module Hbc
           :version => nil,
           :current => versions,
           :outdated? => false,
+          :auto_updates => false,
         }
       end
     end
