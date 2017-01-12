@@ -7,7 +7,7 @@ module Bcu
   def self.parse!(args)
     options = OpenStruct.new
     options.all = false
-    options.cask = nil
+    options.cask = args[0]
     options.dry_run = true
 
     parser = OptionParser.new do |opts|
@@ -19,10 +19,6 @@ module Bcu
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
         options.dry_run = false
-      end
-
-      opts.on("--cask [CASK]", "Specify a single cask for upgrade") do |name|
-        options.cask = name
       end
 
       # `-h` is not available since the Homebrew hijacks it.

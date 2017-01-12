@@ -16,7 +16,7 @@ module Bcu
 
     if options.dry_run
       printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, outdated.length > 1 ? "s" : ""
-      input = gets.strip
+      input = STDIN.gets.strip
 
       if input.casecmp("y").zero?
         options.dry_run = false
