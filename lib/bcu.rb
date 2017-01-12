@@ -22,17 +22,6 @@ module Bcu
         options.dry_run = true
       end
 
-      opts.on("--cask [CASK]", "Specify a single cask for upgrade") do |cask_name|
-        Hbc.each_installed(true) do |app|
-          options.cask = app if cask_name == app[:name]
-        end
-
-        if options.cask.nil?
-          onoe "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
-          exit(1)
-        end
-      end
-
       # `-h` is not available since the Homebrew hijacks it.
       opts.on_tail("--h", "Show this message") do
         puts opts
@@ -52,6 +41,8 @@ module Bcu
       $stdout
     end
 
+    options.cask = get_cask(args[0]) unless args[0].nil?
+
     Hbc.outdated(options).each do |app|
       next if options.dry_run
 
@@ -70,5 +61,22 @@ module Bcu
         end
       end
     end
+  end
+
+  def self.get_cask(cask_name)
+    cask = Hbc.get_installed_cask(cask_name)
+
+    if cask.nil?
+      onoe "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
+      exit(1)
+    end
+
+    {
+      cask: cask,
+      name: cask.to_s,
+      full_name: cask.name.first,
+      latest: cask.version.to_s,
+      installed: Hbc.installed_versions(cask.to_s),
+    }
   end
 end
