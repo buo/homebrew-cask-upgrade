@@ -46,10 +46,11 @@ module Bcu
 
   def self.process(args)
     options = parse(args)
-    begin
-      Hbc::CLI::Update.run
-    rescue SystemExit
-      $stdout
+    result = Hbc::SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
+    # This is brittle but will only need to change if
+    # https://github.com/Homebrew/brew/blob/master/Library/Homebrew/cmd/update.sh#L579 changes
+    if result.success? && result.to_s.chomp != "Already up-to-date."
+      puts "Updated formulae"
     end
 
     Hbc.outdated(options).each do |app|
