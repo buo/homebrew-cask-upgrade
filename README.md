@@ -30,13 +30,18 @@ Upgrade outdated apps:
 brew cu
 ```
 
+Upgrade a specific app:
+
+```
+brew cu [CASK]
+```
+
 Options:
 
 ```
-Usage: brew cu [options]
+Usage: brew cu [CASK] [options]
     -a, --all          Force upgrade outdated apps including the ones marked as latest
     -y, --yes          Update all outdated apps; answer yes to updating packages
-        --cask [CASK]  Specify a single cask for upgrade
         --h            Show this message
 ```
 
