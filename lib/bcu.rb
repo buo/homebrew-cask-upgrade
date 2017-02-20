@@ -46,11 +46,6 @@ module Bcu
 
   def self.process(args)
     options = parse(args)
-    begin
-      system "#{HOMEBREW_BREW_FILE} update"
-    rescue SystemExit
-      $stdout
-    end
 
     Hbc.outdated(options).each do |app|
       next if options.dry_run
