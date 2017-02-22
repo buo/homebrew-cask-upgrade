@@ -49,6 +49,10 @@ module Hbc
     end
   end
 
+  def self.get_installed_cask(cask_name)
+    Hbc.installed.select {|name| name.to_s == cask_name }.first
+  end
+
   # Retrieves currently installed versions on the machine.
   def self.installed_versions(name)
     Dir["#{CASKROOM}/#{name}/*"].map { |e| File.basename e }

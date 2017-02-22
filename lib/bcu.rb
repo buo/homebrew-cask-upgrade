@@ -12,7 +12,7 @@ module Bcu
     options.cask = nil
 
     parser = OptionParser.new do |opts|
-      opts.banner = "Usage: brew cu [options]"
+      opts.banner = "Usage: brew cu [CASK] [options]"
 
       opts.on("-a", "--all", "Force upgrade outdated apps including the ones marked as latest") do
         options.all = true
@@ -20,17 +20,6 @@ module Bcu
 
       opts.on("--dry-run", "Print outdated apps without upgrading them") do
         options.dry_run = true
-      end
-
-      opts.on("--cask [CASK]", "Specify a single cask for upgrade") do |cask_name|
-        Hbc.each_installed(true) do |app|
-          options.cask = app if cask_name == app[:name]
-        end
-
-        if options.cask.nil?
-          onoe "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
-          exit(1)
-        end
       end
 
       # `-h` is not available since the Homebrew hijacks it.
@@ -46,6 +35,8 @@ module Bcu
 
   def self.process(args)
     options = parse(args)
+
+    options.cask = get_cask(args[0]) unless args[0].nil?
 
     Hbc.outdated(options).each do |app|
       next if options.dry_run
@@ -65,5 +56,22 @@ module Bcu
         end
       end
     end
+  end
+
+  def self.get_cask(cask_name)
+    cask = Hbc.get_installed_cask(cask_name)
+
+    if cask.nil?
+      onoe "#{Tty.red}Cask \"#{cask_name}\" is not installed.#{Tty.reset}"
+      exit(1)
+    end
+
+    {
+      cask: cask,
+      name: cask.to_s,
+      full_name: cask.name.first,
+      latest: cask.version.to_s,
+      installed: Hbc.installed_versions(cask.to_s),
+    }
   end
 end

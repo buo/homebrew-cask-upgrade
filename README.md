@@ -28,6 +28,12 @@ Upgrade outdated apps:
 brew cu
 ```
 
+Upgrade a specific app:
+
+```
+brew cu [CASK]
+```
+
 Options:
 
 ```
