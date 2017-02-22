@@ -10,6 +10,7 @@ module Bcu
     options = OpenStruct.new
     options.all = false
     options.cask = nil
+    options.dry_run = true
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [options]"
@@ -18,8 +19,8 @@ module Bcu
         options.all = true
       end
 
-      opts.on("--dry-run", "Print outdated apps without upgrading them") do
-        options.dry_run = true
+      opts.on("-u", "--update", "Update all outdated apps") do
+        options.dry_run = false
       end
 
       opts.on("--cask [CASK]", "Specify a single cask for upgrade") do |cask_name|
@@ -46,8 +47,21 @@ module Bcu
 
   def self.process(args)
     options = parse(args)
-
-    Hbc.outdated(options).each do |app|
+    outdated = Hbc.outdated(options)
+    
+    return if outdated.length == 0
+    
+    if options.dry_run
+      printf "\nDo you want to update %d package%s (y/n)? ", outdated.length, outdated.length > 1 ? 's' : ''
+      to_update = gets
+      to_update.chomp!
+      
+      if to_update.downcase == 'y'
+        options.dry_run = false
+      end
+    end
+    
+    outdated.each do |app|
       next if options.dry_run
 
       ohai "Upgrading #{app[:name]} to #{app[:latest]}"
