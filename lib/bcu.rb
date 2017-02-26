@@ -19,7 +19,7 @@ module Bcu
         options.all = true
       end
 
-      opts.on("-u", "--update", "Update all outdated apps") do
+      opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
         options.dry_run = false
       end
 
