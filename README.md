@@ -33,7 +33,7 @@ Options:
 ```
 Usage: brew cu [options]
     -a, --all      Force upgrade outdated apps including the ones marked as latest
-        --dry-run  Print outdated apps without upgrading them
+    -y, --yes      Update all outdated apps; answer yes to updating packages
         --h        Show this message
 ```
 
