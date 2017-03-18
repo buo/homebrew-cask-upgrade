@@ -35,7 +35,7 @@ module Hbc
   def self.each_installed(suppress_errors = false)
     Hbc.installed.each_with_index do |name, i|
       begin
-        cask = Hbc.load name.to_s
+        cask = CaskLoader.load(name.to_s)
         yield({
           :cask => cask,
           :name => name.to_s,
