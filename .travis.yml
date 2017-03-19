@@ -6,8 +6,9 @@ rvm: system
 
 before_install:
   - brew update
-  - brew tap buo/cask-upgrade
   - brew --version
+  - mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+  - cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
 script:
   - brew cu -y
