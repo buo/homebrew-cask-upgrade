@@ -1,3 +1,5 @@
+![status](https://travis-ci.org/buo/homebrew-cask-upgrade.svg?branch=master)
+
 # brew-cask-upgrade
 
 `brew-cask-upgrade` is a command-line tool for upgrading every outdated app
