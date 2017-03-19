@@ -37,4 +37,4 @@ Usage: brew cu [options]
         --h        Show this message
 ```
 
-[![asciicast](https://asciinema.org/a/2xvi9l8rsps3troigke6b51qf.png)](https://asciinema.org/a/2xvi9l8rsps3troigke6b51qf)
+[![asciicast](https://asciinema.org/a/107961.png)](https://asciinema.org/a/107961)
