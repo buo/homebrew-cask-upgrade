@@ -1,0 +1,13 @@
+language: ruby
+
+os: osx
+
+rvm: system
+
+before_install:
+  - brew update
+  - brew tap buo/cask-upgrade
+  - brew --version
+
+script:
+  - brew cu -y
