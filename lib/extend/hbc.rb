@@ -35,7 +35,7 @@ module Hbc
   def self.each_installed(suppress_errors = false)
     Hbc.installed.each_with_index do |name, i|
       begin
-        cask = CaskLoader.load(name.to_s)
+        cask = load_cask(name.to_s)
         yield({
           :cask => cask,
           :name => name.to_s,
@@ -46,6 +46,15 @@ module Hbc
       rescue Hbc::CaskError => e
         opoo e unless suppress_errors
       end
+    end
+  end
+
+  # See: https://github.com/buo/homebrew-cask-upgrade/issues/43
+  def self.load_cask(name)
+    begin
+      CaskLoader.load(name)
+    rescue NoMethodError
+      Hbc.load(name)
     end
   end
 
