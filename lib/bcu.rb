@@ -77,8 +77,13 @@ module Bcu
         output << "#{Tty.green}#{app[:token]}#{Tty.reset}"
         output << " is installed with version "
         output << "#{Tty.green}#{app[:current].join(", ")}#{Tty.reset}"
-        output << " and "
-        output << "#{Tty.green}up to date#{Tty.reset}"
+        if app[:withoutSource?]
+          output << " but "
+          output << "#{Tty.red}no cask is available#{Tty.reset}"
+        else
+          output << " and "
+          output << "#{Tty.green}up to date#{Tty.reset}"
+        end
       end
       puts output
     end
