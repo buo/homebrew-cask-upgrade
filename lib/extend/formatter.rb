@@ -1,7 +1,7 @@
 module Formatter
   module_function
 
-  def table(rows, gutter: 4)
+  def table(rows, gutter: 2)
     output = ""
 
     # Maximum number of columns

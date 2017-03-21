@@ -57,51 +57,44 @@ module Bcu
       end
     end
 
-    installed.each do |app|
-      output = ""
+    table = [["No.", "Name", "Cask", "Current", "Latest", "State"]]
+    installed.each_with_index do |app, i|
+      row = []
+      row << "#{i+1}/#{installed.length}"
+      row << app[:name].to_s
+      row << app[:cask].to_s
+      row << app[:current].join(", ")
+      row << app[:version]
       if options.all && app[:version] == "latest"
-        output << "#{Tty.red}#{app[:token]}#{Tty.reset}"
-        output << " is marked as "
-        output << "#{Tty.red}latest#{Tty.reset}"
-        output << " but "
-        output << "#{Tty.red}forced to upgrade#{Tty.reset}"
+        row << "forced to upgrade"
         outdated.push app
       elsif app[:outdated?]
-        output << "#{Tty.red}#{app[:token]}#{Tty.reset}"
-        output << " is installed with version "
-        output << "#{Tty.red}#{app[:current].join(", ")}#{Tty.reset}"
-        output << " and will be upgraded to "
-        output << "#{Tty.green}#{app[:version]}#{Tty.reset}"
+        row << "outdated"
         outdated.push app
-      else
-        output << "#{Tty.green}#{app[:token]}#{Tty.reset}"
-        output << " is installed with version "
-        output << "#{Tty.green}#{app[:current].join(", ")}#{Tty.reset}"
-        if app[:withoutSource?]
-          output << " but "
-          output << "#{Tty.red}no cask is available#{Tty.reset}"
-        else
-          output << " and "
-          output << "#{Tty.green}up to date#{Tty.reset}"
-        end
+      elsif app[:withoutSource?]
+        row << "no cask available"
       end
-      puts output
+      table << row
     end
+    puts Formatter.table(table)
 
     outdated
   end
 
   def self.print_outdated_app(outdated)
-    padding = outdated.length.to_s.length
-
-    table = [["No.", "App", "Token", "Current", "Latest"]]
+    table = [["No.", "Name", "Cask", "Current", "Latest", "State"]]
     outdated.each_with_index do |app, i|
       row = []
-      row << format("(%0#{padding}d/%d)", i + 1, outdated.length)
-      row << app[:name]
-      row << app[:token]
+      row << "#{i+1}/#{outdated.length}"
+      row << app[:name].to_s
+      row << app[:cask].to_s
       row << app[:current].join(", ")
       row << app[:version]
+      if options.all && app[:version] == "latest"
+        row << "forced to upgrade"
+      elsif app[:outdated?]
+        row << "outdated"
+      end
       table << row
     end
 
