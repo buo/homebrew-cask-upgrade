@@ -62,7 +62,7 @@ module Bcu
       row = []
       row << "#{i+1}/#{installed.length}"
       row << app[:name].to_s
-      row << app[:cask].to_s
+      row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
       if options.all && app[:version] == "latest"
@@ -71,7 +71,7 @@ module Bcu
       elsif app[:outdated?]
         row << "outdated"
         outdated.push app
-      elsif app[:withoutSource?]
+      elsif app[:cask].nil?
         row << "no cask available"
       end
       table << row
@@ -87,7 +87,7 @@ module Bcu
       row = []
       row << "#{i+1}/#{outdated.length}"
       row << app[:name].to_s
-      row << app[:cask].to_s
+      row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
       if options.all && app[:version] == "latest"

@@ -11,7 +11,7 @@ module Formatter
     col_widths = Array.new(cols, 0)
     rows.each do |row|
       row.each_with_index do |obj, i|
-        len = Tty.strip_ansi(obj).length
+        len = Tty.strip_ansi(obj.to_s).length
         col_widths[i] = len if col_widths[i] < len
       end
     end
@@ -22,7 +22,7 @@ module Formatter
     # Print table header
     output << "=" * table_width + "\n"
     rows.shift.each_with_index do |obj, i|
-      output << obj.ljust(col_widths[i] + gutter)
+      output << obj.to_s.ljust(col_widths[i] + gutter)
     end
     output << "\n"
     output << "=" * table_width + "\n"
@@ -30,7 +30,7 @@ module Formatter
     # Print table body
     rows.each do |row|
       row.each_with_index do |obj, i|
-        output << obj.ljust(col_widths[i] + gutter)
+        output << obj.to_s.ljust(col_widths[i] + gutter)
       end
       output << "\n"
     end

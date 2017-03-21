@@ -2,18 +2,43 @@ CASKROOM = Hbc.caskroom
 
 module Hbc
   def self.installed_apps
-    Hbc.installed.map do |cask|
-      installed = installed_versions(cask.token)
-      {
-        :cask => cask,
-        :name => cask.name.first,
-        :token => cask.token,
-        :version => cask.version.to_s,
-        :current => installed,
-        :outdated? => cask.instance_of?(Cask) && !installed.include?(cask.version.to_s),
-        :withoutSource? => cask.instance_of?(WithoutSource),
-      }
+    # Manually retrieve installed apps instead of using Hbc.installed because
+    # it raises errors while iterating and stops.
+    installed = Dir["#{CASKROOM}/*"].map { |e| File.basename e }
+
+    installed.map do |token|
+      versions = installed_versions(token)
+      begin
+        cask = load_cask(token)
+        {
+          :cask => cask,
+          :name => cask.name.first,
+          :token => cask.token,
+          :version => cask.version.to_s,
+          :current => versions,
+          :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
+        }
+      rescue Hbc::CaskUnavailableError
+        {
+          :cask => nil,
+          :name => nil,
+          :token => token,
+          :version => nil,
+          :current => versions,
+          :outdated? => false,
+        }
+      end
     end
+  end
+
+  # See: https://github.com/buo/homebrew-cask-upgrade/issues/43
+  def self.load_cask(token)
+    begin
+      cask = CaskLoader.load(token)
+    rescue NoMethodError
+      cask = Hbc.load(token)
+    end
+    cask
   end
 
   # Retrieves currently installed versions on the machine.
