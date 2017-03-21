@@ -34,9 +34,10 @@ Options:
 
 ```
 Usage: brew cu [options]
-    -a, --all      Force upgrade outdated apps including the ones marked as latest
-    -y, --yes      Update all outdated apps; answer yes to updating packages
-        --h        Show this message
+    -a, --all          Force upgrade outdated apps including the ones marked as latest
+    -y, --yes          Update all outdated apps; answer yes to updating packages
+        --cask [CASK]  Specify a single cask for upgrade
+        --h            Show this message
 ```
 
 [![asciicast](https://asciinema.org/a/107961.png)](https://asciinema.org/a/107961)
