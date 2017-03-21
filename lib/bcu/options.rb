@@ -7,7 +7,7 @@ module Bcu
   def self.parse!(args)
     options = OpenStruct.new
     options.all = false
-    options.cask = args[0]
+    options.cask = nil
     options.dry_run = true
 
     parser = OptionParser.new do |opts|
@@ -29,6 +29,9 @@ module Bcu
     end
 
     parser.parse!(args)
+
+    options.cask = args[0]
+
     self.options = options
   end
 end
