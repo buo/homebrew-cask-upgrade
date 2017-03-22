@@ -7,7 +7,7 @@ yes n | brew cu "${@}"
 
 if [ "${#}" = "0" ]
 then
-	#If no arguments, were passed to `brew-cu`, clear the last line of the terminal, which contains the prompt for user input
+	#If no arguments were passed to `brew-cu`, clear the last line of the terminal, which contains the prompt for user input
 	tput cr && tput el
 	
 	#Print a message explaining how to upgrade outdated casks in place of the interactive prompt
