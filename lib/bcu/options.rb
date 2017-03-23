@@ -8,6 +8,7 @@ module Bcu
     options = OpenStruct.new
     options.all = false
     options.cask = nil
+    options.cleanup = false
     options.dry_run = true
 
     parser = OptionParser.new do |opts|
@@ -15,6 +16,10 @@ module Bcu
 
       opts.on("-a", "--all", "Force upgrade outdated apps including the ones marked as latest") do
         options.all = true
+      end
+
+      opts.on("--cleanup", "Cleans up cached downloads and tracker symlinks after updating") do
+        options.cleanup = true
       end
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
