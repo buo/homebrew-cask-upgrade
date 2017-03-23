@@ -59,7 +59,7 @@ module Bcu
       end
     end
 
-    table = [["No.", "Name", "Cask", "Current", "Latest", "State"]]
+    table = [["No.", "Name", "Cask", "Current", "Latest", "Auto-Update", "State"]]
     installed.each_with_index do |app, i|
       row = []
       row << "#{i+1}/#{installed.length}"
@@ -67,6 +67,7 @@ module Bcu
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
+      row << (app[:auto_updates] ? "Y" : "")
       if options.all && (app[:version] == "latest" || app[:auto_updates])
         row << "forced to upgrade"
         outdated.push app
@@ -84,7 +85,7 @@ module Bcu
   end
 
   def self.print_outdated_app(outdated)
-    table = [["No.", "Name", "Cask", "Current", "Latest", "State"]]
+    table = [["No.", "Name", "Cask", "Current", "Latest", "Auto-Update", "State"]]
     outdated.each_with_index do |app, i|
       row = []
       row << "#{i+1}/#{outdated.length}"
@@ -92,6 +93,7 @@ module Bcu
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
+      row << (app[:auto_updates] ? "Y" : "")
       if options.all && (app[:version] == "latest" || app[:auto_updates])
         row << "forced to upgrade"
       elsif app[:outdated?]
