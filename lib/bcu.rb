@@ -74,6 +74,8 @@ module Bcu
       elsif options.all && app[:auto_updates] && app[:outdated?]
         row << "forced to upgrade"
         outdated.push app
+      elsif !options.all && app[:auto_updates]
+        row << "ignored"
       elsif app[:outdated?]
         row << "outdated"
         outdated.push app
