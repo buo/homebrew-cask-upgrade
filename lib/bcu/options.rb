@@ -35,6 +35,11 @@ module Bcu
 
     parser.parse!(args)
 
+    if args[0] == "help"
+      puts parser
+      exit
+    end
+
     options.cask = args[0]
 
     self.options = options
