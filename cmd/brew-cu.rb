@@ -8,11 +8,14 @@
 #:    Upgrade a specific app.
 #:
 #:OPTIONS:
-#:    If `--all` or `-a` is passed, force upgrade outdated apps including those
-#:    marked as latest and those that auto-update.
+#:    If `--all` or `-a` is passed, include apps that auto-update in the
+#:    upgrade.
 #:
 #:    If `--cleanup` is passed, clean up cached downloads and tracker symlinks
 #:    after updating.
+#:
+#:    If `--force` or `-f` is passed, include apps that are marked as latest
+#:    (i.e. force-reinstall them).
 #:
 #:    If `--yes` or `-y` is passed, update all outdated apps; answer yes to
 #:    updating packages.
