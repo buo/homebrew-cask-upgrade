@@ -40,8 +40,9 @@ Options:
 
 ```
 Usage: brew cu [CASK] [options]
-    -a, --all          Force upgrade outdated apps including those marked as latest and those that auto-update
+    -a, --all          Include apps that auto-update in the upgrade
         --cleanup      Cleans up cached downloads and tracker symlinks after updating
+    -f  --force        Include apps that are marked as latest (i.e. force-reinstall them)
     -y, --yes          Update all outdated apps; answer yes to updating packages
 ```
 

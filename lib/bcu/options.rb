@@ -7,6 +7,7 @@ module Bcu
   def self.parse!(args)
     options = OpenStruct.new
     options.all = false
+    options.force = false
     options.cask = nil
     options.cleanup = false
     options.dry_run = true
@@ -14,12 +15,16 @@ module Bcu
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
 
-      opts.on("-a", "--all", "Force upgrade outdated apps including those marked as latest and those that auto-update") do
+      opts.on("-a", "--all", "Include apps that auto-update in the upgrade") do
         options.all = true
       end
 
       opts.on("--cleanup", "Cleans up cached downloads and tracker symlinks after updating") do
         options.cleanup = true
+      end
+
+      opts.on("-f", "--force", "Include apps that are marked as latest (i.e. force-reinstall them)") do
+        options.force = true
       end
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do

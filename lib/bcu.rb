@@ -63,17 +63,22 @@ module Bcu
     end
 
     installed.each do |app|
-      if options.all && app[:version] == "latest"
+      version_latest = (app[:version] == "latest")
+
+      if options.force && options.all && version_latest && app[:auto_updates]
+        outdated.push app
+        state_info[app] = "forced to reinstall"
+      elsif options.force && version_latest && !app[:auto_updates]
+        outdated.push app
+        state_info[app] = "forced to reinstall"
+      elsif options.all && !version_latest && app[:auto_updates] && app[:outdated?]
         outdated.push app
         state_info[app] = "forced to upgrade"
-      elsif options.all && app[:auto_updates] && app[:outdated?]
-        outdated.push app
-        state_info[app] = "forced to upgrade"
-      elsif !options.all && app[:auto_updates]
-        state_info[app] = "ignored"
-      elsif app[:outdated?]
+      elsif !version_latest && !app[:auto_updates] && app[:outdated?]
         outdated.push app
         state_info[app] = "outdated"
+      elsif version_latest || app[:outdated?]
+        state_info[app] = "ignored"
       elsif app[:cask].nil?
         state_info[app] = "no cask available"
       end
