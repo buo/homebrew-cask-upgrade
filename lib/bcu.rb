@@ -9,10 +9,12 @@ module Bcu
   def self.process(args)
     parse!(args)
 
-    outdated = find_outdated_apps
+    outdated, state_info = find_outdated_apps
     return if outdated.empty?
 
-    print_outdated_app(outdated)
+    puts
+    ohai "Found outdated apps"
+    print_app_table(outdated, state_info)
 
     if options.dry_run
       printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, outdated.length > 1 ? "s" : ""
@@ -47,6 +49,7 @@ module Bcu
 
   def self.find_outdated_apps
     outdated = []
+    state_info = Hash.new("")
 
     ohai "Finding outdated apps"
     installed = Hbc.installed_apps
@@ -59,58 +62,43 @@ module Bcu
       end
     end
 
-    table = [["No.", "Name", "Cask", "Current", "Latest", "Auto-Update", "State"]]
-    installed.each_with_index do |app, i|
-      row = []
-      row << "#{i+1}/#{installed.length}"
-      row << app[:name].to_s
-      row << app[:token]
-      row << app[:current].join(", ")
-      row << app[:version]
-      row << (app[:auto_updates] ? "Y" : "")
+    installed.each do |app|
       if options.all && app[:version] == "latest"
-        row << "forced to upgrade"
         outdated.push app
+        state_info[app] = "forced to upgrade"
       elsif options.all && app[:auto_updates] && app[:outdated?]
-        row << "forced to upgrade"
         outdated.push app
+        state_info[app] = "forced to upgrade"
       elsif !options.all && app[:auto_updates]
-        row << "ignored"
+        state_info[app] = "ignored"
       elsif app[:outdated?]
-        row << "outdated"
         outdated.push app
+        state_info[app] = "outdated"
       elsif app[:cask].nil?
-        row << "no cask available"
+        state_info[app] = "no cask available"
       end
-      table << row
     end
-    puts Formatter.table(table)
 
-    outdated
+    print_app_table(installed, state_info)
+
+    [outdated, state_info]
   end
 
-  def self.print_outdated_app(outdated)
+  def self.print_app_table(apps, state_info)
     table = [["No.", "Name", "Cask", "Current", "Latest", "Auto-Update", "State"]]
-    outdated.each_with_index do |app, i|
+
+    apps.each_with_index do |app, i|
       row = []
-      row << "#{i+1}/#{outdated.length}"
+      row << "#{i+1}/#{apps.length}"
       row << app[:name].to_s
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
       row << (app[:auto_updates] ? "Y" : "")
-      if options.all && app[:version] == "latest"
-        row << "forced to upgrade"
-      elsif options.all && app[:auto_updates] && app[:outdated?]
-        row << "forced to upgrade"
-      elsif app[:outdated?]
-        row << "outdated"
-      end
+      row << state_info[app]
       table << row
     end
 
-    puts
-    ohai "Found outdated apps"
     puts Formatter.table(table)
   end
 end
