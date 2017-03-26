@@ -43,7 +43,11 @@ Usage: brew cu [CASK] [options]
     -a, --all          Force upgrade outdated apps including those marked as latest and those that auto-update
         --cleanup      Cleans up cached downloads and tracker symlinks after updating
     -y, --yes          Update all outdated apps; answer yes to updating packages
-        --h            Show this message
+```
+
+Display usage instructions:
+```sh
+brew help cu
 ```
 
 [![asciicast](https://asciinema.org/a/107961.png)](https://asciinema.org/a/107961)

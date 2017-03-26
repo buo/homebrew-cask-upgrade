@@ -25,20 +25,9 @@ module Bcu
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
         options.dry_run = false
       end
-
-      # `-h` is not available since the Homebrew hijacks it.
-      opts.on_tail("--h", "Show this message") do
-        puts opts
-        exit
-      end
     end
 
     parser.parse!(args)
-
-    if args[0] == "help"
-      puts parser
-      exit
-    end
 
     options.cask = args[0]
 
