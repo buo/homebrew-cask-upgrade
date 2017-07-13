@@ -44,7 +44,7 @@ module Bcu
       end
     end
 
-    Hbc::CLI::Cleanup.default.cleanup! if options.cleanup
+    Hbc::CLI::Cleanup.run if options.cleanup
   end
 
   def self.find_outdated_apps
