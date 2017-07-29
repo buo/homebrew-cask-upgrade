@@ -1,5 +1,4 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby -W0 -EUTF-8:UTF-8
-# encoding: UTF-8
 
 #:  * `cu` [`options`]
 #:    Upgrade every outdated app installed by `brew cask`.
