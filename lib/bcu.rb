@@ -17,12 +17,10 @@ module Bcu
     print_app_table(outdated, state_info)
 
     if options.dry_run
-      printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, outdated.length > 1 ? "s" : ""
+      printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, (outdated.length > 1) ? "s" : ""
       input = STDIN.gets.strip
 
-      if input.casecmp("y").zero?
-        options.dry_run = false
-      end
+      options.dry_run = false if input.casecmp("y").zero?
     end
 
     return if options.dry_run
@@ -99,7 +97,7 @@ module Bcu
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
-      row << (app[:auto_updates] ? "Y" : "")
+      row << ((app[:auto_updates]) ? "Y" : "")
       row << state_info[app]
       table << row
     end
