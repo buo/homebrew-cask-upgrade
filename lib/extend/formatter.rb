@@ -30,7 +30,8 @@ module Formatter
     # Print table body
     rows.each do |row|
       row.each_with_index do |obj, i|
-        output << obj.to_s.ljust(col_widths[i] + gutter)
+        padding = col_widths[i] - Tty.strip_ansi(obj.to_s).length + gutter
+        output << "#{obj}#{" " * padding}"
       end
       output << "\n"
     end

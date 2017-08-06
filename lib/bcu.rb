@@ -92,13 +92,24 @@ module Bcu
 
     apps.each_with_index do |app, i|
       row = []
-      row << "#{i+1}/#{apps.length}"
-      row << app[:name].to_s
+      row << "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}"
+
+      if state_info[app] == "ignored"
+        color = "default"
+      elsif state_info[app][0, 6] == "forced"
+        color = "yellow"
+      elsif state_info[app] == "outdated"
+        color = "red"
+      else
+        color = "green"
+      end
+
+      row << "#{Tty.send(color)}#{app[:name]}#{Tty.reset}"
       row << app[:token]
       row << app[:current].join(", ")
       row << app[:version]
       row << ((app[:auto_updates]) ? "Y" : "")
-      row << state_info[app]
+      row << "#{Tty.send(color)}#{state_info[app]}#{Tty.reset}"
       table << row
     end
 
