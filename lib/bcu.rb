@@ -88,7 +88,7 @@ module Bcu
   end
 
   def self.print_app_table(apps, state_info)
-    table = [["No.", "Cask", "Current", "Latest", "Auto-Update", "State"]]
+    table = [["", "Cask", "Current", "Latest", "Auto-Update", "State"]]
 
     apps.each_with_index do |app, i|
       row = []
