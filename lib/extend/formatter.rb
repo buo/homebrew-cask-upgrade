@@ -10,7 +10,7 @@ module Formatter
     "#{s[0, len - suffix.length]}#{suffix}"
   end
 
-  def table(rows, gutter: 2)
+  def table(rows, gutter: 2, bordered: false)
     output = ""
 
     # Maximum number of columns
@@ -29,12 +29,14 @@ module Formatter
     table_width = col_widths.inject(:+) + gutter * (cols - 1)
 
     # Print table header
-    output << "=" * table_width + "\n"
+    output << "=" * table_width + "\n" if bordered
     rows.shift.each_with_index do |obj, i|
-      output << obj.to_s.ljust(col_widths[i] + gutter)
+      string = "#{Tty.underline}#{obj}#{Tty.reset}"
+      padding = col_widths[i] - Tty.strip_ansi(string).length + gutter
+      output << "#{string}#{" " * padding}"
     end
     output << "\n"
-    output << "=" * table_width + "\n"
+    output << "=" * table_width + "\n" if bordered
 
     # Print table body
     rows.each do |row|
@@ -44,7 +46,7 @@ module Formatter
       end
       output << "\n"
     end
-    output << "=" * table_width + "\n"
+    output << "=" * table_width + "\n" if bordered
 
     output
   end
