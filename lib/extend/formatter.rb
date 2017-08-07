@@ -1,6 +1,16 @@
 module Formatter
   module_function
 
+  class TableColumn
+    attr_accessor :align, :color, :value, :width
+    def initialize(args)
+      @align = args[:align].nil? ? "left" : args[:align]
+      @color = args[:color].nil? ? "default" : args[:color]
+      @value = args[:value].nil? ? "" : args[:value].to_s
+      @width = args[:width].nil? ? 0 : args[:width]
+    end
+  end
+
   def colorize(string, color)
     "#{Tty.send(color)}#{string}#{Tty.reset}"
   end
@@ -14,7 +24,7 @@ module Formatter
     "#{string[0, len - suffix.length]}#{suffix}"
   end
 
-  def table(rows, gutter: 2, bordered: false)
+  def table(rows, gutter: 2)
     output = ""
 
     # Maximum number of columns
@@ -23,8 +33,8 @@ module Formatter
     # Calculate column widths
     col_widths = Array.new(cols, 0)
     rows.each do |row|
-      row.each_with_index do |obj, i|
-        len = Tty.strip_ansi(obj.to_s).length
+      row.each_with_index do |col, i|
+        len = col.value.length
         col_widths[i] = len if col_widths[i] < len
       end
     end
@@ -32,25 +42,55 @@ module Formatter
     # Calculate table width including gutters
     table_width = col_widths.inject(:+) + gutter * (cols - 1)
 
+    if table_width > Tty.width
+      content_width = Tty.width - gutter * (cols - 1) - gutter
+      overflow_cols = 0
+      max_width = content_width
+      col_widths.each do |width|
+        if width <= content_width / cols
+          max_width -= width
+        else
+          overflow_cols += 1
+        end
+      end
+      max_width /= overflow_cols
+
+      # Re-calculate column widths
+      col_widths = Array.new(cols, 0)
+      rows.each do |row|
+        row.each_with_index do |col, i|
+          len = [col.value.length, max_width].min
+          col_widths[i] = len if col_widths[i] < len
+        end
+      end
+
+      # Truncate values
+      rows = rows.map do |row|
+        row.map.with_index do |col, i|
+          col.value = Formatter.truncate(col.value, len: col_widths[i])
+          col
+        end
+      end
+    end
+
     # Print table header
-    output << "=" * table_width + "\n" if bordered
-    rows.shift.each_with_index do |obj, i|
-      string = "#{Tty.underline}#{obj}#{Tty.reset}"
-      padding = col_widths[i] - Tty.strip_ansi(string).length + gutter
+    rows.shift.each_with_index do |th, i|
+      string = "#{Tty.underline}#{th.value}#{Tty.reset}"
+      padding = col_widths[i] - th.value.length
+      padding += gutter unless i - 1 == cols
       output << "#{string}#{" " * padding}"
     end
     output << "\n"
-    output << "=" * table_width + "\n" if bordered
 
     # Print table body
     rows.each do |row|
-      row.each_with_index do |obj, i|
-        padding = col_widths[i] - Tty.strip_ansi(obj.to_s).length + gutter
-        output << "#{obj}#{" " * padding}"
+      row.each_with_index do |td, i|
+        padding = col_widths[i] - td.value.length
+        padding += gutter unless i - 1 == cols
+        output << "#{Tty.send(td.color)}#{td.value}#{Tty.reset}#{" " * padding}"
       end
       output << "\n"
     end
-    output << "=" * table_width + "\n" if bordered
 
     output
   end

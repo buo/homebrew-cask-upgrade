@@ -93,35 +93,42 @@ module Bcu
   end
 
   def self.print_app_table(apps, state_info)
-    table = [["", "Cask", "Current", "Latest", "A/U", "Result"]]
+    thead = []
+    thead << Formatter::TableColumn.new(value: "")
+    thead << Formatter::TableColumn.new(value: "Cask")
+    thead << Formatter::TableColumn.new(value: "Current")
+    thead << Formatter::TableColumn.new(value: "Latest")
+    thead << Formatter::TableColumn.new(value: "A/U")
+    thead << Formatter::TableColumn.new(value: "Result")
+    table = [thead]
 
     apps.each_with_index do |app, i|
       if state_info[app][0, 6] == "forced"
         color = "yellow"
-        result = " FORCED "
+        result = "[ FORCED ]"
       elsif app[:auto_updates]
         if options.all
           color = "green"
-          result = "   OK   "
+          result = "[   OK   ]"
         else
           color = "default"
-          result = "  PASS  "
+          result = "[  PASS  ]"
         end
       elsif state_info[app] == "outdated"
         color = "red"
-        result = "OUTDATED"
+        result = "[OUTDATED]"
       else
         color = "green"
-        result = "   OK   "
+        result = "[   OK   ]"
       end
 
       row = []
-      row << "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}"
-      row << Formatter.colorize(app[:token], color)
-      row << Formatter.truncate(app[:current].join(","))
-      row << Formatter.colorize(Formatter.truncate(app[:version]), "magenta")
-      row << Formatter.colorize((app[:auto_updates]) ? " Y " : "", "magenta")
-      row << Formatter.state(result, color: color)
+      row << Formatter::TableColumn.new(value: "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
+      row << Formatter::TableColumn.new(value: app[:token], color: color)
+      row << Formatter::TableColumn.new(value: app[:current].join(","))
+      row << Formatter::TableColumn.new(value: app[:version], color: "magenta")
+      row << Formatter::TableColumn.new(value: (app[:auto_updates]) ? " Y " : "", color: "magenta")
+      row << Formatter::TableColumn.new(value: result, color: color)
       table << row
     end
 
