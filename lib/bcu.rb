@@ -9,6 +9,12 @@ module Bcu
   def self.process(args)
     parse!(args)
 
+    ohai "Options"
+    puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
+    puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
+
+    puts
+    ohai "Finding outdated apps"
     outdated, state_info = find_outdated_apps
     return if outdated.empty?
 
@@ -49,7 +55,6 @@ module Bcu
     outdated = []
     state_info = Hash.new("")
 
-    ohai "Finding outdated apps"
     installed = Hbc.installed_apps
 
     if options.cask
