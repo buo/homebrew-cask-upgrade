@@ -104,7 +104,7 @@ module Bcu
           color = "green"
           result = "   OK   "
         else
-          color = "blue"
+          color = "default"
           result = "  PASS  "
         end
       elsif state_info[app] == "outdated"
