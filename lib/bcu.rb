@@ -88,27 +88,35 @@ module Bcu
   end
 
   def self.print_app_table(apps, state_info)
-    table = [["", "Cask", "Current", "Latest", "Auto-Update", "State"]]
+    table = [["", "Cask", "Current", "Latest", "A/U", "Result"]]
 
     apps.each_with_index do |app, i|
-      row = []
-      row << "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}"
-
-      if state_info[app] == "ignored"
-        color = "default"
-      elsif state_info[app][0, 6] == "forced"
+      if state_info[app][0, 6] == "forced"
         color = "yellow"
+        result = " FORCED "
+      elsif app[:auto_updates]
+        if options.all
+          color = "green"
+          result = "   OK   "
+        else
+          color = "blue"
+          result = "  PASS  "
+        end
       elsif state_info[app] == "outdated"
         color = "red"
+        result = "OUTDATED"
       else
         color = "green"
+        result = "   OK   "
       end
 
+      row = []
+      row << "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}"
       row << Formatter.colorize(app[:token], color)
       row << Formatter.truncate(app[:current])
       row << Formatter.colorize(Formatter.truncate(app[:version]), "magenta")
-      row << ((app[:auto_updates]) ? "Y" : "")
-      row << "#{Tty.send(color)}#{state_info[app]}#{Tty.reset}"
+      row << Formatter.colorize(app[:auto_updates] ? " Y " : "", "magenta")
+      row << Formatter.state(result, color: color)
       table << row
     end
 

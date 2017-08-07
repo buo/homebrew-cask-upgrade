@@ -5,6 +5,10 @@ module Formatter
     "#{Tty.send(color)}#{string}#{Tty.reset}"
   end
 
+  def state(string, color: "default")
+    "[#{Tty.send(color)}#{string}#{Tty.reset}]"
+  end
+
   def truncate(s, len: 10, suffix: "...")
     return s if s.length <= len
     "#{s[0, len - suffix.length]}#{suffix}"
