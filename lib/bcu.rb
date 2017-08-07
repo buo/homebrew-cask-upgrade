@@ -106,8 +106,8 @@ module Bcu
 
       row << "#{Tty.send(color)}#{app[:name]}#{Tty.reset}"
       row << app[:token]
-      row << app[:current].join(", ")
-      row << app[:version]
+      row << Formatter.truncate(app[:current])
+      row << Formatter.truncate(app[:version])
       row << ((app[:auto_updates]) ? "Y" : "")
       row << "#{Tty.send(color)}#{state_info[app]}#{Tty.reset}"
       table << row

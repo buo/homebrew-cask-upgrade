@@ -1,6 +1,11 @@
 module Formatter
   module_function
 
+  def truncate(s, len: 10, suffix: "...")
+    return s if s.length <= len
+    "#{s[0, len - suffix.length]}#{suffix}"
+  end
+
   def table(rows, gutter: 2)
     output = ""
 
