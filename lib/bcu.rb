@@ -88,7 +88,7 @@ module Bcu
   end
 
   def self.print_app_table(apps, state_info)
-    table = [["No.", "Name", "Cask", "Current", "Latest", "Auto-Update", "State"]]
+    table = [["No.", "Cask", "Current", "Latest", "Auto-Update", "State"]]
 
     apps.each_with_index do |app, i|
       row = []
@@ -104,8 +104,7 @@ module Bcu
         color = "green"
       end
 
-      row << "#{Tty.send(color)}#{app[:name]}#{Tty.reset}"
-      row << app[:token]
+      row << Formatter.colorize(app[:token], color)
       row << Formatter.truncate(app[:current])
       row << Formatter.truncate(app[:version])
       row << ((app[:auto_updates]) ? "Y" : "")
