@@ -99,7 +99,7 @@ module Bcu
     thead << Formatter::TableColumn.new(value: "Current")
     thead << Formatter::TableColumn.new(value: "Latest")
     thead << Formatter::TableColumn.new(value: "A/U")
-    thead << Formatter::TableColumn.new(value: "Result")
+    thead << Formatter::TableColumn.new(value: "Result", align: "center")
     table = [thead]
 
     apps.each_with_index do |app, i|

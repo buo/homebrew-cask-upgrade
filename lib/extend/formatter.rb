@@ -77,8 +77,15 @@ module Formatter
     rows.shift.each_with_index do |th, i|
       string = "#{Tty.underline}#{th.value}#{Tty.reset}"
       padding = col_widths[i] - th.value.length
-      padding += gutter unless i - 1 == cols
-      output << "#{string}#{" " * padding}"
+      if th.align == "center"
+        padding_left = padding / 2
+        padding_right = padding - padding_left
+        padding_right += gutter unless i - 1 == cols
+        output << "#{" " * padding_left}#{string}#{" " * padding_right}"
+      else
+        padding += gutter unless i - 1 == cols
+        output << "#{string}#{" " * padding}"
+      end
     end
     output << "\n"
 
