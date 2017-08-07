@@ -106,7 +106,7 @@ module Bcu
 
       row << Formatter.colorize(app[:token], color)
       row << Formatter.truncate(app[:current])
-      row << Formatter.truncate(app[:version])
+      row << Formatter.colorize(Formatter.truncate(app[:version]), "magenta")
       row << ((app[:auto_updates]) ? "Y" : "")
       row << "#{Tty.send(color)}#{state_info[app]}#{Tty.reset}"
       table << row
