@@ -51,4 +51,4 @@ Display usage instructions:
 brew help cu
 ```
 
-[![asciicast](https://asciinema.org/a/107961.png)](https://asciinema.org/a/107961)
+[![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)
