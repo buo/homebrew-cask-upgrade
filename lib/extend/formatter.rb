@@ -9,9 +9,9 @@ module Formatter
     "[#{Tty.send(color)}#{string}#{Tty.reset}]"
   end
 
-  def truncate(s, len: 10, suffix: "...")
-    return s if s.length <= len
-    "#{s[0, len - suffix.length]}#{suffix}"
+  def truncate(string, len: 10, suffix: "...")
+    return string if string.length <= len
+    "#{string[0, len - suffix.length]}#{suffix}"
   end
 
   def table(rows, gutter: 2, bordered: false)

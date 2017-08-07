@@ -15,8 +15,7 @@ module Hbc
           :name => cask.name.first,
           :token => cask.token,
           :version => cask.version.to_s,
-          # TODO: multiple versions?
-          :current => versions.first,
+          :current => versions,
           :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
           :auto_updates => cask.auto_updates,
         }
@@ -26,8 +25,7 @@ module Hbc
           :name => nil,
           :token => token,
           :version => nil,
-          # TODO: multiple versions?
-          :current => versions.first,
+          :current => versions,
           :outdated? => false,
           :auto_updates => false,
         }

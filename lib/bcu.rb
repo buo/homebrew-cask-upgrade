@@ -113,7 +113,7 @@ module Bcu
       row = []
       row << "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}"
       row << Formatter.colorize(app[:token], color)
-      row << Formatter.truncate(app[:current])
+      row << Formatter.truncate(app[:current].join(","))
       row << Formatter.colorize(Formatter.truncate(app[:version]), "magenta")
       row << Formatter.colorize(app[:auto_updates] ? " Y " : "", "magenta")
       row << Formatter.state(result, color: color)
