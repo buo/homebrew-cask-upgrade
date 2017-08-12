@@ -16,6 +16,9 @@
 #:    If `--force` or `-f` is passed, include apps that are marked as latest
 #:    (i.e. force-reinstall them).
 #:
+#:    If `--no-brew-update` is passed, prevent auto-update of Homebrew, taps,
+#:    and fomulae before checking outdated apps.
+#:
 #:    If `--yes` or `-y` is passed, update all outdated apps; answer yes to
 #:    updating packages.
 
