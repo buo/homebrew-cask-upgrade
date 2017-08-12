@@ -40,10 +40,14 @@ Options:
 
 ```
 Usage: brew cu [CASK] [options]
-    -a, --all          Include apps that auto-update in the upgrade
-        --cleanup      Cleans up cached downloads and tracker symlinks after updating
-    -f  --force        Include apps that are marked as latest (i.e. force-reinstall them)
-    -y, --yes          Update all outdated apps; answer yes to updating packages
+    -a, --all             Include apps that auto-update in the upgrade.
+        --cleanup         Cleans up cached downloads and tracker symlinks after
+                          updating.
+    -f  --force           Include apps that are marked as latest
+                          (i.e. force-reinstall them).
+        --no-brew-update  Prevent auto-update of Homebrew, taps, and fomulae
+                          before checking outdated apps.
+    -y, --yes             Update all outdated apps; answer yes to updating packages.
 ```
 
 Display usage instructions:
