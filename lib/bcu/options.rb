@@ -11,6 +11,7 @@ module Bcu
     options.cask = nil
     options.cleanup = false
     options.dry_run = true
+    options.no_brew_update = false
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -25,6 +26,10 @@ module Bcu
 
       opts.on("-f", "--force", "Include apps that are marked as latest (i.e. force-reinstall them)") do
         options.force = true
+      end
+
+      opts.on("--no-brew-update", "Prevent auto-update of Homebrew, taps, and fomulae before checking outdated apps") do
+        options.no_brew_update = true
       end
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
