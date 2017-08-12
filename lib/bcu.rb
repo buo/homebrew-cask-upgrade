@@ -13,12 +13,13 @@ module Bcu
     puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
     puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
 
-    puts
+    ohai "Updating Homebrew"
+    puts Hbc.brew_update
+
     ohai "Finding outdated apps"
     outdated, state_info = find_outdated_apps
     return if outdated.empty?
 
-    puts
     ohai "Found outdated apps"
     print_app_table(outdated, state_info)
 

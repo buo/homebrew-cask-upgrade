@@ -47,4 +47,8 @@ module Hbc
   def self.installed_versions(token)
     Dir["#{CASKROOM}/#{token}/*"].map { |e| File.basename e }
   end
+
+  def self.brew_update
+    Hbc::SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
+  end
 end
