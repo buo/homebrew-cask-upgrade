@@ -12,6 +12,7 @@ module Bcu
     options.cleanup = false
     options.dry_run = true
     options.no_brew_update = false
+    options.quiet = false
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -34,6 +35,10 @@ module Bcu
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
         options.dry_run = false
+      end
+
+      opts.on("-q", "--quiet", "Do not show information about installed apps or current options") do
+        options.quiet = true
       end
     end
 

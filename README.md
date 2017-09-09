@@ -48,6 +48,7 @@ Usage: brew cu [CASK] [options]
         --no-brew-update  Prevent auto-update of Homebrew, taps, and fomulae
                           before checking outdated apps.
     -y, --yes             Update all outdated apps; answer yes to updating packages.
+    -q, --quiet           Do not show information about installed apps or current options.
 ```
 
 Display usage instructions:

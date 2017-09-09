@@ -21,6 +21,9 @@
 #:
 #:    If `--yes` or `-y` is passed, update all outdated apps; answer yes to
 #:    updating packages.
+#:
+#:    If `--quiet` or `-q` is passed, do not show information about installed
+#:    apps or current options.
 
 require "pathname"
 
