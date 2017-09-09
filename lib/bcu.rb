@@ -9,9 +9,11 @@ module Bcu
   def self.process(args)
     parse!(args)
 
-    ohai "Options"
-    puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
-    puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
+    unless options.quiet
+      ohai "Options"
+      puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
+      puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
+    end
 
     unless options.no_brew_update
       ohai "Updating Homebrew"
@@ -19,8 +21,11 @@ module Bcu
     end
 
     ohai "Finding outdated apps"
-    outdated, state_info = find_outdated_apps
-    return if outdated.empty?
+    outdated, state_info = find_outdated_apps(options.quiet)
+    if outdated.empty?
+      puts "No outdated apps found." if options.quiet
+      return
+    end
 
     ohai "Found outdated apps"
     print_app_table(outdated, state_info)
@@ -54,7 +59,7 @@ module Bcu
     Hbc::CLI::Cleanup.run if options.cleanup
   end
 
-  def self.find_outdated_apps
+  def self.find_outdated_apps(quiet)
     outdated = []
     state_info = Hash.new("")
 
@@ -90,7 +95,7 @@ module Bcu
       end
     end
 
-    print_app_table(installed, state_info)
+    print_app_table(installed, state_info) unless quiet
 
     [outdated, state_info]
   end
