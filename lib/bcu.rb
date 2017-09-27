@@ -110,7 +110,7 @@ module Bcu
     thead << Formatter::TableColumn.new(value: "Result", align: "center")
     table = [thead]
 
-    apps.each_with_index do |app, i|
+    apps.sort_by { |a| a[:token] }.each_with_index do |app, i|
       if state_info[app][0, 6] == "forced"
         color = "yellow"
         result = "[ FORCED ]"
@@ -135,7 +135,7 @@ module Bcu
       row << Formatter::TableColumn.new(value: app[:token], color: color)
       row << Formatter::TableColumn.new(value: app[:current].join(","))
       row << Formatter::TableColumn.new(value: app[:version], color: "magenta")
-      row << Formatter::TableColumn.new(value: (app[:auto_updates]) ? " Y " : "", color: "magenta")
+      row << Formatter::TableColumn.new(value: app[:auto_updates] ? " Y " : "", color: "magenta")
       row << Formatter::TableColumn.new(value: result, color: color)
       table << row
     end
