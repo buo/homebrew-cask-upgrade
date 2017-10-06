@@ -17,7 +17,7 @@
 #:    (i.e. force-reinstall them).
 #:
 #:    If `--no-brew-update` is passed, prevent auto-update of Homebrew, taps,
-#:    and fomulae before checking outdated apps.
+#:    and formulae before checking outdated apps.
 #:
 #:    If `--yes` or `-y` is passed, update all outdated apps; answer yes to
 #:    updating packages.
