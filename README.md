@@ -45,7 +45,7 @@ Usage: brew cu [CASK] [options]
                           updating.
     -f  --force           Include apps that are marked as latest
                           (i.e. force-reinstall them).
-        --no-brew-update  Prevent auto-update of Homebrew, taps, and fomulae
+        --no-brew-update  Prevent auto-update of Homebrew, taps, and formulae
                           before checking outdated apps.
     -y, --yes             Update all outdated apps; answer yes to updating packages.
     -q, --quiet           Do not show information about installed apps or current options.
