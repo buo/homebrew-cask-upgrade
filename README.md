@@ -18,12 +18,6 @@ brew tap buo/cask-upgrade
 
 ## Usage
 
-Fetch the newest version of Homebrew Cask and all casks:
-
-```
-brew update
-```
-
 Upgrade outdated apps:
 
 ```
@@ -36,7 +30,18 @@ Upgrade a specific app:
 brew cu [CASK]
 ```
 
-Options:
+While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
+latest versions of all the installed casks (this can be disabled, see options below).
+
+### Apps with auto-update
+
+If the app has the auto update functionality (they ask you themselves, if you want to upgrade them), they are not
+upgraded while running `brew cu`. If you want to upgrade them, pass `--all` option to include also those kind of apps.
+
+Please note, that if you update the apps using their auto-update functionality, that change will not reflect in the
+`brew cu` script! Tracked version gets only updated, when the app is upgraded through `brew cu --all`.
+
+### Options
 
 ```
 Usage: brew cu [CASK] [options]
