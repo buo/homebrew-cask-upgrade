@@ -6,7 +6,7 @@ module Hbc
     # it raises errors while iterating and stops.
     installed = Dir["#{CASKROOM}/*"].map { |e| File.basename e }
 
-    installed.map do |token|
+    installed = installed.map do |token|
       versions = installed_versions(token)
       begin
         cask = load_cask(token)
@@ -31,6 +31,8 @@ module Hbc
         }
       end
     end
+
+    installed.sort_by { |a| a[:token] }
   end
 
   # See: https://github.com/buo/homebrew-cask-upgrade/issues/43

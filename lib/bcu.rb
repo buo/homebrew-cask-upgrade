@@ -110,7 +110,7 @@ module Bcu
     thead << Formatter::TableColumn.new(value: "Result", align: "center")
     table = [thead]
 
-    apps.sort_by { |a| a[:token] }.each_with_index do |app, i|
+    apps.each_with_index do |app, i|
       if state_info[app][0, 6] == "forced"
         color = "yellow"
         result = "[ FORCED ]"
