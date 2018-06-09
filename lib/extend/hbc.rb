@@ -1,4 +1,4 @@
-CASKROOM = Hbc.caskroom
+CASKROOM = Hbc::Caskroom.path
 
 module Hbc
   def self.installed_apps
