@@ -1,4 +1,6 @@
-CASKROOM = Hbc::Caskroom.path
+# For backward-compatibility
+# See https://github.com/buo/homebrew-cask-upgrade/issues/97
+CASKROOM = Hbc.methods.include?(:caskroom) ? Hbc.caskroom : Hbc::Caskroom.path
 
 module Hbc
   def self.installed_apps
