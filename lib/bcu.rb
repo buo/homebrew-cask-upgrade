@@ -17,7 +17,7 @@ module Bcu
 
     unless options.no_brew_update
       ohai "Updating Homebrew"
-      puts Hbc.brew_update
+      puts Hbc.brew_update.stdout
     end
 
     ohai "Finding outdated apps"
