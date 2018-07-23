@@ -53,6 +53,6 @@ module Hbc
   end
 
   def self.brew_update
-    Hbc::SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
+    SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
   end
 end
