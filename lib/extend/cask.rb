@@ -1,10 +1,10 @@
 # For backward-compatibility
 # See https://github.com/buo/homebrew-cask-upgrade/issues/97
-CASKROOM = Hbc.methods.include?(:caskroom) ? Hbc.caskroom : Hbc::Caskroom.path
+CASKROOM = Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path
 
-module Hbc
+module Cask
   def self.installed_apps
-    # Manually retrieve installed apps instead of using Hbc.installed because
+    # Manually retrieve installed apps instead of using Cask.installed because
     # it raises errors while iterating and stops.
     installed = Dir["#{CASKROOM}/*"].map { |e| File.basename e }
 
@@ -21,7 +21,7 @@ module Hbc
           :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
           :auto_updates => cask.auto_updates,
         }
-      rescue Hbc::CaskUnavailableError
+      rescue Cask::CaskUnavailableError
         {
           :cask => nil,
           :name => nil,
@@ -42,7 +42,7 @@ module Hbc
     begin
       cask = CaskLoader.load(token)
     rescue NoMethodError
-      cask = Hbc.load(token)
+      cask = Cask.load(token)
     end
     cask
   end
