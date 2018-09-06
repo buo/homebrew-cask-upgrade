@@ -3,7 +3,7 @@ $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 require "bcu/options"
 require "cask/all"
 require "extend/formatter"
-require "extend/hbc"
+require "extend/cask"
 
 module Bcu
   def self.process(args)
@@ -17,7 +17,7 @@ module Bcu
 
     unless options.no_brew_update
       ohai "Updating Homebrew"
-      puts Hbc.brew_update.stdout
+      puts Cask.brew_update.stdout
     end
 
     ohai "Finding outdated apps"
@@ -63,7 +63,7 @@ module Bcu
     outdated = []
     state_info = Hash.new("")
 
-    installed = Hbc.installed_apps
+    installed = Cask.installed_apps
 
     if options.cask
       installed = installed.select { |app| app[:token] == options.cask }
