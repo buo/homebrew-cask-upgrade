@@ -7,7 +7,7 @@ installed by [Homebrew Cask](https://caskroom.github.io).
 
 Homebrew Cask extends [Homebrew](http://brew.sh) and brings its elegance, simplicity, and speed to the installation and management of GUI macOS applications and large binaries alike.
 
-`brew-cask-upgrade` is an external command to replace the native `upgrade` by offering interativity, an improved interface, and higher granularity of what to upgrade.
+`brew-cask-upgrade` is an external command to replace the native `upgrade` by offering interactivity, an improved interface, and higher granularity of what to upgrade.
 
 ## Installation
 
