@@ -21,7 +21,7 @@ module Cask
           :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
           :auto_updates => cask.auto_updates,
         }
-      rescue Cask::CaskUnavailableError
+      rescue CaskUnavailableError
         {
           :cask => nil,
           :name => nil,
