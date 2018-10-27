@@ -46,7 +46,7 @@ module Bcu
       system "rm -rf #{app[:cask].metadata_master_container_path}"
 
       # Force to install the latest version.
-      system "brew cask install #{app[:token]} --force"
+      system "brew cask install #{options.install_options} #{app[:token]} --force"
 
       # Remove the old versions.
       app[:current].each do |version|
