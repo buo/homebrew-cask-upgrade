@@ -13,6 +13,7 @@ module Bcu
     options.dry_run = true
     options.no_brew_update = false
     options.quiet = false
+    options.install_options = ""
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -39,6 +40,10 @@ module Bcu
 
       opts.on("-q", "--quiet", "Do not show information about installed apps or current options") do
         options.quiet = true
+      end
+
+      opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation") do
+        options.install_options += " --no-quarantine"
       end
     end
 
