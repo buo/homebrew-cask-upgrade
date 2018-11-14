@@ -65,10 +65,25 @@ module Bcu
 
     installed = Cask.installed_apps
 
-    if options.cask
-      installed = installed.select { |app| app[:token] == options.cask }
+    unless options.casks.empty?
+      installed = installed.select do |app| 
+        found = false
+        options.casks.each do |arg| 
+          found = true if app[:token] == arg || (arg.end_with?('*') && app[:token].start_with?(arg.slice(0..-2)))
+        end
+        found
+      end
+
       if installed.empty?
-        onoe "#{Tty.red}Cask \"#{options.cask}\" is not installed.#{Tty.reset}"
+        if options.casks.length == 1
+          if options.casks[0].end_with? '*'
+            onoe "#{Tty.red}No Cask matching \"#{options.casks[0]}\" is installed.#{Tty.reset}"
+          else
+            onoe "#{Tty.red}Cask \"#{options.casks[0]}\" is not installed.#{Tty.reset}"
+          end
+        else 
+          onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
+        end
         exit(1)
       end
     end

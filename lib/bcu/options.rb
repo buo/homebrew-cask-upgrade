@@ -8,7 +8,7 @@ module Bcu
     options = OpenStruct.new
     options.all = false
     options.force = false
-    options.cask = nil
+    options.casks = nil
     options.cleanup = false
     options.dry_run = true
     options.no_brew_update = false
@@ -49,7 +49,7 @@ module Bcu
 
     parser.parse!(args)
 
-    options.cask = args[0]
+    options.casks = args
 
     self.options = options
   end
