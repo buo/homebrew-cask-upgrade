@@ -42,7 +42,7 @@ module Bcu
         options.quiet = true
       end
 
-      opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation") do
+      opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation for additional information") do
         options.install_options += " --no-quarantine"
       end
     end
