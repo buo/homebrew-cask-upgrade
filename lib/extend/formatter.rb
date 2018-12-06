@@ -101,4 +101,53 @@ module Formatter
 
     output
   end
+  
+  def print_app_table(apps, state_info, options)
+    thead = []
+    thead << self::TableColumn.new(value: "")
+    thead << self::TableColumn.new(value: "Cask")
+    thead << self::TableColumn.new(value: "Current")
+    thead << self::TableColumn.new(value: "Latest")
+    thead << self::TableColumn.new(value: "A/U")
+    thead << self::TableColumn.new(value: "Result", align: "center")
+    table = [thead]
+
+    apps.each_with_index do |app, i|
+      color, result = get_formatting_for_app(state_info, app, options).values_at(0, 1)
+
+      row = []
+      row << self::TableColumn.new(:value => "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
+      row << self::TableColumn.new(:value => app[:token], :color => color)
+      row << self::TableColumn.new(:value => app[:current].join(","))
+      row << self::TableColumn.new(:value => app[:version], :color => "magenta")
+      row << self::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
+      row << self::TableColumn.new(:value => result, :color => color)
+      table << row
+    end
+
+    puts Formatter.table(table)
+  end
+  
+  def get_formatting_for_app(state_info, app, options)
+    if state_info[app][0, 6] == "forced"
+      color = "yellow"
+      result = "[ FORCED ]"
+    elsif app[:auto_updates]
+      if options.all
+        color = "green"
+        result = "[   OK   ]"
+      else
+        color = "default"
+        result = "[  PASS  ]"
+      end
+    elsif state_info[app] == "outdated"
+      color = "red"
+      result = "[OUTDATED]"
+    else
+      color = "green"
+      result = "[   OK   ]"
+    end
+
+    [color, result]
+  end
 end
