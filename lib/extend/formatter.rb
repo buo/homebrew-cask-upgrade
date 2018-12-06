@@ -119,7 +119,7 @@ module Formatter
     return string if string.length <= len
     "#{string[0, len - suffix.length]}#{suffix}"
   end
-  
+
   def print_app_table(apps, state_info, options)
     table = self::Table.new
     table.add_header_column ""
