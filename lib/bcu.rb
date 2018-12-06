@@ -28,7 +28,7 @@ module Bcu
     end
 
     ohai "Found outdated apps"
-    print_app_table(outdated, state_info)
+    Formatter.print_app_table(outdated, state_info, options)
 
     if options.dry_run
       printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, (outdated.length > 1) ? "s" : ""
@@ -102,58 +102,9 @@ module Bcu
       end
     end
 
-    print_app_table(installed, state_info) unless quiet
+    Formatter.print_app_table(installed, state_info, options) unless quiet
 
     [outdated, state_info]
-  end
-
-  def self.print_app_table(apps, state_info)
-    thead = []
-    thead << Formatter::TableColumn.new(value: "")
-    thead << Formatter::TableColumn.new(value: "Cask")
-    thead << Formatter::TableColumn.new(value: "Current")
-    thead << Formatter::TableColumn.new(value: "Latest")
-    thead << Formatter::TableColumn.new(value: "A/U")
-    thead << Formatter::TableColumn.new(value: "Result", align: "center")
-    table = [thead]
-
-    apps.each_with_index do |app, i|
-      color, result = get_formatting_for_app(state_info, app).values_at(0, 1)
-
-      row = []
-      row << Formatter::TableColumn.new(:value => "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
-      row << Formatter::TableColumn.new(:value => app[:token], :color => color)
-      row << Formatter::TableColumn.new(:value => app[:current].join(","))
-      row << Formatter::TableColumn.new(:value => app[:version], :color => "magenta")
-      row << Formatter::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
-      row << Formatter::TableColumn.new(:value => result, :color => color)
-      table << row
-    end
-
-    puts Formatter.table(table)
-  end
-
-  def self.get_formatting_for_app(state_info, app)
-    if state_info[app][0, 6] == "forced"
-      color = "yellow"
-      result = "[ FORCED ]"
-    elsif app[:auto_updates]
-      if options.all
-        color = "green"
-        result = "[   OK   ]"
-      else
-        color = "default"
-        result = "[  PASS  ]"
-      end
-    elsif state_info[app] == "outdated"
-      color = "red"
-      result = "[OUTDATED]"
-    else
-      color = "green"
-      result = "[   OK   ]"
-    end
-
-    [color, result]
   end
 
   def self.print_install_empty_message(cask_searched)
