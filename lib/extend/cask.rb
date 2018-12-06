@@ -13,22 +13,22 @@ module Cask
       begin
         cask = load_cask(token)
         {
-          :cask => cask,
-          :name => cask.name.first,
-          :token => cask.token,
-          :version => cask.version.to_s,
-          :current => versions,
-          :outdated? => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
+          :cask         => cask,
+          :name         => cask.name.first,
+          :token        => cask.token,
+          :version      => cask.version.to_s,
+          :current      => versions,
+          :outdated?    => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
           :auto_updates => cask.auto_updates,
         }
       rescue CaskUnavailableError
         {
-          :cask => nil,
-          :name => nil,
-          :token => token,
-          :version => nil,
-          :current => versions,
-          :outdated? => false,
+          :cask         => nil,
+          :name         => nil,
+          :token        => token,
+          :version      => nil,
+          :current      => versions,
+          :outdated?    => false,
           :auto_updates => false,
         }
       end

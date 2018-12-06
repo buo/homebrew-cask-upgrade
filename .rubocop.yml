@@ -1,0 +1,4 @@
+inherit_from: ../../../.rubocop.yml
+
+Style/HashSyntax:
+  EnforcedStyle: no_mixed_keys

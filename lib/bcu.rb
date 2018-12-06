@@ -66,24 +66,16 @@ module Bcu
     installed = Cask.installed_apps
 
     unless options.casks.empty?
-      installed = installed.select do |app| 
+      installed = installed.select do |app|
         found = false
-        options.casks.each do |arg| 
-          found = true if app[:token] == arg || (arg.end_with?('*') && app[:token].start_with?(arg.slice(0..-2)))
+        options.casks.each do |arg|
+          found = true if app[:token] == arg || (arg.end_with?("*") && app[:token].start_with?(arg.slice(0..-2)))
         end
         found
       end
 
       if installed.empty?
-        if options.casks.length == 1
-          if options.casks[0].end_with? '*'
-            onoe "#{Tty.red}No Cask matching \"#{options.casks[0]}\" is installed.#{Tty.reset}"
-          else
-            onoe "#{Tty.red}Cask \"#{options.casks[0]}\" is not installed.#{Tty.reset}"
-          end
-        else 
-          onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
-        end
+        print_install_empty_message options.casks
         exit(1)
       end
     end
@@ -126,35 +118,53 @@ module Bcu
     table = [thead]
 
     apps.each_with_index do |app, i|
-      if state_info[app][0, 6] == "forced"
-        color = "yellow"
-        result = "[ FORCED ]"
-      elsif app[:auto_updates]
-        if options.all
-          color = "green"
-          result = "[   OK   ]"
-        else
-          color = "default"
-          result = "[  PASS  ]"
-        end
-      elsif state_info[app] == "outdated"
-        color = "red"
-        result = "[OUTDATED]"
-      else
-        color = "green"
-        result = "[   OK   ]"
-      end
+      color, result = get_formatting_for_app(state_info, app).values_at(0, 1)
 
       row = []
-      row << Formatter::TableColumn.new(value: "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
-      row << Formatter::TableColumn.new(value: app[:token], color: color)
-      row << Formatter::TableColumn.new(value: app[:current].join(","))
-      row << Formatter::TableColumn.new(value: app[:version], color: "magenta")
-      row << Formatter::TableColumn.new(value: app[:auto_updates] ? " Y " : "", color: "magenta")
-      row << Formatter::TableColumn.new(value: result, color: color)
+      row << Formatter::TableColumn.new(:value => "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
+      row << Formatter::TableColumn.new(:value => app[:token], :color => color)
+      row << Formatter::TableColumn.new(:value => app[:current].join(","))
+      row << Formatter::TableColumn.new(:value => app[:version], :color => "magenta")
+      row << Formatter::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
+      row << Formatter::TableColumn.new(:value => result, :color => color)
       table << row
     end
 
     puts Formatter.table(table)
+  end
+
+  def self.get_formatting_for_app(state_info, app)
+    if state_info[app][0, 6] == "forced"
+      color = "yellow"
+      result = "[ FORCED ]"
+    elsif app[:auto_updates]
+      if options.all
+        color = "green"
+        result = "[   OK   ]"
+      else
+        color = "default"
+        result = "[  PASS  ]"
+      end
+    elsif state_info[app] == "outdated"
+      color = "red"
+      result = "[OUTDATED]"
+    else
+      color = "green"
+      result = "[   OK   ]"
+    end
+
+    [color, result]
+  end
+
+  def self.print_install_empty_message(cask_searched)
+    if cask_searched.length == 1
+      if cask_searched[0].end_with? "*"
+        onoe "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
+      else
+        onoe "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
+      end
+    else
+      onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
+    end
   end
 end
