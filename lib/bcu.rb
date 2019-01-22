@@ -4,8 +4,8 @@ require "bcu/options"
 require "cask/all"
 require "extend/formatter"
 require "extend/cask"
-require 'fileutils'
-require 'set'
+require "fileutils"
+require "set"
 
 PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../pins")
 
@@ -87,7 +87,6 @@ module Bcu
     return if options.dry_run
 
     outdated.each do |app|
-
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
 
       # Clean up the cask metadata container.
