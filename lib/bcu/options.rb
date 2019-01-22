@@ -49,15 +49,15 @@ module Bcu
         options.install_options += " --no-quarantine"
       end
 
-      opts.on("--pins", "List pinned casks") do
+      opts.on("--pins", "List pinned apps") do
         options.list_pins = true
       end
 
-      opts.on("--pin CASK", "Cask to pin") do |app|
+      opts.on("--pin APP", "App to pin") do |app|
         options.pin = app
       end
 
-      opts.on("--unpin CASK", "Cask to unpin") do |app|
+      opts.on("--unpin APP", "App to unpin") do |app|
         options.unpin = app
       end
     end
