@@ -7,52 +7,24 @@ require "extend/cask"
 require "fileutils"
 require "set"
 
-PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../pins")
-
 module Bcu
+  PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../pinned")
+
   def self.process(args)
     parse!(args)
 
-    FileUtils.touch(PINS_FILE)
-
-    pins = Set[]
-    File.open(PINS_FILE, "r") do |f|
-      f.each_line do |app|
-        pins.add(app.rstrip)
-      end
-    end
-
-    if options.list_pins
-      pins.each do |app|
-        puts app
-      end
+    if options.list_pinned
+      list_pinned
       return
     end
 
     if options.pin
-      if pins.include?(options.pin)
-        puts "Already pinned: #{options.pin}"
-      else
-        File.open(PINS_FILE, "a") do |f|
-          f.puts(options.pin)
-        end
-        puts "Pinned: #{options.pin}"
-      end
+      add_pin options.pin
       return
     end
 
     if options.unpin
-      if pins.include?(options.unpin)
-        pins.delete(options.unpin)
-        File.open(PINS_FILE, "w") do |f|
-          pins.each do |app|
-            f.puts(app)
-          end
-        end
-        puts "Unpinned: #{options.unpin}"
-      else
-        puts "Not pinned: #{options.unpin}"
-      end
+      remove_pin options.unpin
       return
     end
 
@@ -68,7 +40,7 @@ module Bcu
     end
 
     ohai "Finding outdated apps"
-    outdated, state_info = find_outdated_apps(options.quiet, pins)
+    outdated, state_info = find_outdated_apps(options.quiet)
     if outdated.empty?
       puts "No outdated apps found." if options.quiet
       return
@@ -106,7 +78,7 @@ module Bcu
     system "brew cleanup" if options.cleanup
   end
 
-  def self.find_outdated_apps(quiet, pins)
+  def self.find_outdated_apps(quiet)
     outdated = []
     state_info = Hash.new("")
 
@@ -129,7 +101,7 @@ module Bcu
 
     installed.each do |app|
       version_latest = (app[:version] == "latest")
-      if pins.include?(app[:token])
+      if pinned.include?(app[:token])
         state_info[app] = "pinned"
       elsif options.force && options.all && version_latest && app[:auto_updates]
         outdated.push app
@@ -165,5 +137,56 @@ module Bcu
     else
       onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
     end
+  end
+
+  def self.pinned
+    @pinned ||= begin
+      FileUtils.touch(PINS_FILE)
+
+      pinned = Set[]
+      File.open(PINS_FILE, "r") do |f|
+        f.each_line do |cask|
+          pinned.add(cask.rstrip)
+        end
+      end
+
+      pinned
+    end
+  end
+
+  def self.list_pinned
+    pinned.each do |cask|
+      puts cask
+    end
+  end
+
+  def self.add_pin(cask)
+    if pinned.include?(cask)
+      puts "Already pinned: #{cask}"
+      return
+    end
+
+    File.open(PINS_FILE, "a") do |f|
+      f.puts(cask)
+    end
+
+    puts "Pinned: #{cask}"
+  end
+
+  def self.remove_pin(cask)
+    unless pinned.include?(cask)
+      puts "Not pinned: #{cask}"
+      return
+    end
+
+    pinned.delete(cask)
+
+    File.open(PINS_FILE, "w") do |f|
+      pinned.each do |csk|
+        f.puts(csk)
+      end
+    end
+
+    puts "Unpinned: #{cask}"
   end
 end

@@ -30,9 +30,9 @@
 #:
 #:    If `--pinned` is passed, print all pinned apps
 #:
-#:    If `--pin APP` is passed, pin the current app version
+#:    If `--pin CASK` is passed, pin the current app version
 #:
-#:    If `--unpin APP` is passed, unpin the current app version
+#:    If `--unpin CASK` is passed, unpin the current app version
 #:
 
 require "pathname"
