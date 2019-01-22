@@ -55,13 +55,18 @@ Usage: brew cu [CASK] [options]
     -q, --quiet           Do not show information about installed apps or current options.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
         --pinned          Print all pinned apps
-        --pin APP         Pin the current app version
-        --unpin APP       Unpin the current app version
+        --pin CASK         Pin the current app version
+        --unpin CASK       Unpin the current app version
 ```
 
 Display usage instructions:
 ```sh
 brew help cu
 ```
+
+### Version pinning
+
+Pinned apps will not be updated by `brew cu` until they are unpinned.
+NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updating pinned apps.
 
 [![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)

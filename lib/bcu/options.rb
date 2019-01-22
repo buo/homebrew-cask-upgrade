@@ -14,7 +14,7 @@ module Bcu
     options.no_brew_update = false
     options.quiet = false
     options.install_options = ""
-    options.list_pins = false
+    options.list_pinned = false
     options.pin = nil
     options.unpin = nil
 
@@ -50,15 +50,15 @@ module Bcu
       end
 
       opts.on("--pinned", "List pinned apps") do
-        options.list_pins = true
+        options.list_pinned = true
       end
 
-      opts.on("--pin APP", "App to pin") do |app|
-        options.pin = app
+      opts.on("--pin CASK", "Cask to pin") do |cask|
+        options.pin = cask
       end
 
-      opts.on("--unpin APP", "App to unpin") do |app|
-        options.unpin = app
+      opts.on("--unpin CASK", "Cask to unpin") do |cask|
+        options.unpin = cask
       end
     end
 
