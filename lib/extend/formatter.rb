@@ -157,6 +157,9 @@ module Formatter
         color = "default"
         result = "[  PASS  ]"
       end
+    elsif state_info[app] == "pinned"
+      color = "yellow"
+      result = "[ PINNED ]"
     elsif state_info[app] == "outdated"
       color = "red"
       result = "[OUTDATED]"
