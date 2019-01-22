@@ -49,7 +49,7 @@ module Bcu
         options.install_options += " --no-quarantine"
       end
 
-      opts.on("--pins", "List pinned apps") do
+      opts.on("--pinned", "List pinned apps") do
         options.list_pins = true
       end
 
