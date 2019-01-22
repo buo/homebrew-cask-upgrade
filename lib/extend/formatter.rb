@@ -146,7 +146,10 @@ module Formatter
   end
 
   def formatting_for_app(state_info, app, options)
-    if state_info[app][0, 6] == "forced"
+    if state_info[app] == "pinned"
+      color = "cyan"
+      result = "[ PINNED ]"
+    elsif state_info[app][0, 6] == "forced"
       color = "yellow"
       result = "[ FORCED ]"
     elsif app[:auto_updates]
@@ -157,9 +160,6 @@ module Formatter
         color = "default"
         result = "[  PASS  ]"
       end
-    elsif state_info[app] == "pinned"
-      color = "yellow"
-      result = "[ PINNED ]"
     elsif state_info[app] == "outdated"
       color = "red"
       result = "[OUTDATED]"
