@@ -55,8 +55,8 @@ Usage: brew cu [CASK] [options]
     -q, --quiet           Do not show information about installed apps or current options.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
         --pinned          Print all pinned apps
-        --pin CASK         Pin the current app version
-        --unpin CASK       Unpin the current app version
+        --pin CASK        Pin the current app version
+        --unpin CASK      Unpin the current app version
 ```
 
 Display usage instructions:
