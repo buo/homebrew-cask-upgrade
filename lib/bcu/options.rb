@@ -14,6 +14,9 @@ module Bcu
     options.no_brew_update = false
     options.quiet = false
     options.install_options = ""
+    options.list_pins = false
+    options.pin = nil
+    options.unpin = nil
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -44,6 +47,18 @@ module Bcu
 
       opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation for additional information") do
         options.install_options += " --no-quarantine"
+      end
+
+      opts.on("--pins", "List pinned casks") do
+        options.list_pins = true
+      end
+
+      opts.on("--pin CASK", "Cask to pin") do |app|
+        options.pin = app
+      end
+
+      opts.on("--unpin CASK", "Cask to unpin") do |app|
+        options.unpin = app
       end
     end
 

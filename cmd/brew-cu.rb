@@ -27,6 +27,13 @@
 #:
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
+#:
+#:    If `--pins` is passed, print all pinned apps
+#:
+#:    If `--pin APP` is passed, pin the current app version
+#:
+#:    If `--unpin APP` is passed, unpin the current app version
+#:
 
 require "pathname"
 

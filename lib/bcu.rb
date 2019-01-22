@@ -4,10 +4,57 @@ require "bcu/options"
 require "cask/all"
 require "extend/formatter"
 require "extend/cask"
+require 'fileutils'
+require 'set'
+
+PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../pins")
 
 module Bcu
   def self.process(args)
     parse!(args)
+
+    FileUtils.touch(PINS_FILE)
+
+    pins = Set[]
+    File.open(PINS_FILE, "r") do |f|
+      f.each_line do |app|
+        pins.add(app.rstrip)
+      end
+    end
+
+    if options.list_pins
+      pins.each do |app|
+        puts app
+      end
+      return
+    end
+
+    if options.pin
+      if pins.include?(options.pin)
+        puts "Already pinned: #{options.pin}"
+      else
+        File.open(PINS_FILE, "a") do |f|
+          f.puts(options.pin)
+        end
+        puts "Pinned: #{options.pin}"
+      end
+      return
+    end
+
+    if options.unpin
+      if pins.include?(options.unpin)
+        pins.delete(options.unpin)
+        File.open(PINS_FILE, "w") do |f|
+          pins.each do |app|
+            f.puts(app)
+          end
+        end
+        puts "Unpinned: #{options.unpin}"
+      else
+        puts "Not pinned: #{options.unpin}"
+      end
+      return
+    end
 
     unless options.quiet
       ohai "Options"
@@ -21,7 +68,7 @@ module Bcu
     end
 
     ohai "Finding outdated apps"
-    outdated, state_info = find_outdated_apps(options.quiet)
+    outdated, state_info = find_outdated_apps(options.quiet, pins)
     if outdated.empty?
       puts "No outdated apps found." if options.quiet
       return
@@ -40,6 +87,7 @@ module Bcu
     return if options.dry_run
 
     outdated.each do |app|
+
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
 
       # Clean up the cask metadata container.
@@ -59,7 +107,7 @@ module Bcu
     system "brew cleanup" if options.cleanup
   end
 
-  def self.find_outdated_apps(quiet)
+  def self.find_outdated_apps(quiet, pins)
     outdated = []
     state_info = Hash.new("")
 
@@ -82,8 +130,9 @@ module Bcu
 
     installed.each do |app|
       version_latest = (app[:version] == "latest")
-
-      if options.force && options.all && version_latest && app[:auto_updates]
+      if pins.include?(app[:token])
+        state_info[app] = "pinned"
+      elsif options.force && options.all && version_latest && app[:auto_updates]
         outdated.push app
         state_info[app] = "forced to reinstall"
       elsif options.force && version_latest && !app[:auto_updates]
