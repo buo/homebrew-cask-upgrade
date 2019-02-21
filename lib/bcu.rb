@@ -48,17 +48,34 @@ module Bcu
 
     ohai "Found outdated apps"
     Formatter.print_app_table(outdated, state_info, options)
+    printf "\n"
 
-    if options.dry_run
-      printf "\nDo you want to upgrade %d app%s [y/N]? ", outdated.length, (outdated.length > 1) ? "s" : ""
+    unless options.interactive || options.force_yes
+      printf "Do you want to upgrade %d app%s [y/i/N]? ", outdated.length, (outdated.length > 1) ? "s" : ""
       input = STDIN.gets.strip
 
-      options.dry_run = false if input.casecmp("y").zero?
+      if input.casecmp("i").zero?
+        options.interactive = true
+      else
+        return unless input.casecmp("y").zero?
+      end
     end
 
-    return if options.dry_run
+    # In interactive flow we're not sure if we need to clean up
+    cleanup_necessary = !options.interactive
 
     outdated.each do |app|
+      if options.interactive
+        formatting = Formatter.formatting_for_app(state_info, app, options)
+        printf 'Do you want to upgrade "%s" [y/p/N]? ', Formatter.colorize(app[:token], formatting[0])
+        input = STDIN.gets.strip
+
+        if input.casecmp("p").zero?
+          add_pin app[:token]
+        end
+        next unless input.casecmp("y").zero?
+      end
+
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
 
       # Clean up the cask metadata container.
@@ -75,7 +92,7 @@ module Bcu
       end
     end
 
-    system "brew cleanup" if options.cleanup
+    system "brew cleanup" if options.cleanup && cleanup_necessary
   end
 
   def self.find_outdated_apps(quiet)

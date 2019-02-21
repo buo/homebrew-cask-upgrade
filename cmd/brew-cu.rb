@@ -4,9 +4,10 @@
 #:    Upgrade every outdated app installed by `brew cask`.
 #:
 #:  * `cu` cask [`options`]
-#:    Upgrade a specific app.
+#:    Upgrade a specific app. You can use star to include more apps (`brew cu flash-***`)
+#:    to upgrade all flash related casks (might require escaping `brew cu flash-\*`).
 #:
-#:OPTIONS:
+#:`OPTIONS`:
 #:    If `--all` or `-a` is passed, include apps that auto-update in the
 #:    upgrade.
 #:
@@ -33,6 +34,17 @@
 #:    If `--pin CASK` is passed, pin the current app version
 #:
 #:    If `--unpin CASK` is passed, unpin the current app version
+#:
+#:`INTERACTIVE MODE`:
+#:    After listing casks to upgrade you want those casks to be upgraded.
+#:    By using the option `i` you will step into an interactive mode.
+#:
+#:    In the `interactive` mode you will be asked for every single app separately
+#:        `y` will upgrade the app
+#:        `p` will pin the app so it will not prompt you again, unless you unpin it
+#:        `N` will skip the app upgrade
+#:
+#:    All unknown options will be considered as `N`
 #:
 
 require "pathname"

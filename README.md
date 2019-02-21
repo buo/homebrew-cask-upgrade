@@ -32,6 +32,10 @@ brew cu [CASK]
 While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
 latest versions of all the installed casks (this can be disabled, see options below).
 
+It is also possible to use `*` to instal multiple casks at once, i.e. `brew cu flash-*` to install all casks starting with `flash-` prefix.
+
+[![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)
+
 ### Apps with auto-update
 
 If the app has the auto update functionality (they ask you themselves, if you want to upgrade them), they are not
@@ -57,6 +61,7 @@ Usage: brew cu [CASK] [options]
         --pinned          Print all pinned apps
         --pin CASK        Pin the current app version
         --unpin CASK      Unpin the current app version
+    -i, --interactive     Running update in interactive mode    
 ```
 
 Display usage instructions:
@@ -64,9 +69,15 @@ Display usage instructions:
 brew help cu
 ```
 
+### Interactive mode
+
+When using interactive mode (by adding `--interactive` argument or confirming app installation with `i`) will trigger per-cask confirmation.
+For every cask it is then possible to use following options:
+- `y` will install the current cask update
+- `N` will skip the installation of current cask
+- `p` will pin the current version of the cask (see [version pinning](#version-pinning))
+
 ### Version pinning
 
 Pinned apps will not be updated by `brew cu` until they are unpinned.
 NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updating pinned apps.
-
-[![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)
