@@ -22,6 +22,18 @@ module Bcu
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
 
+      # Prevent using short -p syntax for pinning
+      opts.on("-p") do
+        onoe "invalid option -p, did you mean --pin?"
+        exit 1
+      end
+
+      # Prevent using short -u syntax for unpinning
+      opts.on("-u") do
+        onoe "invalid option -u, did you mean --unpin?"
+        exit 1
+      end
+
       opts.on("-a", "--all", "Include apps that auto-update in the upgrade") do
         options.all = true
       end
