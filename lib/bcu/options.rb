@@ -10,13 +10,14 @@ module Bcu
     options.force = false
     options.casks = nil
     options.cleanup = false
-    options.dry_run = true
+    options.force_yes = false
     options.no_brew_update = false
     options.quiet = false
     options.install_options = ""
     options.list_pinned = false
     options.pin = nil
     options.unpin = nil
+    options.interactive = false
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -38,7 +39,11 @@ module Bcu
       end
 
       opts.on("-y", "--yes", "Update all outdated apps; answer yes to updating packages") do
-        options.dry_run = false
+        options.force_yes = true
+      end
+
+      opts.on("-i", "--interactive", "Use interactive mode while installing") do
+        options.interactive = true
       end
 
       opts.on("-q", "--quiet", "Do not show information about installed apps or current options") do

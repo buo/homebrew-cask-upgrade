@@ -117,6 +117,7 @@ module Formatter
 
   def truncate(string, len: 10, suffix: "...")
     return string if string.length <= len
+
     "#{string[0, len - suffix.length]}#{suffix}"
   end
 
