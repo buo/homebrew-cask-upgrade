@@ -40,15 +40,19 @@ module Bcu
     end
 
     ohai "Finding outdated apps"
-    outdated, state_info = find_outdated_apps(options.quiet)
+    outdated, state_info = find_outdated_apps(options.quiet, options.report)
     if outdated.empty?
-      puts "No outdated apps found." if options.quiet
+      puts "No outdated apps found." if options.quiet || options.report
       return
     end
 
     ohai "Found outdated apps"
     Formatter.print_app_table(outdated, state_info, options)
     printf "\n"
+
+    if options.report
+      return
+    end
 
     unless options.interactive || options.force_yes
       printf "Do you want to upgrade %d app%s or enter [i]nteractive mode [y/i/N]? ", outdated.length, (outdated.length > 1) ? "s" : ""
@@ -95,7 +99,7 @@ module Bcu
     system "brew cleanup" if options.cleanup && cleanup_necessary
   end
 
-  def self.find_outdated_apps(quiet)
+  def self.find_outdated_apps(quiet, report)
     outdated = []
     state_info = Hash.new("")
 
@@ -139,7 +143,7 @@ module Bcu
       end
     end
 
-    Formatter.print_app_table(installed, state_info, options) unless quiet
+    Formatter.print_app_table(installed, state_info, options) unless quiet || report
 
     [outdated, state_info]
   end

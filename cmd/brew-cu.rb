@@ -26,6 +26,9 @@
 #:    If `--quiet` or `-q` is passed, do not show information about installed
 #:    apps or current options.
 #:
+#:    If `--report` or `-r` is passed, show information about outdated
+#:    apps and quit without performing updates.
+#:
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
 #:

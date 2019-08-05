@@ -61,7 +61,8 @@ Usage: brew cu [CASK] [options]
         --pinned          Print all pinned apps
         --pin CASK        Pin the current app version
         --unpin CASK      Unpin the current app version
-    -i, --interactive     Running update in interactive mode    
+    -i, --interactive     Running update in interactive mode
+    -r, --report          Return list of outdated apps and quit without performing updates
 ```
 
 Display usage instructions:
