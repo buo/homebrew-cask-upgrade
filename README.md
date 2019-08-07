@@ -58,9 +58,11 @@ Usage: brew cu [CASK] [options]
     -y, --yes             Update all outdated apps; answer yes to updating packages.
     -q, --quiet           Do not show information about installed apps or current options.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
-        --pinned          Print all pinned apps
-        --pin CASK        Pin the current app version
-        --unpin CASK      Unpin the current app version
+        --pinned          Print all pinned apps. See also `pin`.
+        --pin CASK        Pin the current app version, preventing it from being 
+                          upgraded when issuing the `brew cu` command. See also `unpin`.
+        --unpin CASK      Unpin the current app version, allowing them to be 
+                          upgraded by `brew cu` command. See also `pin`.
     -i, --interactive     Running update in interactive mode    
 ```
 
