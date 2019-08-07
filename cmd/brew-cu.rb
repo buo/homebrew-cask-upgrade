@@ -31,10 +31,10 @@
 #:
 #:    If `--pinned` is passed, print all pinned apps. See also `pin`.
 #:
-#:    If `--pin CASK` is passed, pin the specified CASK, preventing them from being 
+#:    If `--pin CASK` is passed, pin the specified CASK, preventing them from being
 #:    upgraded when issuing the `brew cu` command. See also `unpin`.
 #:
-#:    If `--unpin CASK` is passed, unpin specified CASK, allowing them to be 
+#:    If `--unpin CASK` is passed, unpin specified CASK, allowing them to be
 #:    upgraded by `brew cu` command. See also `pin`.
 #:
 #:`INTERACTIVE MODE`:
