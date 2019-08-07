@@ -29,11 +29,13 @@
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
 #:
-#:    If `--pinned` is passed, print all pinned apps
+#:    If `--pinned` is passed, print all pinned apps. See also `pin`.
 #:
-#:    If `--pin CASK` is passed, pin the current app version
+#:    If `--pin CASK` is passed, pin the specified CASK, preventing them from being
+#:    upgraded when issuing the `brew cu` command. See also `unpin`.
 #:
-#:    If `--unpin CASK` is passed, unpin the current app version
+#:    If `--unpin CASK` is passed, unpin specified CASK, allowing them to be
+#:    upgraded by `brew cu` command. See also `pin`.
 #:
 #:`INTERACTIVE MODE`:
 #:    After listing casks to upgrade you want those casks to be upgraded.
