@@ -38,8 +38,8 @@ It is also possible to use `*` to instal multiple casks at once, i.e. `brew cu f
 
 ### Apps with auto-update
 
-If the app has the auto update functionality (they ask you themselves, if you want to upgrade them), they are not
-upgraded while running `brew cu`. If you want to upgrade them, pass `--all` option to include also those kind of apps.
+If the app has the auto update functionality (i.e. they ask you themselves if you want to upgrade them), they are not
+upgraded while running `brew cu` and will display a `PASS` result. If you want to upgrade them, pass the `-a` or `--all` option to include also those kind of apps.
 
 Please note, that if you update the apps using their auto-update functionality, that change will not reflect in the
 `brew cu` script! Tracked version gets only updated, when the app is upgraded through `brew cu --all`.
