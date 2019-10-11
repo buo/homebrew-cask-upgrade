@@ -87,7 +87,7 @@ module Bcu
     parser.parse!(args)
 
     # verbose and quiet cannot both exist
-    if options.quiet and options.verbose
+    if options.quiet && options.verbose
       onoe "--quiet and --verbose cannot be specified at the same time"
       exit 1
     end
