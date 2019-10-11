@@ -57,6 +57,7 @@ Usage: brew cu [CASK] [options]
                           before checking outdated apps.
     -y, --yes             Update all outdated apps; answer yes to updating packages.
     -q, --quiet           Do not show information about installed apps or current options.
+    -v, --verbose         Make output more verbose.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
         --pinned          Print all pinned apps. See also `pin`.
         --pin CASK        Pin the current app version, preventing it from being 

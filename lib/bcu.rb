@@ -36,7 +36,7 @@ module Bcu
 
     unless options.no_brew_update
       ohai "Updating Homebrew"
-      puts Cask.brew_update.stdout
+      puts Cask.brew_update(options.verbose).stdout
     end
 
     ohai "Finding outdated apps"
@@ -64,6 +64,13 @@ module Bcu
     # In interactive flow we're not sure if we need to clean up
     cleanup_necessary = !options.interactive
 
+    # Create verbose flag
+    if options.verbose
+      verbose_flag = "--verbose"
+    else
+      verbose_flag = ""
+    end
+
     outdated.each do |app|
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
@@ -82,7 +89,7 @@ module Bcu
       system "rm -rf #{app[:cask].metadata_master_container_path}"
 
       # Force to install the latest version.
-      system "brew cask install #{options.install_options} #{app[:token]} --force"
+      system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
 
       # Remove the old versions.
       app[:current].each do |version|
@@ -92,7 +99,7 @@ module Bcu
       end
     end
 
-    system "brew cleanup" if options.cleanup && cleanup_necessary
+    system "brew cleanup " + verbose_flag if options.cleanup && cleanup_necessary
   end
 
   def self.find_outdated_apps(quiet)
