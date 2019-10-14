@@ -52,7 +52,11 @@ module Cask
     Dir["#{CASKROOM}/#{token}/*"].map { |e| File.basename e }
   end
 
-  def self.brew_update
-    SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
+  def self.brew_update(verbose)
+    if verbose
+      SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update", "--verbose"], print_stderr: true, print_stdout: true)
+    else
+      SystemCommand.run(HOMEBREW_BREW_FILE, args: ["update"], print_stderr: true, print_stdout: false)
+    end
   end
 end

@@ -13,6 +13,7 @@ module Bcu
     options.force_yes = false
     options.no_brew_update = false
     options.quiet = false
+    options.verbose = false
     options.install_options = ""
     options.list_pinned = false
     options.pin = nil
@@ -62,6 +63,10 @@ module Bcu
         options.quiet = true
       end
 
+      opts.on("-v", "--verbose", "Make output more verbose") do
+        options.verbose = true
+      end
+
       opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation for additional information") do
         options.install_options += " --no-quarantine"
       end
@@ -80,6 +85,12 @@ module Bcu
     end
 
     parser.parse!(args)
+
+    # verbose and quiet cannot both exist
+    if options.quiet && options.verbose
+      onoe "--quiet and --verbose cannot be specified at the same time"
+      exit 1
+    end
 
     options.casks = args
 
