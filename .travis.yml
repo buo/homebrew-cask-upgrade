@@ -5,6 +5,7 @@ os: osx
 rvm: system
 
 before_install:
+  - sudo gem install bundler 
   - brew update
   - brew --version
   - sudo gem install rubocop
