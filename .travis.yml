@@ -2,10 +2,10 @@ language: ruby
 
 os: osx
 
-rvm: system
+rvm:
+  - 2.3
 
 before_install:
-  - sudo gem install bundler 
   - brew update
   - brew --version
   - sudo gem install rubocop
