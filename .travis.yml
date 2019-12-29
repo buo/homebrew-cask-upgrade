@@ -3,7 +3,7 @@ language: ruby
 os: osx
 
 rvm:
-  - 2.3
+  - 2.4
 
 before_install:
   - brew update
