@@ -12,6 +12,7 @@ before_install:
   - mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+  - ls -la ../../../
 
 script:
   - rubocop
