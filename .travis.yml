@@ -9,10 +9,10 @@ before_install:
   - brew update
   - brew --version
   - sudo gem install rubocop
+  - sudo gem install rubocop-performance
   - mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-  - ls -la ../../../
 
 script:
   - rubocop
