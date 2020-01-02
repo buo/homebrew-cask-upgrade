@@ -6,6 +6,7 @@ require "extend/formatter"
 require "extend/cask"
 require "fileutils"
 require "set"
+require "shellwords"
 
 module Bcu
   PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../pinned")
@@ -94,7 +95,7 @@ module Bcu
       # Remove the old versions.
       app[:current].each do |version|
         unless version == "latest"
-          system "rm -rf #{CASKROOM}/#{app[:token]}/#{version}"
+          system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
         end
       end
     end
