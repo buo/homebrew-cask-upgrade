@@ -52,7 +52,7 @@ module Bcu
     printf "\n"
 
     unless options.interactive || options.force_yes
-      printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ", {count: outdated.length, s: (outdated.length > 1) ? "s" : ""}
+      printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ", count: outdated.length, s: (outdated.length > 1) ? "s" : ""
       input = STDIN.gets.strip
 
       if input.casecmp("i").zero?
@@ -75,7 +75,7 @@ module Bcu
     outdated.each do |app|
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
-        printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ', {app: Formatter.colorize(app[:token], formatting[0])}
+        printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ', app: Formatter.colorize(app[:token], formatting[0])
         input = STDIN.gets.strip
 
         if input.casecmp("p").zero?
