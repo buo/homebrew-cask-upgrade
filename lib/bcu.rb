@@ -85,18 +85,33 @@ module Bcu
       end
 
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
+      backup_metadata_folder = app[:cask].metadata_master_container_path.to_s.gsub(%r{/.*\/$/}, "") + "-bck/"
 
-      # Clean up the cask metadata container.
-      system "rm -rf #{app[:cask].metadata_master_container_path}"
+      # Move the cask metadata container to backup folder
+      if options.verbose || File.exist?(app[:cask].metadata_master_container_path)
+        system "mv -f #{app[:cask].metadata_master_container_path} #{backup_metadata_folder}"
+      end
 
-      # Force to install the latest version.
-      system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
+      begin
+        # Force to install the latest version.
+        installation_successful = system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
+      rescue
+        installation_successful = false
+      end
 
-      # Remove the old versions.
-      app[:current].each do |version|
-        unless version == "latest"
-          system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
+      if installation_successful
+        # Remove the old versions.
+        app[:current].each do |version|
+          unless version == "latest"
+            system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
+          end
         end
+
+        # Clean up the cask metadata backup container if everything went well.
+        system "rm -rf #{backup_metadata_folder}"
+      elsif options.verbose || File.exist?(backup_metadata_folder)
+        # Put back the "old" metadata folder if error occured.
+        system "mv -f #{backup_metadata_folder} #{app[:cask].metadata_master_container_path}"
       end
     end
 
