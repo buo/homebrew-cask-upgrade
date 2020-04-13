@@ -30,6 +30,7 @@ module Cask
           homepage:           cask.homepage,
           installed_versions: versions,
           tap:                cask.tap&.name,
+          mas:                false,
         }
       rescue CaskUnavailableError
         {
@@ -45,6 +46,7 @@ module Cask
           homepage:           nil,
           installed_versions: versions,
           tap:                nil,
+          mas:                false,
         }
       end
     end
