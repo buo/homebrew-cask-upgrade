@@ -19,6 +19,7 @@ module Bcu
     options.pin = nil
     options.unpin = nil
     options.interactive = false
+    options.command = "update"
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -78,28 +79,48 @@ module Bcu
       end
 
       opts.on("--pinned", "List pinned apps") do
-        options.list_pinned = true
+        onoe "Using option --pinned for listing pinned apps is deprecated, please use \"brew cu pinned\" command."
+        options.command = "pinned"
       end
 
       opts.on("--pin CASK", "Cask to pin") do |cask|
+        onoe "Using option --pin for pinning is deprecated, please use \"brew cu pin\" command."
+        options.command = "pin"
         options.pin = cask
       end
 
       opts.on("--unpin CASK", "Cask to unpin") do |cask|
+        onoe "Using option --unpin for unpinning is deprecated, please use \"brew cu unpin\" command."
         options.unpin = cask
+        options.command = "unpin"
       end
     end
 
     parser.parse!(args)
 
+    if %w(pin unpin pinned config).include?(args[0])
+      options.command = args[0]
+      validate_command_args args, options
+    end
+    validate_options options
+
+    options.casks = args
+
+    self.options = options
+  end
+
+  def self.validate_command_args(args, options)
+    if %w(pin unpin).include?(options.command) && args[1].nil?
+      onoe "Missing CASK for #{options.command} command"
+      exit 1
+    end
+  end
+
+  def self.validate_options(options)
     # verbose and quiet cannot both exist
     if options.quiet && options.verbose
       onoe "--quiet and --verbose cannot be specified at the same time"
       exit 1
     end
-
-    options.casks = args
-
-    self.options = options
   end
 end

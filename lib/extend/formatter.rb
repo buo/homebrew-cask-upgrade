@@ -151,6 +151,25 @@ module Formatter
     puts table.output
   end
 
+  def print_pin_table(pinns)
+    table = self::Table.new
+    table.add_header_column ""
+    table.add_header_column "Cask"
+    table.add_header_column "Current"
+    table.add_header_column "Latest"
+
+    pinns.each_with_index do |cask, i|
+      row = []
+      row << self::TableColumn.new(:value => "#{(i+1).to_s.rjust(pinns.length.to_s.length)}/#{pinns.length}")
+      row << self::TableColumn.new(:value => cask.token, :color => "green")
+      row << self::TableColumn.new(:value => cask.versions.join(","))
+      row << self::TableColumn.new(:value => cask.version.to_s, :color => "magenta")
+      table.add_row row
+    end
+
+    puts table.output
+  end
+
   def formatting_for_app(state_info, app, options)
     if state_info[app] == "pinned"
       color = "cyan"
