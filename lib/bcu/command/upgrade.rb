@@ -1,4 +1,4 @@
-require 'bcu/module/pin'
+require "bcu/module/pin"
 
 module Bcu
   class Upgrade
@@ -44,23 +44,18 @@ module Bcu
       # In interactive flow we're not sure if we need to clean up
       cleanup_necessary = !options.interactive
 
-      # Create verbose flag
-      if options.verbose
-        verbose_flag = "--verbose"
-      else
-        verbose_flag = ""
-      end
-
       outdated.each do |app|
-        upgrade app, options, verbose_flag, state_info
+        upgrade app, options, state_info
       end
 
-      system "brew cleanup " + verbose_flag if options.cleanup && cleanup_necessary
+      if options.cleanup && cleanup_necessary
+        system "brew cleanup" + (options.verbose ? " --verbose" : "")
+      end
     end
 
     private
 
-    def self.upgrade(app, options, verbose_flag, state_info)
+    def self.upgrade(app, options, state_info)
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
         printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ',
@@ -74,12 +69,20 @@ module Bcu
       end
 
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
-      backup_metadata_folder = app[:cask].metadata_master_container_path.to_s.gsub(%r{/.*\/$/}, "") + "-bck/"
+      backup_metadata_folder = backup_metadata app
+      installation_successful = install app, options
 
-      # Move the cask metadata container to backup folder
-      if options.verbose || File.exist?(app[:cask].metadata_master_container_path)
-        system "mv -f #{app[:cask].metadata_master_container_path} #{backup_metadata_folder}"
+      if installation_successful
+        installation_cleanup app, backup_metadata_folder
+      elsif options.verbose || File.exist?(backup_metadata_folder)
+        restore_metadata app, backup_metadata_folder
       end
+    end
+
+    private
+
+    def self.install(app, options)
+      verbose_flag = options.verbose ? "--verbose" : ""
 
       begin
         # Force to install the latest version.
@@ -88,20 +91,35 @@ module Bcu
         installation_successful = false
       end
 
-      if installation_successful
-        # Remove the old versions.
-        app[:current].each do |version|
-          unless version == "latest"
-            system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
-          end
-        end
+      installation_successful
+    end
 
-        # Clean up the cask metadata backup container if everything went well.
-        system "rm -rf #{backup_metadata_folder}"
-      elsif options.verbose || File.exist?(backup_metadata_folder)
-        # Put back the "old" metadata folder if error occured.
-        system "mv -f #{backup_metadata_folder} #{app[:cask].metadata_master_container_path}"
+    def self.restore_metadata(app, backup_folder)
+      # Put back the "old" metadata folder if error occurred.
+      system "mv -f #{backup_folder} #{app[:cask].metadata_master_container_path}"
+    end
+
+    def self.installation_cleanup(app, backup_folder)
+      # Remove the old versions.
+      app[:current].each do |version|
+        unless version == "latest"
+          system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
+        end
       end
+
+      # Clean up the cask metadata backup container if everything went well.
+      system "rm -rf #{backup_folder}"
+    end
+
+    def self.backup_metadata(app)
+      backup_metadata_folder = app[:cask].metadata_master_container_path.to_s.gsub(%r{/.*\/$/}, "") + "-bck/"
+
+      # Move the cask metadata container to backup folder
+      if options.verbose || File.exist?(app[:cask].metadata_master_container_path)
+        system "mv -f #{app[:cask].metadata_master_container_path} #{backup_metadata_folder}"
+      end
+
+      backup_metadata_folder
     end
 
     def self.find_outdated_apps(installed, options)
@@ -119,7 +137,7 @@ module Bcu
 
         if installed.empty?
           print_install_empty_message options.casks
-          exit(1)
+          exit 1
         end
       end
 

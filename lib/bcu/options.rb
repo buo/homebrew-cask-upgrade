@@ -1,11 +1,14 @@
 require "optparse"
-require "ostruct"
 
 module Bcu
-  class << self; attr_accessor :options; end
+  class << self;
+    attr_accessor :options;
+  end
 
   def self.parse!(args)
-    options = OpenStruct.new
+    options_struct = Struct.new(:all, :force, :casks, :cleanup, :force_yes, :no_brew_update, :quiet, :verbose,
+                                :install_options, :list_pinned, :pin, :unpin, :interactive, :command)
+    options = options_struct.new
     options.all = false
     options.force = false
     options.casks = nil

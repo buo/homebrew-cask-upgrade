@@ -4,6 +4,7 @@ module Bcu
 
     def pinned
       @pinned ||= begin
+        #noinspection RubyArgCount
         FileUtils.touch PINS_FILE
 
         pinned = Set[]

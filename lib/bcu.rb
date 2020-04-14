@@ -11,7 +11,7 @@ require "shellwords"
 module Bcu
   def self.process(args)
     # Load all commands
-    Dir[File.join(__dir__, 'bcu/command', '*.rb')].each { |file| require file }
+    load_commands
 
     parse!(args)
 
@@ -31,5 +31,12 @@ module Bcu
     end
 
     Bcu::Upgrade.process options
+  end
+
+  private
+
+  def self.load_commands
+    commands = Dir[File.join(__dir__, "bcu/command", "*.rb")].sort
+    commands.each { |file| require file }
   end
 end

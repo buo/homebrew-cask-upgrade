@@ -1,4 +1,4 @@
-require 'bcu/module/pin'
+require "bcu/module/pin"
 
 module Bcu
   module Pin
