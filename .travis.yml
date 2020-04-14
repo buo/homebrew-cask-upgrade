@@ -15,8 +15,10 @@ before_install:
   - gem install activesupport -v 5.2.4.1
   - mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-  - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+  - cd /usr/local/Homebrew/Library/Homebrew
 
 script:
+  - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+  - rubocop --version
   - rubocop
   - brew cu -y

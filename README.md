@@ -32,7 +32,7 @@ brew cu [CASK]
 While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
 latest versions of all the installed casks (this can be disabled, see options below).
 
-It is also possible to use `*` to instal multiple casks at once, i.e. `brew cu flash-*` to install all casks starting with `flash-` prefix.
+It is also possible to use `*` to install multiple casks at once, i.e. `brew cu flash-*` to install all casks starting with `flash-` prefix.
 
 [![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)
 

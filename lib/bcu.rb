@@ -52,7 +52,9 @@ module Bcu
     printf "\n"
 
     unless options.interactive || options.force_yes
-      printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ", count: outdated.length, s: (outdated.length > 1) ? "s" : ""
+      printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ",
+             count: outdated.length,
+             s:     (outdated.length > 1) ? "s" : ""
       input = STDIN.gets.strip
 
       if input.casecmp("i").zero?
@@ -65,22 +67,14 @@ module Bcu
     # In interactive flow we're not sure if we need to clean up
     cleanup_necessary = !options.interactive
 
-    # Create verbose flag
-    if options.verbose
-      verbose_flag = "--verbose"
-    else
-      verbose_flag = ""
-    end
-
     outdated.each do |app|
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
-        printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ', app: Formatter.colorize(app[:token], formatting[0])
+        printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ',
+               app: Formatter.colorize(app[:token], formatting[0])
         input = STDIN.gets.strip
 
-        if input.casecmp("p").zero?
-          add_pin app[:token]
-        end
+        add_pin app[:token] if input.casecmp("p").zero?
         next unless input.casecmp("y").zero?
       end
 
@@ -92,19 +86,19 @@ module Bcu
         system "mv -f #{app[:cask].metadata_master_container_path} #{backup_metadata_folder}"
       end
 
+      verbose_flag = options.verbose ? "--verbose" : ""
+
       begin
         # Force to install the latest version.
-        installation_successful = system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
+        success = system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
       rescue
-        installation_successful = false
+        success = false
       end
 
-      if installation_successful
+      if success
         # Remove the old versions.
         app[:current].each do |version|
-          unless version == "latest"
-            system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
-          end
+          system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" unless version == "latest"
         end
 
         # Clean up the cask metadata backup container if everything went well.

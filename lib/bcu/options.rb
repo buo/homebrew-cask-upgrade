@@ -47,7 +47,10 @@ module Bcu
         options.force = true
       end
 
-      opts.on("--no-brew-update", "Prevent auto-update of Homebrew, taps, and formulae before checking outdated apps") do
+      opts.on(
+        "--no-brew-update",
+        "Prevent auto-update of Homebrew, taps, and formulae before checking outdated apps",
+      ) do
         options.no_brew_update = true
       end
 
@@ -67,7 +70,10 @@ module Bcu
         options.verbose = true
       end
 
-      opts.on("--no-quarantine", "Add --no-quarantine option to install command, see brew cask documentation for additional information") do
+      opts.on(
+        "--no-quarantine",
+        "Add --no-quarantine option to install command, see brew cask documentation for additional information",
+      ) do
         options.install_options += " --no-quarantine"
       end
 
