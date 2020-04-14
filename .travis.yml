@@ -3,7 +3,6 @@ language: ruby
 os: osx
 
 rvm:
-  - 2.4
   - 2.5
   - 2.6
   - 2.7
@@ -16,9 +15,10 @@ before_install:
   - mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - cd /usr/local/Homebrew/Library/Homebrew
+  - gem install bundler:1.17.2
 
 script:
   - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - rubocop --version
   - rubocop
-  - brew cu -y
+  - brew cu -y --no-brew-update
