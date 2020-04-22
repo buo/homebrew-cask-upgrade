@@ -3,7 +3,7 @@ require "bcu/module/pin"
 module Bcu
   module Pin
     class Remove
-      def self.process(args, options)
+      def process(args, options)
         pin = args[1]
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.unpin if pin.nil?
@@ -11,9 +11,9 @@ module Bcu
         remove_pin pin
       end
 
-      private_class_method
+      private
 
-      def self.remove_pin(cask, quiet = false)
+      def remove_pin(cask, quiet = false)
         unless Pin.pinned.include? cask
           puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
           return
@@ -22,7 +22,7 @@ module Bcu
         Pin.pinned.delete(cask)
 
         File.open(PINS_FILE, "w") do |f|
-          Pin::pinned.each do |csk|
+          Pin.pinned.each do |csk|
             f.puts(csk)
           end
         end

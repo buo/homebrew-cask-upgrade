@@ -2,8 +2,8 @@ require "bcu/module/pin"
 
 module Bcu
   module Pin
-    class Add
-      def self.process(args, options)
+    class Add < Command
+      def process(args, options)
         pin = args[1]
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.pin if pin.nil?
@@ -11,9 +11,9 @@ module Bcu
         add_pin pin
       end
 
-      private_class_method
+      private
 
-      def self.add_pin(cask_name)
+      def add_pin(cask_name)
         if Pin.pinned.include? cask_name
           puts "Already pinned: #{Tty.green}#{cask_name}#{Tty.reset}"
           return

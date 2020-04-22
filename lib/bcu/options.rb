@@ -1,8 +1,8 @@
 require "optparse"
 
 module Bcu
-  class << self;
-    attr_accessor :options;
+  class << self
+    attr_accessor :options
   end
 
   def self.parse!(args)
@@ -101,7 +101,7 @@ module Bcu
 
     parser.parse!(args)
 
-    if %w(pin unpin pinned config).include?(args[0])
+    if %w[pin unpin pinned config].include?(args[0])
       options.command = args[0]
       validate_command_args args, options
     end
@@ -113,7 +113,7 @@ module Bcu
   end
 
   def self.validate_command_args(args, options)
-    if %w(pin unpin).include?(options.command) && args[1].nil?
+    if %w[pin unpin].include?(options.command) && args[1].nil?
       onoe "Missing CASK for #{options.command} command"
       exit 1
     end

@@ -2,9 +2,11 @@ module Bcu
   module Pin
     PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../../../pinned")
 
+    module_function
+
     def pinned
       @pinned ||= begin
-        #noinspection RubyArgCount
+        # noinspection RubyArgCount
         FileUtils.touch PINS_FILE
 
         pinned = Set[]
@@ -17,7 +19,5 @@ module Bcu
         pinned
       end
     end
-
-    module_function :pinned
   end
 end

@@ -1,8 +1,8 @@
 require "bcu/module/pin"
 
 module Bcu
-  class Upgrade
-    def self.process(options)
+  class Upgrade < Command
+    def process(_args, options)
       unless options.quiet
         ohai "Options"
         puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
@@ -53,23 +53,22 @@ module Bcu
       end
     end
 
-    private_class_method
+    private
 
-    def self.upgrade(app, options, state_info)
+    def upgrade(app, options, state_info)
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
         printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
         input = STDIN.gets.strip
 
-        if input.casecmp("p").zero?
-          Bcu::Pin::Add.process app[:token], options
-        end
+        Bcu::Pin::Add.process app[:token], options if input.casecmp("p").zero?
+
         return unless input.casecmp("y").zero?
       end
 
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
-      backup_metadata_folder = backup_metadata app
+      backup_metadata_folder = backup_metadata app, options
       installation_successful = install app, options
 
       if installation_successful
@@ -79,39 +78,35 @@ module Bcu
       end
     end
 
-    private
-
-    def self.install(app, options)
+    def install(app, options)
       verbose_flag = options.verbose ? "--verbose" : ""
 
       begin
         # Force to install the latest version.
-        installation_successful = system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
+        success = system "brew cask install #{options.install_options} #{app[:token]} --force " + verbose_flag
       rescue
-        installation_successful = false
+        success = false
       end
 
-      installation_successful
+      success
     end
 
-    def self.restore_metadata(app, backup_folder)
+    def restore_metadata(app, backup_folder)
       # Put back the "old" metadata folder if error occurred.
       system "mv -f #{backup_folder} #{app[:cask].metadata_master_container_path}"
     end
 
-    def self.installation_cleanup(app, backup_folder)
+    def installation_cleanup(app, backup_folder)
       # Remove the old versions.
       app[:current].each do |version|
-        unless version == "latest"
-          system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}"
-        end
+        system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" unless version == "latest"
       end
 
       # Clean up the cask metadata backup container if everything went well.
       system "rm -rf #{backup_folder}"
     end
 
-    def self.backup_metadata(app)
+    def backup_metadata(app, options)
       backup_metadata_folder = app[:cask].metadata_master_container_path.to_s.gsub(%r{/.*\/$/}, "") + "-bck/"
 
       # Move the cask metadata container to backup folder
@@ -122,7 +117,7 @@ module Bcu
       backup_metadata_folder
     end
 
-    def self.find_outdated_apps(installed, options)
+    def find_outdated_apps(installed, options)
       outdated = []
       state_info = Hash.new("")
 
@@ -167,7 +162,7 @@ module Bcu
       [outdated, state_info]
     end
 
-    def self.print_install_empty_message(cask_searched)
+    def print_install_empty_message(cask_searched)
       if cask_searched.length == 1
         if cask_searched[0].end_with? "*"
           onoe "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
