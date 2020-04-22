@@ -67,6 +67,8 @@ module Bcu
     # In interactive flow we're not sure if we need to clean up
     cleanup_necessary = !options.interactive
 
+    verbose_flag = options.verbose ? "--verbose" : ""
+
     outdated.each do |app|
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
@@ -85,8 +87,6 @@ module Bcu
       if options.verbose || File.exist?(app[:cask].metadata_master_container_path)
         system "mv -f #{app[:cask].metadata_master_container_path} #{backup_metadata_folder}"
       end
-
-      verbose_flag = options.verbose ? "--verbose" : ""
 
       begin
         # Force to install the latest version.
