@@ -53,7 +53,7 @@ module Bcu
       end
     end
 
-    private
+    private_class_method
 
     def self.upgrade(app, options, state_info)
       if options.interactive

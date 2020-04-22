@@ -33,7 +33,7 @@ module Bcu
     Bcu::Upgrade.process options
   end
 
-  private
+  private_class_method
 
   def self.load_commands
     commands = Dir[File.join(__dir__, "bcu/command", "*.rb")].sort

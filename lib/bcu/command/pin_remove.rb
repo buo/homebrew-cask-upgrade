@@ -11,15 +11,15 @@ module Bcu
         remove_pin pin
       end
 
-      private
+      private_class_method
 
       def self.remove_pin(cask, quiet = false)
-        unless Pin::pinned.include? cask
-          puts "Not pinned: #{Tty.send("green")}#{cask}#{Tty.reset}" unless quiet
+        unless Pin.pinned.include? cask
+          puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
           return
         end
 
-        Pin::pinned.delete(cask)
+        Pin.pinned.delete(cask)
 
         File.open(PINS_FILE, "w") do |f|
           Pin::pinned.each do |csk|
@@ -27,7 +27,7 @@ module Bcu
           end
         end
 
-        puts "Unpinned: #{Tty.send("green")}#{cask}#{Tty.reset}" unless quiet
+        puts "Unpinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
       end
     end
   end

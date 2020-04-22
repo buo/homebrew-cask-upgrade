@@ -11,11 +11,11 @@ module Bcu
         add_pin pin
       end
 
-      private
+      private_class_method
 
       def self.add_pin(cask_name)
-        if Pin::pinned.include? cask_name
-          puts "Already pinned: #{Tty.send("green")}#{cask_name}#{Tty.reset}"
+        if Pin.pinned.include? cask_name
+          puts "Already pinned: #{Tty.green}#{cask_name}#{Tty.reset}"
           return
         end
 
@@ -25,7 +25,10 @@ module Bcu
           f.puts(cask_name)
         end
 
-        puts "Pinned: #{Tty.send("green")}#{cask_name}#{Tty.reset} in version #{Tty.send("magenta")}#{cask.version.to_s}#{Tty.reset}"
+        formatted_cask_name = "#{Tty.green}#{cask_name}#{Tty.reset}"
+        formatted_version = "#{Tty.magenta}#{cask.version}#{Tty.reset}"
+
+        puts "Pinned: #{formatted_cask_name} in version #{formatted_version}"
       end
     end
   end

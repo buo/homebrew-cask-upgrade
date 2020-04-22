@@ -7,11 +7,11 @@ module Bcu
         list_pinned
       end
 
-      private
+      private_class_method
 
       def self.list_pinned
         casks = []
-        Pin::pinned.each do |cask_name|
+        Pin.pinned.each do |cask_name|
           begin
             casks.push Cask.load_cask(cask_name)
           rescue Cask::CaskUnavailableError
