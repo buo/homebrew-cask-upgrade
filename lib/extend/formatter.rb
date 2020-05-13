@@ -129,7 +129,9 @@ module Formatter
     table.add_header_column "Latest"
     table.add_header_column "A/U"
     table.add_header_column "Result", "center"
-    table.add_header_column "URL"
+    if options.verbose
+      table.add_header_column "URL"
+    end
 
     apps.each_with_index do |app, i|
       color, result = formatting_for_app(state_info, app, options).values_at(0, 1)
@@ -141,7 +143,9 @@ module Formatter
       row << self::TableColumn.new(:value => app[:version], :color => "magenta")
       row << self::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
       row << self::TableColumn.new(:value => result, :color => color)
-      row << self::TableColumn.new(:value => app[:homepage], :color => "blue")
+      if options.verbose
+        row << self::TableColumn.new(:value => app[:homepage], :color => "blue")
+      end
       table.add_row row
     end
 
