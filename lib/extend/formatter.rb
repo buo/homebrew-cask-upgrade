@@ -3,6 +3,7 @@ module Formatter
 
   class TableColumn
     attr_accessor :align, :color, :value, :width
+
     def initialize(args)
       @align = args[:align].nil? ? "left" : args[:align]
       @color = args[:color].nil? ? "default" : args[:color]
@@ -13,6 +14,7 @@ module Formatter
 
   class Table
     attr_accessor :header, :rows
+
     def initialize
       @header = []
       @rows = []
@@ -129,9 +131,7 @@ module Formatter
     table.add_header_column "Latest"
     table.add_header_column "A/U"
     table.add_header_column "Result", "center"
-    if options.verbose
-      table.add_header_column "URL"
-    end
+    table.add_header_column "URL" if options.verbose
 
     apps.each_with_index do |app, i|
       color, result = formatting_for_app(state_info, app, options).values_at(0, 1)
@@ -143,9 +143,8 @@ module Formatter
       row << self::TableColumn.new(:value => app[:version], :color => "magenta")
       row << self::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
       row << self::TableColumn.new(:value => result, :color => color)
-      if options.verbose
-        row << self::TableColumn.new(:value => app[:homepage], :color => "blue")
-      end
+      row << self::TableColumn.new(:value => app[:homepage], :color => "blue") if options.verbose
+
       table.add_row row
     end
 
