@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 
 require "bcu/options"
+require "bcu/command/all"
 require "cask/all"
 require "extend/formatter"
 require "extend/cask"
@@ -10,17 +11,10 @@ require "shellwords"
 
 module Bcu
   def self.process(args)
-    # Load all commands
-    load_commands
     parse!(args)
 
     command = resolve_command options
     command.process args, options
-  end
-
-  def self.load_commands
-    commands = Dir[File.join(__dir__, "bcu/command", "*.rb")].sort
-    commands.each { |file| require file }
   end
 
   # @param [Struct] options

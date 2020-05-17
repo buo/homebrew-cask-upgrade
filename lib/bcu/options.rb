@@ -22,7 +22,7 @@ module Bcu
     options.pin = nil
     options.unpin = nil
     options.interactive = false
-    options.command = "update"
+    options.command = "run"
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -101,7 +101,7 @@ module Bcu
 
     parser.parse!(args)
 
-    if %w[pin unpin pinned config].include?(args[0])
+    if %w[pin unpin pinned run].include?(args[0])
       options.command = args[0]
       validate_command_args args, options
     end

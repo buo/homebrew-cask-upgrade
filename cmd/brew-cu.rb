@@ -1,13 +1,30 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby -W0 -EUTF-8:UTF-8
 
-#:  * `cu` [`options`]
-#:    Upgrade every outdated app installed by `brew cask`.
 #:
-#:  * `cu` cask [`options`]
-#:    Upgrade a specific app. You can use star to include more apps (`brew cu flash-***`)
-#:    to upgrade all flash related casks (might require escaping `brew cu flash-\*`).
+#:`USAGE` brew cu [command=run] [CASK] [options]
+#:
+#:   `cu` [`options`]
+#:      Upgrade every outdated app installed by `brew cask`.
+#:
+#:   `cu` CASK [`options`]
+#:      Upgrade a specific app. You can use star
+#:      to include more apps (`brew cu flash-**`)
+#:      to upgrade all flash related casks
+#:      (might require escaping `brew cu flash-\*`).
+#:
+#:   `cu pin` CASK
+#:      Pin the current CASK version, preventing it from being
+#:      upgraded when running the `brew cu` command. See also `unpin`.
+#:
+#:   `cu unpin` CASK
+#:      Unpin specified CASK, allowing them to be
+#:      upgraded by `brew cu` command. See also `pin`.
+#:
+#:   `cu pinned`
+#:      Lists all CASKs that have been pinned.
 #:
 #:`OPTIONS`:
+#:
 #:    If `--all` or `-a` is passed, include apps that auto-update in the
 #:    upgrade.
 #:
@@ -30,14 +47,6 @@
 #:
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
-#:
-#:    If `--pinned` is passed, print all pinned apps. See also `pin`.
-#:
-#:    If `--pin CASK` is passed, pin the specified CASK, preventing them from being
-#:    upgraded when issuing the `brew cu` command. See also `unpin`.
-#:
-#:    If `--unpin CASK` is passed, unpin specified CASK, allowing them to be
-#:    upgraded by `brew cu` command. See also `pin`.
 #:
 #:`INTERACTIVE MODE`:
 #:    After listing casks to upgrade you want those casks to be upgraded.
