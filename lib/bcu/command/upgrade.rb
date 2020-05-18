@@ -62,7 +62,12 @@ module Bcu
                app: Formatter.colorize(app[:token], formatting[0])
         input = STDIN.gets.strip
 
-        Bcu::Pin::Add.process app[:token], options if input.casecmp("p").zero?
+        if input.casecmp("p").zero?
+          cmd = Bcu::Pin::Add.new
+          args = []
+          args[1] = app[:token]
+          cmd.process args, options
+        end
 
         return unless input.casecmp("y").zero?
       end
