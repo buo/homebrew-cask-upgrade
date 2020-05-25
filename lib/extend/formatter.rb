@@ -139,8 +139,13 @@ module Formatter
       row = []
       row << self::TableColumn.new(:value => "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
       row << self::TableColumn.new(:value => app[:token], :color => color)
-      row << self::TableColumn.new(:value => app[:current].join(","))
-      row << self::TableColumn.new(:value => app[:version], :color => "magenta")
+      if options.verbose
+        row << self::TableColumn.new(:value => app[:current_full])
+        row << self::TableColumn.new(:value => app[:version_full], :color => "magenta")
+      else
+        row << self::TableColumn.new(:value => app[:current])
+        row << self::TableColumn.new(:value => app[:version], :color => "magenta")
+      end
       row << self::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
       row << self::TableColumn.new(:value => result, :color => color)
       row << self::TableColumn.new(:value => app[:homepage], :color => "blue") if options.verbose

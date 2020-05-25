@@ -77,9 +77,9 @@ module Bcu
       installation_successful = install app, options
 
       if installation_successful
-        installation_cleanup app, backup_metadata_folder
+        installation_cleanup app, backup_metadata_folder, options
       elsif options.verbose || File.exist?(backup_metadata_folder)
-        restore_metadata app, backup_metadata_folder
+        restore_metadata app, backup_metadata_folder, options
       end
     end
 
@@ -96,22 +96,26 @@ module Bcu
       success
     end
 
-    def restore_metadata(app, backup_folder)
+    def restore_metadata(app, backup_folder, options)
       # Put back the "old" metadata folder if error occurred.
+      ohai "Restoring old metadata folder" if options.verbose
       system "mv -f #{backup_folder} #{app[:cask].metadata_master_container_path}"
     end
 
-    def installation_cleanup(app, backup_folder)
+    def installation_cleanup(app, backup_folder, options)
+      ohai "Cleaning up old versions" if options.verbose
       # Remove the old versions.
-      app[:current].each do |version|
+      app[:installed_versions].each do |version|
         system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" unless version == "latest"
       end
 
       # Clean up the cask metadata backup container if everything went well.
+      ohai "Cleaning up backup folder" if options.verbose
       system "rm -rf #{backup_folder}"
     end
 
     def backup_metadata(app, options)
+      ohai "Backing up metadata" if options.verbose
       backup_metadata_folder = app[:cask].metadata_master_container_path.to_s.gsub(%r{/.*\/$/}, "") + "-bck/"
 
       # Move the cask metadata container to backup folder
