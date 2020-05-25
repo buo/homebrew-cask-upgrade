@@ -10,28 +10,35 @@ module Cask
 
     installed = installed.map do |token|
       versions = installed_versions(token)
+      current_version = DSL::Version.new(versions.first)
       begin
         cask = load_cask(token)
         {
-          :cask         => cask,
-          :name         => cask.name.first,
-          :token        => cask.token,
-          :version      => cask.version.to_s,
-          :current      => versions,
-          :outdated?    => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
-          :auto_updates => cask.auto_updates,
-          :homepage     => cask.homepage,
+          :cask               => cask,
+          :name               => cask.name.first,
+          :token              => cask.token,
+          :version_full       => cask.version.to_s,
+          :version            => cask.version.before_comma.before_colon.to_s,
+          :current_full       => current_version.to_s,
+          :current            => current_version.before_comma.before_colon.to_s,
+          :outdated?          => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
+          :auto_updates       => cask.auto_updates,
+          :homepage           => cask.homepage,
+          :installed_versions => versions,
         }
       rescue CaskUnavailableError
         {
-          :cask         => nil,
-          :name         => nil,
-          :token        => token,
-          :version      => nil,
-          :current      => versions,
-          :outdated?    => false,
-          :auto_updates => false,
-          :homepage     => nil,
+          :cask               => nil,
+          :name               => nil,
+          :token              => token,
+          :version_full       => nil,
+          :version            => nil,
+          :current_full       => current_version.to_s,
+          :current            => current_version.before_comma.before_colon.to_s,
+          :outdated?          => false,
+          :auto_updates       => false,
+          :homepage           => nil,
+          :installed_versions => versions,
         }
       end
     end
