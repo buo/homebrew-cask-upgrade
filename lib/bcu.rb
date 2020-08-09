@@ -2,7 +2,7 @@ $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 
 require "bcu/options"
 require "bcu/command/all"
-require "cask/all"
+require "cask"
 require "extend/formatter"
 require "extend/cask"
 require "extend/version"
