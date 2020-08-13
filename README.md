@@ -15,6 +15,12 @@ Homebrew Cask extends [Homebrew](http://brew.sh) and brings its elegance, simpli
 brew tap buo/cask-upgrade
 ```
 
+## Uninstall
+
+```shell
+brew untap buo/cask-upgrade
+```
+
 ## Usage
 
 Upgrade outdated apps:
