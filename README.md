@@ -85,7 +85,8 @@ Options:
     -q, --quiet           Do not show information about installed apps or current options.
     -v, --verbose         Make output more verbose.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
-    -i, --interactive     Running update in interactive mode    
+    -i, --interactive     Running update in interactive mode
+    --ignore-config       Ignores any changes made to a default config    
 ```
 
 Display usage instructions:
@@ -105,3 +106,22 @@ For every cask it is then possible to use following options:
 
 Pinned apps will not be updated by `brew cu` until they are unpinned.
 NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updating pinned apps.
+
+### Default config
+
+In order to have less verbose execution, it is possible to alter default config under which the upgrade gets executed.
+That could be done by changing `~/.brew-cu` config file.
+This is the default config setting the default options:
+```yaml
+---
+all: false
+force: false
+cleanup: false
+force_yes: false
+no_brew_update: false
+quiet: false
+verbose: false
+interactive: false
+```
+
+If any changes to this config were made, those changes can be ignored by passing `--ignore-config` option.
