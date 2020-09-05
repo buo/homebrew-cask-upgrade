@@ -2,3 +2,4 @@
 *.iml
 *.gem
 pinned
+.DS_Store
