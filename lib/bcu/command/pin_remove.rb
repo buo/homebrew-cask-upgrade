@@ -8,7 +8,7 @@ module Bcu
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.unpin if pin.nil?
 
-        remove_pin cask:pin
+        remove_pin cask: pin
       end
 
       private

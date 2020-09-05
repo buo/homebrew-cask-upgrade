@@ -119,12 +119,9 @@ module Bcu
     end
   end
 
-  def self.build_config(use_config_file = true)
-    if use_config_file
-      options = load_default_options
-    else
-      options = create_default_options
-    end
+  def self.build_config(use_config_file: true)
+    options = use_config_file ? load_default_options : create_default_options
+
     options.casks = nil
     options.install_options = ""
     options.list_pinned = false
@@ -145,10 +142,12 @@ module Bcu
     default_options = create_default_options
     if File.exist?(config_filename)
       odebug "Loading configuration from config file"
-      handle = File.open(config_filename)
-      options = YAML::load handle.read
-      odebug "Configuration loaded", options
-      OpenStruct.new(options.to_h)
+      options = {}
+      File.open(config_filename) do |f|
+        options = (YAML.safe_load f.read).to_h
+        odebug "Configuration loaded", options
+      end
+      OpenStruct.new options
     else
       # something went wrong while reading config file
       odebug "Config file wasn't created, setting default config"
@@ -172,27 +171,26 @@ module Bcu
   end
 
   def self.create_default_config_file(config_filename)
-    begin
-      system "touch #{config_filename}"
-      handle = File.open(config_filename, "w")
-      handle.write default_config_hash.to_yaml
-      handle.close
-    rescue Exception => e
-      odebug "RESCUE: File couldn't be created", e
-      system "rm -f #{config_filename}"
+    File.unlink config_filename
+    system "touch #{config_filename}"
+    File.open(config_filename, "w") do |f|
+      f.write default_config_hash.to_yaml
     end
+  rescue => e
+    odebug "RESCUE: File couldn't be created", e
+    system "rm -f #{config_filename}"
   end
 
   def self.default_config_hash
     {
-        "all" => false,
-        "force" => false,
-        "cleanup" => false,
-        "force_yes" => false,
-        "no_brew_update" => false,
-        "quiet" => false,
-        "verbose" => false,
-        "interactive" => false,
+      "all"            => false,
+      "force"          => false,
+      "cleanup"        => false,
+      "force_yes"      => false,
+      "no_brew_update" => false,
+      "quiet"          => false,
+      "verbose"        => false,
+      "interactive"    => false,
     }
   end
 end

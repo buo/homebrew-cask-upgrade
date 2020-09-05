@@ -3,9 +3,7 @@ language: ruby
 os: osx
 
 rvm:
-  # - 2.5
   - 2.6
-  # - 2.7
 
 before_install:
   - brew update
@@ -21,4 +19,8 @@ script:
   - cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
   - rubocop --version
   - rubocop
+  - brew cu pin java
+  - brew cu pinned
+  - brew cu -y --no-brew-update
+  - brew cu unpin java
   - brew cu -y --no-brew-update

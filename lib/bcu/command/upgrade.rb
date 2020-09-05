@@ -118,9 +118,7 @@ module Bcu
           found
         end
 
-        if installed.empty?
-          odie empty_message(options.casks)
-        end
+        odie empty_message(options.casks) if installed.empty?
       end
 
       installed.each do |app|
