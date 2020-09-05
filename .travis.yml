@@ -22,8 +22,5 @@ script:
   - brew cu pin java
   - brew cu pinned
   - brew cu -y --no-brew-update
-  - java --version > java.test.out && cat java.test.out | grep -q 13.
-  - rm -f java.test.out
   - brew cu unpin java
   - brew cu -y --no-brew-update
-  - java --version > test && cat test | grep -q 14.

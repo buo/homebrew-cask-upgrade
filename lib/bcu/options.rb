@@ -171,7 +171,6 @@ module Bcu
   end
 
   def self.create_default_config_file(config_filename)
-    File.unlink config_filename
     system "touch #{config_filename}"
     File.open(config_filename, "w") do |f|
       f.write default_config_hash.to_yaml
