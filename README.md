@@ -15,6 +15,17 @@ Homebrew Cask extends [Homebrew](http://brew.sh) and brings its elegance, simpli
 brew tap buo/cask-upgrade
 ```
 
+### Verification of installation
+In order to simply verify that `brew cu` is correctly installed, you can simply run `brew tap` command and see if the repo is included:
+
+```bash
+> brew tap
+buo/cask-upgrade
+homebrew/bundle
+homebrew/cask
+homebrew/core
+```
+
 ## Uninstallation
 
 ```shell
