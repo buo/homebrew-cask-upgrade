@@ -58,7 +58,7 @@ module Bcu
     def upgrade(app, options, state_info)
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
-        printf 'Do you want to upgrade "%<app>s" or [p]in it to exclude it from updates [y/p/N]? ',
+        printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit [y/p/q/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
         input = STDIN.gets.strip
 
@@ -67,6 +67,10 @@ module Bcu
           args = []
           args[1] = app[:token]
           cmd.process args, options
+        end
+
+        if input.casecmp("q").zero?
+          exit 0
         end
 
         return unless input.casecmp("y").zero?
