@@ -25,6 +25,7 @@ module Cask
           :auto_updates       => cask.auto_updates,
           :homepage           => cask.homepage,
           :installed_versions => versions,
+          :tap                => cask.tap.name,
         }
       rescue CaskUnavailableError
         {
@@ -39,6 +40,7 @@ module Cask
           :auto_updates       => false,
           :homepage           => nil,
           :installed_versions => versions,
+          :tap                => nil,
         }
       end
     end
