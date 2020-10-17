@@ -85,7 +85,8 @@ module Bcu
 
       begin
         # Force to install the latest version.
-        cmd = "brew reinstall #{options.install_options} #{app[:tap]}/#{app[:token]} --force " + verbose_flag
+        app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
+        cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
         success = system "#{cmd}"
       rescue
         success = false
