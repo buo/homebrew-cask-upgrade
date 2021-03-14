@@ -31,14 +31,12 @@ module Bcu
 
       # Prevent using short -p syntax for pinning
       opts.on("-p") do
-        onoe "invalid option -p, did you mean --pin?"
-        exit 1
+        odie "invalid option -p, did you mean --pin?"
       end
 
       # Prevent using short -u syntax for unpinning
       opts.on("-u") do
-        onoe "invalid option -u, did you mean --unpin?"
-        exit 1
+        odie "invalid option -u, did you mean --unpin?"
       end
 
       opts.on("-a", "--all", "Include apps that auto-update in the upgrade") do
@@ -115,17 +113,11 @@ module Bcu
   end
 
   def self.validate_command_args(args, options)
-    if %w[pin unpin].include?(options.command) && args[1].nil?
-      onoe "Missing CASK for #{options.command} command"
-      exit 1
-    end
+    odie "Missing CASK for #{options.command} command" if %w[pin unpin].include?(options.command) && args[1].nil?
   end
 
   def self.validate_options(options)
     # verbose and quiet cannot both exist
-    if options.quiet && options.verbose
-      onoe "--quiet and --verbose cannot be specified at the same time"
-      exit 1
-    end
+    odie "--quiet and --verbose cannot be specified at the same time" if options.quiet && options.verbose
   end
 end

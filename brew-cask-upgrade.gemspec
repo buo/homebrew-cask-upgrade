@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "brew-cask-upgrade"
-  s.version     = "2.0.1"
+  s.version     = "2.0.2"
   s.summary     = "A command line tool for Homebrew Cask"
   s.description = "A command line tool for upgrading every outdated app installed by Homebrew Cask"
   s.authors     = ["buo"]
@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
 
   s.bindir      = "bin"
   s.executables = %w[brew-cask-upgrade]
+  s.required_ruby_version = "> 2.6.0"
 end
