@@ -32,7 +32,7 @@ module Bcu
         printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ",
                count: outdated.length,
                s:     (outdated.length > 1) ? "s" : ""
-        input = STDIN.gets.strip
+        input = $stdin.gets.strip
 
         if input.casecmp("i").zero?
           options.interactive = true
@@ -60,7 +60,7 @@ module Bcu
         formatting = Formatter.formatting_for_app(state_info, app, options)
         printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit [y/p/q/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
-        input = STDIN.gets.strip
+        input = $stdin.gets.strip
 
         if input.casecmp("p").zero?
           cmd = Bcu::Pin::Add.new
@@ -78,20 +78,18 @@ module Bcu
 
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
-
-      if installation_successful
-        installation_cleanup app, options
-      end
+      installation_cleanup app, options if installation_successful
     end
 
     def install(app, options)
       verbose_flag = options.verbose ? "--verbose" : ""
+      debug_flag = options.debug ? "--debug" : ""
 
       begin
         # Force to install the latest version.
         app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
-        cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
-        success = system "#{cmd}"
+        cmd = "brew reinstall #{options.install_options} #{app_str} --force #{verbose_flag} #{debug_flag}"
+        success = system cmd
       rescue
         success = false
       end
@@ -120,10 +118,7 @@ module Bcu
           found
         end
 
-        if installed.empty?
-          print_install_empty_message options.casks
-          exit 1
-        end
+        odie empty_message(options.casks) if installed.empty?
       end
 
       installed.each do |app|
@@ -152,15 +147,15 @@ module Bcu
       [outdated, state_info]
     end
 
-    def print_install_empty_message(cask_searched)
+    def empty_message(cask_searched)
       if cask_searched.length == 1
         if cask_searched[0].end_with? "*"
-          onoe "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
+          "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
         else
-          onoe "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
+          "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
         end
       else
-        onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
+        "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
       end
     end
   end

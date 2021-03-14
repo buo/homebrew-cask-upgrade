@@ -6,26 +6,18 @@ module Bcu
   end
 
   def self.parse!(args)
-    options_struct = Struct.new(:all, :force, :casks, :cleanup, :force_yes, :no_brew_update, :quiet, :verbose,
-                                :install_options, :list_pinned, :pin, :unpin, :interactive, :command)
-    options = options_struct.new
-    options.all = false
-    options.force = false
-    options.casks = nil
-    options.cleanup = false
-    options.force_yes = false
-    options.no_brew_update = false
-    options.quiet = false
-    options.verbose = false
-    options.install_options = ""
-    options.list_pinned = false
-    options.pin = nil
-    options.unpin = nil
-    options.interactive = false
-    options.command = "run"
+    options = build_config
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
+
+      opts.on("--ignore-config") do
+        options = build_config false
+      end
+
+      opts.on("--debug") do
+        options.debug = true
+      end
 
       # Prevent using short -p syntax for pinning
       opts.on("-p") do
@@ -125,5 +117,79 @@ module Bcu
       onoe "--quiet and --verbose cannot be specified at the same time"
       exit 1
     end
+  end
+
+  def self.build_config(use_config_file: true)
+    options = use_config_file ? load_default_options : create_default_options
+
+    options.casks = nil
+    options.install_options = ""
+    options.list_pinned = false
+    options.pin = nil
+    options.unpin = nil
+    options.command = "run"
+
+    options
+  end
+
+  def self.load_default_options
+    config_filename = "#{ENV["HOME"]}/.brew-cu"
+    unless File.exist?(config_filename)
+      odebug "Config file doesn't exist, creating"
+      create_default_config_file config_filename
+    end
+
+    default_options = create_default_options
+    if File.exist?(config_filename)
+      odebug "Loading configuration from config file"
+      options = {}
+      File.open(config_filename) do |f|
+        options = (YAML.safe_load f.read).to_h
+        odebug "Configuration loaded", options
+      end
+      OpenStruct.new options
+    else
+      # something went wrong while reading config file
+      odebug "Config file wasn't created, setting default config"
+      default_options
+    end
+  end
+
+  def self.create_default_options
+    default_values = default_config_hash
+    default_options = OpenStruct.new
+    default_options.all = default_values["all"]
+    default_options.force = default_values["force"]
+    default_options.cleanup = default_values["cleanup"]
+    default_options.force_yes = default_values["force_yes"]
+    default_options.no_brew_update = default_values["no_brew_update"]
+    default_options.quiet = default_values["quiet"]
+    default_options.verbose = default_values["verbose"]
+    default_options.interactive = default_values["interactive"]
+    default_options.debug = default_values["debug"]
+    default_options
+  end
+
+  def self.create_default_config_file(config_filename)
+    system "touch #{config_filename}"
+    File.open(config_filename, "w") do |f|
+      f.write default_config_hash.to_yaml
+    end
+  rescue => e
+    odebug "RESCUE: File couldn't be created", e
+    system "rm -f #{config_filename}"
+  end
+
+  def self.default_config_hash
+    {
+      "all"            => false,
+      "force"          => false,
+      "cleanup"        => false,
+      "force_yes"      => false,
+      "no_brew_update" => false,
+      "quiet"          => false,
+      "verbose"        => false,
+      "interactive"    => false,
+    }
   end
 end

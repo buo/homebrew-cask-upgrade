@@ -1,6 +1,6 @@
 # For backward-compatibility
 # See https://github.com/buo/homebrew-cask-upgrade/issues/97
-CASKROOM = Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path
+CASKROOM = (Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path).freeze
 
 module Cask
   def self.installed_apps

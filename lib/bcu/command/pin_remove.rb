@@ -8,12 +8,12 @@ module Bcu
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.unpin if pin.nil?
 
-        remove_pin pin
+        remove_pin cask: pin
       end
 
       private
 
-      def remove_pin(cask, quiet = false)
+      def remove_pin(cask:, quiet: false)
         unless Pin.pinned.include? cask
           puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
           return

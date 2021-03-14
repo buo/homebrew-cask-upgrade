@@ -21,7 +21,7 @@ module Bcu
       def add_cask(cask_name, casks)
         casks.push Cask.load_cask(cask_name)
       rescue Cask::CaskUnavailableError
-        Bcu::Pin::Remove.remove_pin cask_name
+        Bcu::Pin::Remove.remove_pin cask: cask_name
       end
     end
   end

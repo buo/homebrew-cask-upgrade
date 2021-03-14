@@ -1,6 +1,6 @@
 module Bcu
   module Pin
-    PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../../../pinned")
+    PINS_FILE = File.expand_path(File.dirname(__FILE__) + "/../../../pinned").freeze
 
     module_function
 

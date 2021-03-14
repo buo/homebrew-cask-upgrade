@@ -48,6 +48,8 @@
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
 #:
+#:    If `--ignore-config` is passed, changes to user config file fill be ignored.
+#:
 #:`INTERACTIVE MODE`:
 #:    After listing casks to upgrade you want those casks to be upgraded.
 #:    By using the option `i` you will step into an interactive mode.
