@@ -34,7 +34,7 @@ module Bcu
         printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ",
                count: outdated.length,
                s:     (outdated.length > 1) ? "s" : ""
-        input = STDIN.gets.strip
+        input = $stdin.gets.strip
 
         if input.casecmp("i").zero?
           options.interactive = true
@@ -51,7 +51,7 @@ module Bcu
       end
 
       if options.cleanup && cleanup_necessary
-        system "brew cleanup" + (options.verbose ? " --verbose" : "")
+        system "brew cleanup#{options.verbose ? " --verbose" : ""}"
       end
     end
 
@@ -62,7 +62,7 @@ module Bcu
         formatting = Formatter.formatting_for_app(state_info, app, options)
         printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit [y/p/q/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
-        input = STDIN.gets.strip
+        input = $stdin.gets.strip
 
         if input.casecmp("p").zero?
           cmd = Bcu::Pin::Add.new
@@ -71,9 +71,7 @@ module Bcu
           cmd.process args, options
         end
 
-        if input.casecmp("q").zero?
-          exit 0
-        end
+        exit 0 if input.casecmp("q").zero?
 
         return unless input.casecmp("y").zero?
       end
@@ -81,9 +79,7 @@ module Bcu
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
 
-      if installation_successful
-        installation_cleanup app, options
-      end
+      installation_cleanup app, options if installation_successful
     end
 
     def install(app, options)
@@ -93,7 +89,7 @@ module Bcu
         # Force to install the latest version.
         app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
         cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
-        success = system "#{cmd}"
+        success = system cmd.to_s
       rescue
         success = false
       end
