@@ -1,4 +1,5 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby -W0 -EUTF-8:UTF-8
+# frozen_string_literal: true
 
 #:
 #:`USAGE` brew cu [command=run] [CASK] [options]

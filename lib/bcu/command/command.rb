@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bcu
   class Command
     class CommandNotImplementedError < NoMethodError
