@@ -2,7 +2,7 @@
 
 # For backward-compatibility
 # See https://github.com/buo/homebrew-cask-upgrade/issues/97
-CASKROOM = Cask.methods.include?(:caskroom) ? Cask.caskroom.freeze : Cask::Caskroom.path.freeze
+CASKROOM = Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path
 
 module Cask
   def self.installed_apps
@@ -23,7 +23,7 @@ module Cask
           :version            => cask.version.before_separators.to_s,
           :current_full       => current_version.to_s,
           :current            => current_version.before_separators.to_s,
-          :outdated?          => cask.instance_of?(Cask) && versions.exclude?(cask.version.to_s),
+          :outdated?          => cask.instance_of?(Cask) && !versions.include?(cask.version.to_s),
           :auto_updates       => cask.auto_updates,
           :homepage           => cask.homepage,
           :installed_versions => versions,
