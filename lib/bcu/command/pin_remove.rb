@@ -17,7 +17,7 @@ module Bcu
 
       def remove_pin(cask, quiet = false)
         unless Pin.pinned.include? cask
-          puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
+          puts_stdout_or_stderr "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
           return
         end
 
@@ -29,7 +29,7 @@ module Bcu
           end
         end
 
-        puts "Unpinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
+        puts_stdout_or_stderr "Unpinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
       end
     end
   end
