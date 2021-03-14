@@ -7,13 +7,15 @@ module Bcu
     def process(_args, options)
       unless options.quiet
         ohai "Options"
-        puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
-        puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
+        puts_stdout_or_stderr "Include auto-update (-a): #{Formatter.colorize(options.all,
+                                                                              options.all ? "green" : "red")}"
+        puts_stdout_or_stderr "Include latest (-f): #{Formatter.colorize(options.force,
+                                                                         options.force ? "green" : "red")}"
       end
 
       unless options.no_brew_update
         ohai "Updating Homebrew"
-        puts Cask.brew_update(options.verbose).stdout
+        puts_stdout_or_stderr Cask.brew_update(options.verbose).stdout
       end
 
       installed = Cask.installed_apps
@@ -22,7 +24,7 @@ module Bcu
       outdated, state_info = find_outdated_apps(installed, options)
       Formatter.print_app_table(installed, state_info, options) unless options.quiet
       if outdated.empty?
-        puts "No outdated apps found." if options.quiet
+        puts_stdout_or_stderr "No outdated apps found." if options.quiet
         return
       end
 
@@ -30,7 +32,7 @@ module Bcu
       Formatter.print_app_table(outdated, state_info, options)
       printf "\n"
 
-      unless options.interactive || options.force_yes
+      if !options.interactive && !options.force_yes
         printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ",
                count: outdated.length,
                s:     (outdated.length > 1) ? "s" : ""
@@ -50,9 +52,7 @@ module Bcu
         upgrade app, options, state_info
       end
 
-      if options.cleanup && cleanup_necessary
-        system "brew cleanup#{options.verbose ? " --verbose" : ""}"
-      end
+      system "brew cleanup#{options.verbose ? " --verbose" : ""}" if options.cleanup && cleanup_necessary
     end
 
     private
@@ -71,7 +71,9 @@ module Bcu
           cmd.process args, options
         end
 
+        # rubocop:disable Rails/Exit
         exit 0 if input.casecmp("q").zero?
+        # rubocop:enable Rails/Exit
 
         return unless input.casecmp("y").zero?
       end
@@ -118,20 +120,15 @@ module Bcu
           found
         end
 
-        if installed.empty?
-          print_install_empty_message options.casks
-          exit 1
-        end
+        odie(install_empty_message(options.casks)) if installed.empty?
       end
 
       installed.each do |app|
         version_latest = (app[:version] == "latest")
         if Pin.pinned.include?(app[:token])
           state_info[app] = "pinned"
-        elsif options.force && options.all && version_latest && app[:auto_updates]
-          outdated.push app
-          state_info[app] = "forced to reinstall"
-        elsif options.force && version_latest && !app[:auto_updates]
+        elsif (options.force && version_latest && app[:auto_updates] && options.all) ||
+              (options.force && version_latest && !app[:auto_updates])
           outdated.push app
           state_info[app] = "forced to reinstall"
         elsif options.all && !version_latest && app[:auto_updates] && app[:outdated?]
@@ -150,15 +147,15 @@ module Bcu
       [outdated, state_info]
     end
 
-    def print_install_empty_message(cask_searched)
+    def install_empty_message(cask_searched)
       if cask_searched.length == 1
         if cask_searched[0].end_with? "*"
-          onoe "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
+          "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
         else
-          onoe "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
+          "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
         end
       else
-        onoe "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
+        "#{Tty.red}No casks matching your arguments found.#{Tty.reset}"
       end
     end
   end

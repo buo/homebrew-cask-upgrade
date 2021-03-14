@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module Formatter
   module_function
 
@@ -46,7 +48,7 @@ module Formatter
       end
 
       # Calculate table width including gutters
-      table_width = col_widths.inject(:+) + gutter * (cols - 1)
+      table_width = col_widths.sum + gutter * (cols - 1)
 
       if table_width > Tty.width
         content_width = Tty.width - gutter * (cols - 1) - gutter
@@ -153,7 +155,7 @@ module Formatter
       table.add_row row
     end
 
-    puts table.output
+    puts_stdout_or_stderr table.output
   end
 
   def print_pin_table(pinns)
@@ -172,7 +174,7 @@ module Formatter
       table.add_row row
     end
 
-    puts table.output
+    puts_stdout_or_stderr table.output
   end
 
   def formatting_for_app(state_info, app, options)
