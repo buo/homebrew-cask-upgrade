@@ -36,7 +36,7 @@ module Bcu
         end
 
         formatted_cask_name = "#{Tty.green}#{cask_name}#{Tty.reset}"
-        formatted_version = "#{Tty.magenta}#{cask.version}#{Tty.reset}"
+        formatted_version = "#{Tty.magenta}#{cask.current}#{Tty.reset}"
 
         puts "Pinned: #{formatted_cask_name} in version #{formatted_version}"
       end
