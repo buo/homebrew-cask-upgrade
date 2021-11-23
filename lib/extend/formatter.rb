@@ -48,10 +48,10 @@ module Formatter
       end
 
       # Calculate table width including gutters
-      table_width = col_widths.sum + gutter * (cols - 1)
+      table_width = col_widths.sum + (gutter * (cols - 1))
 
       if table_width > Tty.width
-        content_width = Tty.width - gutter * (cols - 1) - gutter
+        content_width = Tty.width - (gutter * (cols - 1)) - gutter
         overflow_cols = 0
         max_width = content_width
         col_widths.each do |width|

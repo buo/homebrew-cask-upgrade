@@ -14,4 +14,7 @@ Gem::Specification.new do |s|
   s.bindir      = "bin"
   s.executables = %w[brew-cask-upgrade]
   s.required_ruby_version = "> 2.6.0"
+  s.metadata = {
+    "rubygems_mfa_required" => "true",
+  }
 end
