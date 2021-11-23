@@ -5,17 +5,25 @@ require "bcu/module/pin"
 module Bcu
   class Upgrade < Command
     def process(_args, options)
+      return run_process(_args, options) if $stdout.tty?
+
+      redirect_stdout($stderr) do
+        run_process(_args, options)
+      end
+    end
+
+    def run_process(_args, options)
       unless options.quiet
         ohai "Options"
-        puts_stdout_or_stderr "Include auto-update (-a): #{Formatter.colorize(options.all,
+        puts "Include auto-update (-a): #{Formatter.colorize(options.all,
                                                                               options.all ? "green" : "red")}"
-        puts_stdout_or_stderr "Include latest (-f): #{Formatter.colorize(options.force,
+        puts "Include latest (-f): #{Formatter.colorize(options.force,
                                                                          options.force ? "green" : "red")}"
       end
 
       unless options.no_brew_update
         ohai "Updating Homebrew"
-        puts_stdout_or_stderr Cask.brew_update(options.verbose).stdout
+        puts Cask.brew_update(options.verbose).stdout
       end
 
       installed = Cask.installed_apps
@@ -24,7 +32,7 @@ module Bcu
       outdated, state_info = find_outdated_apps(installed, options)
       Formatter.print_app_table(installed, state_info, options) unless options.quiet
       if outdated.empty?
-        puts_stdout_or_stderr "No outdated apps found." if options.quiet
+        puts "No outdated apps found." if options.quiet
         return
       end
 

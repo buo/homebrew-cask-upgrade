@@ -126,6 +126,14 @@ module Formatter
   end
 
   def print_app_table(apps, state_info, options)
+    return output_print_app_table(apps, state_info, options) if $stdout.tty?
+
+    redirect_stdout($stderr) do
+      output_print_app_table(apps, state_info, options)
+    end
+  end
+
+  def output_print_app_table(apps, state_info, options)
     table = self::Table.new
     table.add_header_column ""
     table.add_header_column "Cask"
@@ -155,10 +163,18 @@ module Formatter
       table.add_row row
     end
 
-    puts_stdout_or_stderr table.output
+    puts table.output
   end
 
   def print_pin_table(pinns)
+    return output_print_pin_table(pinns) if $stdout.tty?
+
+    redirect_stdout($stderr) do
+      output_print_pin_table(pinns)
+    end
+  end
+
+  def output_print_pin_table(pinns)
     table = self::Table.new
     table.add_header_column ""
     table.add_header_column "Cask"
@@ -174,7 +190,7 @@ module Formatter
       table.add_row row
     end
 
-    puts_stdout_or_stderr table.output
+    puts table.output
   end
 
   def formatting_for_app(state_info, app, options)
