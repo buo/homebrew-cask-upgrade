@@ -4,11 +4,11 @@ require "bcu/module/pin"
 
 module Bcu
   class Upgrade < Command
-    def process(_args, options)
-      return run_process(_args, options) if $stdout.tty?
+    def process(args, options)
+      return run_process(args, options) if $stdout.tty?
 
       redirect_stdout($stderr) do
-        run_process(_args, options)
+        run_process(args, options)
       end
     end
 
@@ -16,9 +16,9 @@ module Bcu
       unless options.quiet
         ohai "Options"
         puts "Include auto-update (-a): #{Formatter.colorize(options.all,
-                                                                              options.all ? "green" : "red")}"
+                                                             options.all ? "green" : "red")}"
         puts "Include latest (-f): #{Formatter.colorize(options.force,
-                                                                         options.force ? "green" : "red")}"
+                                                        options.force ? "green" : "red")}"
       end
 
       unless options.no_brew_update
@@ -60,7 +60,7 @@ module Bcu
         upgrade app, options, state_info
       end
 
-      system "brew cleanup#{options.verbose ? " --verbose" : ""}" if options.cleanup && cleanup_necessary
+      system "brew", "cleanup", options.verbose ? "--verbose": "" if options.cleanup && cleanup_necessary
     end
 
     private
@@ -111,7 +111,7 @@ module Bcu
       ohai "Cleaning up old versions" if options.verbose
       # Remove the old versions.
       app[:installed_versions].each do |version|
-        system "rm -rf #{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" unless version == "latest"
+        system "rm", "-rf", "#{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" unless version == "latest"
       end
     end
 
