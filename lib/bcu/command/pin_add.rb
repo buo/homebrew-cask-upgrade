@@ -16,8 +16,16 @@ module Bcu
       private
 
       def add_pin(cask_name)
+        return run_add_pin(cask_name) if $stdout.tty?
+
+        redirect_stdout($stderr) do
+          run_add_pin(cask_name)
+        end
+      end
+
+      def run_add_pin(cask_name)
         if Pin.pinned.include? cask_name
-          puts_stdout_or_stderr "Already pinned: #{Tty.green}#{cask_name}#{Tty.reset}"
+          puts "Already pinned: #{Tty.green}#{cask_name}#{Tty.reset}"
           return
         end
 
@@ -30,7 +38,7 @@ module Bcu
         formatted_cask_name = "#{Tty.green}#{cask_name}#{Tty.reset}"
         formatted_version = "#{Tty.magenta}#{cask.version}#{Tty.reset}"
 
-        puts_stdout_or_stderr "Pinned: #{formatted_cask_name} in version #{formatted_version}"
+        puts "Pinned: #{formatted_cask_name} in version #{formatted_version}"
       end
     end
   end
