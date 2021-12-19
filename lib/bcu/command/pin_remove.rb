@@ -15,7 +15,7 @@ module Bcu
 
       private
 
-      def remove_pin(cask, quiet: false)
+      def remove_pin(cask, quiet = false)
         return run_remove_pin(cask, quiet) if $stdout.tty?
 
         redirect_stdout($stderr) do
@@ -23,7 +23,7 @@ module Bcu
         end
       end
 
-      def run_remove_pin(cask, quiet: false)
+      def run_remove_pin(cask, quiet = false)
         unless Pin.pinned.include? cask
           puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}" unless quiet
           return
