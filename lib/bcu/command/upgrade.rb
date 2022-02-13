@@ -56,7 +56,15 @@ module Bcu
       # In interactive flow we're not sure if we need to clean up
       cleanup_necessary = !options.interactive
 
+      batched = []
+
       outdated.each do |app|
+        upgrade app, options, state_info, batched
+      end
+
+      # upgrade deferred applications
+      options.interactive = false
+      batched.each do |app|
         upgrade app, options, state_info
       end
 
@@ -65,10 +73,10 @@ module Bcu
 
     private
 
-    def upgrade(app, options, state_info)
+    def upgrade(app, options, state_info, batched = [])
       if options.interactive
         formatting = Formatter.formatting_for_app(state_info, app, options)
-        printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit [y/p/q/N]? ',
+        printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit or [b]atched update [y/p/q/b/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
         input = $stdin.gets.strip
 
@@ -82,6 +90,11 @@ module Bcu
         # rubocop:disable Rails/Exit
         exit 0 if input.casecmp("q").zero?
         # rubocop:enable Rails/Exit
+
+        if input.casecmp("b").zero?
+          batched.push app
+          return
+        end
 
         return unless input.casecmp("y").zero?
       end
