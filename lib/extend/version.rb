@@ -12,7 +12,7 @@ module Cask
       end
 
       def before_separators
-        version { before_hyphen.before_colon.before_comma }
+        version { before_hyphen.csv[0] }
       end
     end
   end
