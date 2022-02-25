@@ -40,14 +40,12 @@ jobs:
         run: |
             mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-            cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-            brew cu -y --no-brew-update
 
       - name: Run Rubocop
         run: |
+            cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
             rubocop --version
             rubocop
-            brew cu -y --no-brew-update
             
       - name: Run Brew Cask Upgrade
         run: brew cu -y --no-brew-update
