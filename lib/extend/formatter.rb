@@ -147,18 +147,18 @@ module Formatter
       color, result = formatting_for_app(state_info, app, options).values_at(0, 1)
 
       row = []
-      row << self::TableColumn.new(:value => "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
-      row << self::TableColumn.new(:value => app[:token], :color => color)
+      row << self::TableColumn.new(value: "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
+      row << self::TableColumn.new(value: app[:token], color: color)
       if options.verbose
-        row << self::TableColumn.new(:value => app[:current_full])
-        row << self::TableColumn.new(:value => app[:version_full], :color => "magenta")
+        row << self::TableColumn.new(value: app[:current_full])
+        row << self::TableColumn.new(value: app[:version_full], color: "magenta")
       else
-        row << self::TableColumn.new(:value => app[:current])
-        row << self::TableColumn.new(:value => app[:version], :color => "magenta")
+        row << self::TableColumn.new(value: app[:current])
+        row << self::TableColumn.new(value: app[:version], color: "magenta")
       end
-      row << self::TableColumn.new(:value => app[:auto_updates] ? " Y " : "", :color => "magenta")
-      row << self::TableColumn.new(:value => result, :color => color)
-      row << self::TableColumn.new(:value => app[:homepage], :color => "blue") if options.verbose
+      row << self::TableColumn.new(value: app[:auto_updates] ? " Y " : "", color: "magenta")
+      row << self::TableColumn.new(value: result, color: color)
+      row << self::TableColumn.new(value: app[:homepage], color: "blue") if options.verbose
 
       table.add_row row
     end
@@ -183,10 +183,10 @@ module Formatter
 
     pinns.each_with_index do |cask, i|
       row = []
-      row << self::TableColumn.new(:value => "#{(i+1).to_s.rjust(pinns.length.to_s.length)}/#{pinns.length}")
-      row << self::TableColumn.new(:value => cask.token, :color => "green")
-      row << self::TableColumn.new(:value => cask.versions.join(","))
-      row << self::TableColumn.new(:value => cask.version.to_s, :color => "magenta")
+      row << self::TableColumn.new(value: "#{(i+1).to_s.rjust(pinns.length.to_s.length)}/#{pinns.length}")
+      row << self::TableColumn.new(value: cask.token, color: "green")
+      row << self::TableColumn.new(value: cask.versions.join(","))
+      row << self::TableColumn.new(value: cask.version.to_s, color: "magenta")
       table.add_row row
     end
 
