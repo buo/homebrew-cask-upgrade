@@ -36,6 +36,9 @@ jobs:
             mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
+      - name: Verify cask is reporting outdated
+        run: brew cu --all google-chrome --report-only || test $? -eq 1
+
       - name: Pin google-chrome
         run: brew cu pin google-chrome
 
@@ -46,4 +49,4 @@ jobs:
         run: brew cu unpin google-chrome
 
       - name: Verify it is reporting outdated
-        run: brew cu --all google-chrome --report-only
+        run: brew cu --all google-chrome --report-only || test $? -eq 1
