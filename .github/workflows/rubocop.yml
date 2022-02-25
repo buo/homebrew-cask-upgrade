@@ -1,5 +1,4 @@
-# Worflow example
-name: CI
+name: Rubocop
 on: [push]
 
 jobs:
@@ -10,6 +9,6 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Rubocop checks
-        uses: luizfonseca/github-actions-rubocop@1.5.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: luizfonseca/github-actions-rubocop@1.5.6
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
