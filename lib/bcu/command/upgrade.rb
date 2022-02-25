@@ -40,6 +40,8 @@ module Bcu
       Formatter.print_app_table(outdated, state_info, options)
       printf "\n"
 
+      exit(outdated.length) if options.report_only
+
       if !options.interactive && !options.force_yes
         printf "Do you want to upgrade %<count>d app%<s>s or enter [i]nteractive mode [y/i/N]? ",
                count: outdated.length,

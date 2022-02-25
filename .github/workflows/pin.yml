@@ -39,9 +39,11 @@ jobs:
       - name: Pin google-chrome
         run: brew cu pin google-chrome
 
-      - name: Try updating google chrome
-        run: brew cu --all google-chrome
+      - name: Verify it is not reporting outdated
+        run: brew cu --all google-chrome --report-only
 
-      - name: Verify it is still outdated
-        run: |
-            brew outdated
+      - name: Unpin google-chrome
+        run: brew cu unpin google-chrome
+
+      - name: Verify it is reporting outdated
+        run: brew cu --all google-chrome --report-only
