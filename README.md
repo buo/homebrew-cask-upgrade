@@ -1,4 +1,8 @@
-[![status](https://travis-ci.org/buo/homebrew-cask-upgrade.svg?branch=master)](https://travis-ci.org/buo/homebrew-cask-upgrade)
+[![macOS 10](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-10.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-10.yml)
+[![Pinning workflow (macOS 10)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/pin-macos-10.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/pin-macos-10.yml)
+[![macOS 11](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-11.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-11.yml)
+[![Pinning workflow (macOS 11)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/pin-macos-11.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/pin-macos-11.yml)
+
 
 # brew-cask-upgrade
 
