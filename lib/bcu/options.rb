@@ -9,7 +9,7 @@ module Bcu
 
   def self.parse!(args)
     options_struct = Struct.new(:all, :force, :casks, :cleanup, :force_yes, :no_brew_update, :quiet, :verbose,
-                                :install_options, :list_pinned, :pin, :unpin, :interactive, :command)
+                                :install_options, :list_pinned, :pin, :unpin, :interactive, :command, :report_only)
     options = options_struct.new
     options.all = false
     options.force = false
@@ -24,6 +24,7 @@ module Bcu
     options.pin = nil
     options.unpin = nil
     options.interactive = false
+    options.report_only = false
     options.command = "run"
 
     parser = OptionParser.new do |opts|
@@ -96,6 +97,10 @@ module Bcu
         onoe "Using option --unpin for unpinning is deprecated, please use \"brew cu unpin\" command."
         options.unpin = cask
         options.command = "unpin"
+      end
+
+      opts.on("--report-only", "Only report casks to update with exit code") do
+        options.report_only = true
       end
     end
 
