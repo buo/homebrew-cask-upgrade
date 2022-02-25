@@ -12,8 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a job called "build"
-  build:
+  # This workflow contains a job called "style-check"
+  style-check:
     # The type of runner that the job will run on
     runs-on: macos-11
 
@@ -33,13 +33,5 @@ jobs:
             mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
-  # This workflow contains a job called "run"
-  run:
-    # The type of runner that the job will run on
-    runs-on: macos-11
-    needs: build
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
       - name: Style check
         run: brew style --display-cop-names buo/homebrew-cask-upgrade
