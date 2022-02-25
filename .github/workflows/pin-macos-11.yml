@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Pinning workflow
+name: Pinning workflow (macOS 11)
 
 # Controls when the workflow will run
 on:
@@ -12,8 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a job called "pinning-workflow"
+  pinning-workflow:
     # The type of runner that the job will run on
     runs-on: macos-11
 
