@@ -63,10 +63,12 @@ module Bcu
       end
 
       # upgrade deferred applications
+      tmp_flag = options.interactive
       options.interactive = false
       batched.each do |app|
         upgrade app, options, state_info
       end
+      options.interactive = tmp_flag
 
       system "brew", "cleanup", options.verbose ? "--verbose": "" if options.cleanup && cleanup_necessary
     end
