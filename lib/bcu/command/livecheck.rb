@@ -4,15 +4,15 @@ require "bcu/module/pin"
 
 module Bcu
   class Livecheck < Command
-    def process(args, options)
-      return run_process(args) if $stdout.tty?
+    def process(_args, _options)
+      return run_process() if $stdout.tty?
 
       redirect_stdout($stderr) do
-        run_process(args)
+        run_process()
       end
     end
 
-    def run_process(_args)
+    def run_process()
       installed = Cask.installed_apps
       installed.each do |app|
         system "brew", "livecheck", app[:token]

@@ -4,15 +4,15 @@ require "bcu/module/pin"
 
 module Bcu
   class Upgrade < Command
-    def process(args, options)
-      return run_process(args, options) if $stdout.tty?
+    def process(_args, options)
+      return run_process(options) if $stdout.tty?
 
       redirect_stdout($stderr) do
-        run_process(args, options)
+        run_process(options)
       end
     end
 
-    def run_process(_args, options)
+    def run_process(options)
       unless options.quiet
         ohai "Options"
         puts "Include auto-update (-a): #{Formatter.colorize(options.all,

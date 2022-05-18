@@ -5,13 +5,13 @@ require "bcu/module/pin"
 module Bcu
   module Pin
     class List < Command
-      def process(args, options)
-        list_pinned args, options
+      def process(_args, _options)
+        list_pinned
       end
 
       private
 
-      def list_pinned(_args, _options)
+      def list_pinned()
         casks = []
         Pin.pinned.each do |cask_name|
           add_cask cask_name, casks
