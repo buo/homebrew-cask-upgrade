@@ -106,7 +106,7 @@ module Bcu
 
     parser.parse!(args)
 
-    if %w[pin unpin pinned run].include?(args[0])
+    if %w[pin unpin pinned livecheck run].include?(args[0])
       options.command = args[0]
       validate_command_args args, options
     end
