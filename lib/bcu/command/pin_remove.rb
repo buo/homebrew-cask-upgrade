@@ -4,7 +4,7 @@ require "bcu/module/pin"
 
 module Bcu
   module Pin
-    class Remove
+    class Remove < Command
       def process(args, options)
         pin = args[1]
         # TODO: If we used deprecated --pin option, the value is not any more in the args

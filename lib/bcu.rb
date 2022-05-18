@@ -4,7 +4,10 @@ $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 
 require "bcu/options"
 require "bcu/command/all"
-require "cask"
+## Issue
+# Causing following: Error: No such file or directory @ rb_sysopen - /opt/homebrew/Library/Homebrew/vendor/bundle/ruby/2.6.0/gems/addressable-2.8.0/data/unicode.data
+# https://github.com/buo/homebrew-cask-upgrade/issues/205
+# require "cask"
 require "extend/formatter"
 require "extend/cask"
 require "extend/version"
