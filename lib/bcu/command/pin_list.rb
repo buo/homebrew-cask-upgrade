@@ -11,7 +11,7 @@ module Bcu
 
       private
 
-      def list_pinned()
+      def list_pinned
         casks = []
         Pin.pinned.each do |cask_name|
           add_cask cask_name, casks
