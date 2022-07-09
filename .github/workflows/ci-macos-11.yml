@@ -57,3 +57,31 @@ jobs:
 
       - name: Verify it is reporting outdated
         run: brew cu --all google-chrome --report-only || test $? -eq 1
+
+  pinned-export-workflow:
+    runs-on: macos-11
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Brew Update
+        run: |
+          brew update
+          brew --version
+
+      - name: Setup Homebrew Tap
+        run: |
+          mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+
+      - name: Pin google-chrome
+        run: brew cu pin google-chrome
+
+      - name: Export pinned casks
+        run: brew cu pinned --export exported.txt
+
+      - name: Setup expected file
+        run: echo "google-chrome" > expected.txt
+
+      - name: Verify exported file is as expected
+        run: cmp exported.txt expected.txt
