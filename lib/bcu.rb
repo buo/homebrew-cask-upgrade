@@ -29,6 +29,8 @@ module Bcu
   # @return [Command]
   def self.resolve_command(options)
     return Bcu::Pin::List.new if options.command == "pinned"
+    return Bcu::Pin::Export.new if options.command == "export"
+    return Bcu::Pin::Load.new if options.command == "load"
     return Bcu::Pin::Add.new if options.command == "pin"
     return Bcu::Pin::Remove.new if options.command == "unpin"
     return Bcu::Livecheck.new if options.command == "livecheck"

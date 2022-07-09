@@ -22,7 +22,9 @@
 #:      upgraded by `brew cu` command. See also `pin`.
 #:
 #:   `cu pinned`
-#:      Lists all CASKs that have been pinned.
+#:      Lists all CASKs that have been pinned. Add `--export FILENAME`
+#:      option to export the configuration to a file and `--load` to
+#:      load it back.
 #:
 #:`OPTIONS`:
 #:
