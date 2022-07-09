@@ -10,7 +10,7 @@ module Bcu
   def self.parse!(args)
     options_struct = Struct.new(:all, :force, :casks, :cleanup, :force_yes, :no_brew_update, :quiet, :verbose,
                                 :install_options, :list_pinned, :pin, :unpin, :interactive, :command, :report_only,
-                                :export_filename)
+                                :backup_filename)
     options = options_struct.new
     options.all = false
     options.force = false
@@ -27,7 +27,7 @@ module Bcu
     options.interactive = false
     options.report_only = false
     options.command = "run"
-    options.export_filename = ""
+    options.backup_filename = ""
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -107,12 +107,12 @@ module Bcu
 
       if args[0] == "pinned"
         opts.on("--export FILENAME", "Filename for export") do |filename|
-          options.export_filename = filename
+          options.backup_filename = filename
           options.command = "export"
         end
 
         opts.on("--load FILENAME", "Source filename for loading pinned casks") do |filename|
-          options.export_filename = filename
+          options.backup_filename = filename
           options.command = "load"
         end
       end
@@ -121,7 +121,7 @@ module Bcu
     parser.parse!(args)
 
     if %w[pin unpin pinned livecheck run].include?(args[0])
-      options.command = args[0] if options.export_filename == ""
+      options.command = args[0] if options.backup_filename == ""
       validate_command_args args, options
     end
     validate_options options

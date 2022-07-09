@@ -6,7 +6,7 @@ module Bcu
   module Pin
     class Export < Command
       def process(_, options)
-        file_name = options.export_filename
+        file_name = options.backup_filename
         File.open(file_name, "w+") do |file|
           Pin.pinned.each do |cask_name|
             file.puts cask_name
