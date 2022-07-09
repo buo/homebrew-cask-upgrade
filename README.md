@@ -107,3 +107,17 @@ For every cask it is then possible to use following options:
 
 Pinned apps will not be updated by `brew cu` until they are unpinned.
 NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updating pinned apps.
+
+### Export / Import pinned apps
+
+In order to export backup you pinned casks into a file, simply pass `--export` option to the `pinned` command.
+```sh
+brew cu pinned --export my-backup-filename.txt
+```
+**Note**: Versions, in which were casks pinned, are not exported as it is nt possible to install a specific version afterwards. 
+
+In order to load the configuration back, use `--load` option.
+```sh
+brew cu pinned --load my-backup-filename.txt
+```
+**Note**: Loading the configuration will **replace** current values.
