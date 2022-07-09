@@ -110,11 +110,11 @@ NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updat
 
 ### Export / Import pinned apps
 
-In order to export backup you pinned casks into a file, simply pass `--export` option to the `pinned` command.
+In order to export backup of your pinned casks into a file, simply pass `--export` option to the `pinned` command.
 ```sh
 brew cu pinned --export my-backup-filename.txt
 ```
-**Note**: Versions, in which were casks pinned, are not exported as it is nt possible to install a specific version afterwards. 
+**Note**: Versions, in which were casks pinned, are not exported as it isn’t possible to install a specific version afterwards. 
 
 In order to load the configuration back, use `--load` option.
 ```sh
