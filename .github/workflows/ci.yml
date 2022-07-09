@@ -114,10 +114,10 @@ jobs:
           cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Setup backup file
-        run: echo "google-chrome" > backup.txt
+        run: echo "google-chrome" > /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
 
       - name: Import backup file
-        run: brew cu pinned --load backup.txt
+        run: brew cu pinned --load /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
 
       - name: Verify exported file is as expected
-        run: cmp pinned backup.txt
+        run: cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade && cmp pinned backup.txt
