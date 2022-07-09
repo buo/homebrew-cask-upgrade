@@ -29,6 +29,9 @@ jobs:
       - name: Run Brew Cask Upgrade
         run: brew cu -y -a --no-brew-update
 
+      - name: Check no reported updates
+        run: brew cu -y -a --no-brew-update --report-only
+
   pinning-workflow:
     strategy:
       matrix:
