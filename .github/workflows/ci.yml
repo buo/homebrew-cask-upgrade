@@ -6,7 +6,8 @@ on:
   pull_request:
     branches: [ master ]
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   upgrade:
