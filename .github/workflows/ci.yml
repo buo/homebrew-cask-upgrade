@@ -1,3 +1,4 @@
+name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -6,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  ci:
+  upgrade:
     strategy:
       matrix:
         os: [macos-10.15, macos-11]
@@ -92,3 +93,31 @@ jobs:
 
       - name: Verify exported file is as expected
         run: cmp exported.txt expected.txt
+
+  pinned-load-workflow:
+    strategy:
+      matrix:
+        os: [macos-10.15, macos-11]
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Brew Update
+        run: |
+          brew update
+          brew --version
+
+      - name: Setup Homebrew Tap
+        run: |
+          mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+
+      - name: Setup backup file
+        run: echo "google-chrome" > backup.txt
+
+      - name: Import backup file
+        run: brew cu pinned --load backup.txt
+
+      - name: Verify exported file is as expected
+        run: cmp pinned backup.txt
