@@ -1,5 +1,4 @@
-[![macOS 11](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-11.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-11.yml)
-[![macOS 10](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-10.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci-macos-10.yml)
+[![CI](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci.yml/badge.svg)](https://github.com/buo/homebrew-cask-upgrade/actions/workflows/ci.yml)
 
 
 # brew-cask-upgrade
