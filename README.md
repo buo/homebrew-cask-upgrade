@@ -4,7 +4,7 @@
 # brew-cask-upgrade
 
 `brew-cask-upgrade` is a command-line tool for upgrading every outdated app
-installed by [Homebrew Cask](https://caskroom.github.io).
+installed by [Homebrew Cask](https://github.com/Homebrew/homebrew-cask).
 
 Homebrew Cask extends [Homebrew](http://brew.sh) and brings its elegance, simplicity, and speed to the installation and management of GUI macOS applications and large binaries alike.
 
