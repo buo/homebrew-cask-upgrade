@@ -10,7 +10,7 @@ module Bcu
   def self.parse!(args)
     options_struct = Struct.new(:all, :force, :casks, :cleanup, :force_yes, :no_brew_update, :quiet, :verbose,
                                 :install_options, :list_pinned, :pin, :unpin, :interactive, :command, :report_only,
-                                :backup_filename)
+                                :backup_filename, :debug)
     options = options_struct.new
     options.all = false
     options.force = false
@@ -28,6 +28,7 @@ module Bcu
     options.report_only = false
     options.command = "run"
     options.backup_filename = ""
+    options.debug = false
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: brew cu [CASK] [options]"
@@ -103,6 +104,11 @@ module Bcu
 
       opts.on("--report-only", "Only report casks to update with exit code") do
         options.report_only = true
+      end
+
+      opts.on("--debug", "Output certain debug statements") do
+        options.debug = true
+        options.verbose = true
       end
 
       if args[0] == "pinned"
