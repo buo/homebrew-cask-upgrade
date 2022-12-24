@@ -55,7 +55,7 @@ jobs:
           cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Verify cask is reporting outdated
-        run: brew cu --all google-chrome --report-only || test $? -eq 1
+        run: brew cu --all --no-rewb-update google-chrome --report-only || test $? -eq 1
 
       - name: Pin google-chrome
         run: brew cu pin google-chrome
