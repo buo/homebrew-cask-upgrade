@@ -26,7 +26,7 @@ module Bcu
         puts Cask.brew_update(options.verbose).stdout
       end
 
-      installed = Cask.installed_apps
+      installed = Cask.installed_apps(options)
 
       ohai "Finding outdated apps"
       outdated, state_info = find_outdated_apps(installed, options)

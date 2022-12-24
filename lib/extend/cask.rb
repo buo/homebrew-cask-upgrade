@@ -5,13 +5,15 @@
 CASKROOM = (Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path).freeze
 
 module Cask
-  def self.installed_apps
+  def self.installed_apps(options)
     # Manually retrieve installed apps instead of using Cask.installed because
     # it raises errors while iterating and stops.
     installed = Dir["#{CASKROOM}/*"].map { |e| File.basename e }
 
     installed = installed.map do |token|
+      puts "Checking installed versions for \"#{token}\"" if options.debug
       versions = installed_versions(token)
+      puts "Versions: #{versions}" if options.debug
       current_version = DSL::Version.new(versions.first)
       begin
         cask = load_cask(token)
