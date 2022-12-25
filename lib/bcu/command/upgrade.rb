@@ -58,8 +58,15 @@ module Bcu
       # In interactive flow we're not sure if we need to clean up
       cleanup_necessary = !options.interactive
 
-      outdated.each do |app|
-        upgrade app, options, state_info
+      if options.interactive
+        for_upgrade = to_upgrade_interactively outdated, options, state_info
+        for_upgrade.each do |app|
+          upgrade app, options
+        end
+      else
+        outdated.each do |app|
+          upgrade app, options
+        end
       end
 
       system "brew", "cleanup", options.verbose ? "--verbose": "" if options.cleanup && cleanup_necessary
@@ -67,8 +74,9 @@ module Bcu
 
     private
 
-    def upgrade(app, options, state_info)
-      if options.interactive
+    def to_upgrade_interactively(outdated, options, state_info)
+      for_upgrade = []
+      outdated.each do |app|
         formatting = Formatter.formatting_for_app(state_info, app, options)
         printf 'Do you want to upgrade "%<app>s", [p]in it to exclude it from updates or [q]uit [y/p/q/N]? ',
                app: Formatter.colorize(app[:token], formatting[0])
@@ -85,9 +93,13 @@ module Bcu
         exit 0 if input.casecmp("q").zero?
         # rubocop:enable Rails/Exit
 
-        return unless input.casecmp("y").zero?
+        for_upgrade.push app if input.casecmp("y").zero?
       end
+      for_upgrade
+    end
 
+
+    def upgrade(app, options)
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
 
