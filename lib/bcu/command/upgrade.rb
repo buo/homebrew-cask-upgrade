@@ -98,7 +98,6 @@ module Bcu
       for_upgrade
     end
 
-
     def upgrade(app, options)
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
