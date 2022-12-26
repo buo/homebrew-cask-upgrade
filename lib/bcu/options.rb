@@ -103,6 +103,14 @@ module Bcu
         options.command = "unpin"
       end
 
+      opts.on("--include-mas", "Include Mac AppStore applications") do
+        if IO.popen(%w[which mas])).read.empty?
+          onoe "In order to use --include-mas the mas-cli has to be installed. Please see the instructions here: https://github.com/mas-cli/mas"
+          exit 1
+        end
+        options.include_mas = true
+      end
+
       opts.on("--report-only", "Only report casks to update with exit code") do
         options.report_only = true
       end
@@ -122,14 +130,6 @@ module Bcu
           options.backup_filename = filename
           options.command = "load"
         end
-      end
-
-      opts.on("--include-mas", "Include Mac AppStore applications") do
-        if IO.popen(%w(which mas)).read.empty?
-          onoe "In order to use --include-mas the mas-cli has to be installed. Please see the instructions here: https://github.com/mas-cli/mas"
-          exit 1
-        end
-        options.include_mas = true
       end
     end
 
