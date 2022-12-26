@@ -15,9 +15,12 @@ module Bcu
     def run_process(options)
       unless options.quiet
         ohai "Options"
-        puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
-        puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
-        puts "Include mac app store (--include-mas): #{Formatter.colorize(options.include_mas, options.include_mas ? "green" : "red")}" if options.include_mas
+        auto_update_message = Formatter.colorize(options.all, options.all ? "green" : "red")
+        puts "Include auto-update (-a): #{auto_update_message}"
+        latest_message = Formatter.colorize(options.force, options.force ? "green" : "red")
+        puts "Include latest (-f): #{latest_message}"
+        include_mas_message = Formatter.colorize(options.include_mas, options.include_mas ? "green" : "red")
+        puts "Include mac app store (--include-mas): #{include_mas_message}" if options.include_mas
       end
 
       unless options.no_brew_update
@@ -26,9 +29,7 @@ module Bcu
       end
 
       installed = Cask.installed_apps(options)
-      if options.include_mas
-        include_mas_applications installed
-      end
+      include_mas_applications installed if options.include_mas
 
       ohai "Finding outdated apps"
       outdated, state_info = find_outdated_apps(installed, options)
@@ -77,25 +78,25 @@ module Bcu
     private
 
     def include_mas_applications(installed)
-      result = IO.popen(%w(mas list)).read
+      result = IO.popen(%w[mas list]).read
       mac_apps = result.split("\n")
 
       mas_outdated = mas_load_outdated
 
       mac_apps.each do |app|
         data = app.split(/^(\d+)\s+(.+)\s+\((.+)\)$/)
-        token = data[2].downcase
-        new_version = mas_outdated[token.strip]
+        token = data[2].downcase.strip
+        new_version = mas_outdated[token]
         mas_cask = {
-          :cask         => nil,
-          :name         => data[2],
-          :token        => "#{token} ",
-          :version      => new_version.nil? ? data[3] : new_version,
-          :current      => data[3],
-          :outdated?    => !new_version.nil?,
-          :auto_updates => false,
-          :mas          => true,
-          :mas_id       => data[1].strip,
+          cask:         nil,
+          name:         data[2],
+          token:        "#{token} ",
+          version:      new_version.nil? ? data[3] : new_version,
+          current:      data[3],
+          outdated?:    !new_version.nil?,
+          auto_updates: false,
+          mas:          true,
+          mas_id:       data[1].strip,
         }
         installed.push(mas_cask)
       end
@@ -131,7 +132,7 @@ module Bcu
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
 
-      installation_cleanup app, options if installation_successful and not app[:mas]
+      installation_cleanup app, options if installation_successful && !app[:mas]
     end
 
     def install(app, options)
@@ -140,13 +141,12 @@ module Bcu
       begin
         if app[:mas]
           cmd = "mas upgrade #{app[:mas_id]}"
-          success = system cmd.to_s
         else
           # Force to install the latest version.
           app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
           cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
-          success = system cmd.to_s
         end
+        success = system cmd.to_s
       rescue
         success = false
       end
@@ -203,12 +203,12 @@ module Bcu
     end
 
     def mas_load_outdated
-      result = IO.popen(%w(mas outdated)).read
+      result = IO.popen(%w[mas outdated]).read
       mac_apps = result.split("\n")
       outdated = {}
       mac_apps.each do |app|
         data = app.split(/^(\d+)\s+(.+)\s+\((.+) -> (.+)\)$/)
-        outdated[data[2].downcase] = data[4]
+        outdated[data[2].downcase.strip] = data[4]
       end
       outdated
     end
