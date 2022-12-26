@@ -113,10 +113,14 @@ module Bcu
         input = $stdin.gets.strip
 
         if input.casecmp("p").zero?
-          cmd = Bcu::Pin::Add.new
-          args = []
-          args[1] = app[:token]
-          cmd.process args, options
+          if app[:mas]
+            onoe "Pinning is not yet supported for MAS applications."
+          else
+            cmd = Bcu::Pin::Add.new
+            args = []
+            args[1] = app[:token]
+            cmd.process args, options
+          end
         end
 
         # rubocop:disable Rails/Exit

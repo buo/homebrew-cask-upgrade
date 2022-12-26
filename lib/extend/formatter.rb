@@ -148,11 +148,8 @@ module Formatter
 
       row = []
       row << self::TableColumn.new(value: "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
-      if app[:mas]
-        row << self::TableColumn.new(value: "#{app[:token]} ", color: color)
-      else
-        row << self::TableColumn.new(value: app[:token], color: color)
-      end
+      cask_column_value = app[:mas] ? "#{app[:token]} " : app[:token]
+      row << self::TableColumn.new(value: cask_column_value, color: color)
       if options.verbose
         row << self::TableColumn.new(value: app[:current_full])
         row << self::TableColumn.new(value: app[:version_full], color: "magenta")
