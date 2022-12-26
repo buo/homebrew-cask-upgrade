@@ -104,7 +104,7 @@ module Bcu
       end
 
       opts.on("--include-mas", "Include Mac AppStore applications") do
-        if IO.popen(%w[which mas])).read.empty?
+        if IO.popen(%w[which mas]).read.empty?
           onoe "In order to use --include-mas the mas-cli has to be installed. Please see the instructions here: https://github.com/mas-cli/mas"
           exit 1
         end
