@@ -15,9 +15,9 @@ module Bcu
     def run_process(options)
       unless options.quiet
         ohai "Options"
-        puts_stdout_or_stderr "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
-        puts_stdout_or_stderr "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
-        puts_stdout_or_stderr "Include mac app store (--include-mas): #{Formatter.colorize(options.include_mas, options.include_mas ? "green" : "red")}" if options.include_mas
+        puts "Include auto-update (-a): #{Formatter.colorize(options.all, options.all ? "green" : "red")}"
+        puts "Include latest (-f): #{Formatter.colorize(options.force, options.force ? "green" : "red")}"
+        puts "Include mac app store (--include-mas): #{Formatter.colorize(options.include_mas, options.include_mas ? "green" : "red")}" if options.include_mas
       end
 
       unless options.no_brew_update
