@@ -86,13 +86,20 @@ Options:
     -q, --quiet           Do not show information about installed apps or current options.
     -v, --verbose         Make output more verbose.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
-    -i, --interactive     Running update in interactive mode    
+    -i, --interactive     Running update in interactive mode
+        --include-mas     (Experimental) Include applications from Mac App Store.    
 ```
 
 Display usage instructions:
 ```sh
 brew help cu
 ```
+
+### Mac App Store applications (Experimental)
+By adding `--include-mas` parameter to the `brew cu` command, we use [mas](https://github.com/mas-cli/mas/) cli tool to manage
+upgrades for Mac App Store applications as well.
+
+**Note:** This feature is highly experimental and we don't guarantee it's functionality. Use at your own risk. 
 
 ### Interactive mode
 
