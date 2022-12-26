@@ -51,6 +51,9 @@
 #:    If `--no-quarantine` is passed, that option will be added to the install
 #:    command (see `man brew-cask` for reference)
 #:
+#:    If `--include-mas` is passed, command will include Mac App Store apps
+#:    in the result. It uses mas/mas-cli for such functionality.
+#:
 #:`INTERACTIVE MODE`:
 #:    After listing casks to upgrade you want those casks to be upgraded.
 #:    By using the option `i` you will step into an interactive mode.
