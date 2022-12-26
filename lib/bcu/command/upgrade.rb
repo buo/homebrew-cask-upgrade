@@ -76,22 +76,26 @@ module Bcu
 
     private
 
-    def self.include_mas_applications(installed)
+    def include_mas_applications(installed)
       result = IO.popen(%w(mas list)).read
       mac_apps = result.split("\n")
 
+      mas_outdated = mas_load_outdated
+
       mac_apps.each do |app|
-        data = app.split(/^(\d+) (.+) \((.+)\)$/)
+        data = app.split(/^(\d+)\s+(.+)\s+\((.+)\)$/)
+        token = data[2].downcase
+        new_version = mas_outdated[token.strip]
         mas_cask = {
           :cask         => nil,
           :name         => data[2],
-          :token        => data[2].downcase,
-          :version      => data[3],
-          :current      => [data[3]],
-          :outdated?    => false,
-          :auto_updates => true,
+          :token        => "#{token} ",
+          :version      => new_version.nil? ? data[3] : new_version,
+          :current      => data[3],
+          :outdated?    => !new_version.nil?,
+          :auto_updates => false,
           :mas          => true,
-          :mas_id       => data[1],
+          :mas_id       => data[1].strip,
         }
         installed.push(mas_cask)
       end
@@ -127,17 +131,22 @@ module Bcu
       ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
 
-      installation_cleanup app, options if installation_successful
+      installation_cleanup app, options if installation_successful and not app[:mas]
     end
 
     def install(app, options)
       verbose_flag = options.verbose ? "--verbose" : ""
 
       begin
-        # Force to install the latest version.
-        app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
-        cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
-        success = system cmd.to_s
+        if app[:mas]
+          cmd = "mas upgrade #{app[:mas_id]}"
+          success = system cmd.to_s
+        else
+          # Force to install the latest version.
+          app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
+          cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
+          success = system cmd.to_s
+        end
       rescue
         success = false
       end
@@ -191,6 +200,17 @@ module Bcu
       end
 
       [outdated, state_info]
+    end
+
+    def mas_load_outdated
+      result = IO.popen(%w(mas outdated)).read
+      mac_apps = result.split("\n")
+      outdated = {}
+      mac_apps.each do |app|
+        data = app.split(/^(\d+)\s+(.+)\s+\((.+) -> (.+)\)$/)
+        outdated[data[2].downcase] = data[4]
+      end
+      outdated
     end
 
     def install_empty_message(cask_searched)
