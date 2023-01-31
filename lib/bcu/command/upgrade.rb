@@ -123,9 +123,7 @@ module Bcu
           end
         end
 
-        # rubocop:disable Rails/Exit
         exit 0 if input.casecmp("q").zero?
-        # rubocop:enable Rails/Exit
 
         for_upgrade.push app if input.casecmp("y").zero?
       end
