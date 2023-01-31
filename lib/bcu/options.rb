@@ -20,7 +20,7 @@ module Bcu
     options.no_brew_update = false
     options.quiet = false
     options.verbose = false
-    options.install_options = ""
+    options.install_options = "--cask"
     options.list_pinned = false
     options.pin = nil
     options.unpin = nil
