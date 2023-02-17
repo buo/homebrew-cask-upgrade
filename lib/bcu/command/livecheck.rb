@@ -15,7 +15,7 @@ module Bcu
     def run_process(options)
       installed = Cask.installed_apps(options)
       installed.each do |app|
-        system "brew", "livecheck", app[:token]
+        system "brew", "livecheck", "--cask", app[:token]
       end
     end
   end
