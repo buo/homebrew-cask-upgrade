@@ -88,10 +88,10 @@ module Formatter
         if th.align == "center"
           padding_left = padding / 2
           padding_right = padding - padding_left
-          padding_right += gutter unless i - 1 == cols
+          padding_right += gutter if i - 1 != cols
           output << "#{" " * padding_left}#{string}#{" " * padding_right}"
         else
-          padding += gutter unless i - 1 == cols
+          padding += gutter if i - 1 != cols
           output << "#{string}#{" " * padding}"
         end
       end
@@ -101,7 +101,7 @@ module Formatter
       rows.each do |row|
         row.each_with_index do |td, i|
           padding = col_widths[i] - td.value.length
-          padding += gutter unless i - 1 == cols
+          padding += gutter if i - 1 != cols
           output << "#{Tty.send(td.color)}#{td.value}#{Tty.reset}#{" " * padding}"
         end
         output << "\n"
