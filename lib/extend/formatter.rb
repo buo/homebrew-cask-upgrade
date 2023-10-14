@@ -196,12 +196,9 @@ module Formatter
 
   def formatting_for_app(state_info, app, options)
     if state_info[app] == "pinned"
-      if ENV['HOMEBREW_CASK_UPGRADE_PINNED_OUTDATED_COLORIZE']
-        if app[:current_full] != app[:version_full]
-          color = "blue"
-        end
-      else
-        color = "cyan"
+      color = "cyan"
+      if ENV["HOMEBREW_CASK_UPGRADE_PINNED_OUTDATED_COLORIZE"] && app[:current_full] != app[:version_full]
+        color = "blue"
       end
       result = "[ PINNED ]"
     elsif state_info[app][0, 6] == "forced"
