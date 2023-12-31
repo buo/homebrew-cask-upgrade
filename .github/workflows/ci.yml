@@ -13,7 +13,11 @@ jobs:
   upgrade:
     strategy:
       matrix:
-        os: [macos-12, macos-13, macos-14]
+        os: 
+         - macos-12
+         - macos-13
+         # TODO: Not yet available
+         # - macos-14 
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -38,7 +42,8 @@ jobs:
   pinning-workflow:
     strategy:
       matrix:
-        os: [macos-13, macos-14]
+        os: 
+          - macos-13
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -72,7 +77,8 @@ jobs:
   pinned-export-workflow:
     strategy:
       matrix:
-        os: [macos-13, macos-14]
+        os: 
+          - macos-13
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -103,7 +109,8 @@ jobs:
   pinned-load-workflow:
     strategy:
       matrix:
-        os: [macos-13, macos-14]
+        os: 
+          - macos-13
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
