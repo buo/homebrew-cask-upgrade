@@ -5,6 +5,14 @@
 CASKROOM = (Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path).freeze
 
 module Cask
+
+  # @param [String] token
+  # @return [DSL::Version] currently installed version
+  def self.current_version(token, versions = nil)
+    versions = installed_versions(token) if versions.nil?
+    DSL::Version.new(versions.first)
+  end
+
   def self.installed_apps(options)
     # Manually retrieve installed apps instead of using Cask.installed because
     # it raises errors while iterating and stops.
@@ -14,7 +22,7 @@ module Cask
       puts "Checking installed versions for \"#{token}\"" if options.debug
       versions = installed_versions(token)
       puts "Versions: #{versions}" if options.debug
-      current_version = DSL::Version.new(versions.first)
+      current_version = self.current_version(token, versions)
       begin
         cask = load_cask(token)
         {
