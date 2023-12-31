@@ -5,7 +5,6 @@
 CASKROOM = (Cask.methods.include?(:caskroom) ? Cask.caskroom : Cask::Caskroom.path).freeze
 
 module Cask
-
   # @param [String] token
   # @return [DSL::Version] currently installed version
   def self.current_version(token, versions = nil)
