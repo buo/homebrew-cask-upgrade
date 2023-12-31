@@ -167,6 +167,7 @@ module Formatter
     puts table.output
   end
 
+  # @param [Cask[]] pinns Array of casks to print
   def print_pin_table(pinns)
     return output_print_pin_table(pinns) if $stdout.tty?
 
@@ -175,6 +176,7 @@ module Formatter
     end
   end
 
+  # @param [Cask[]] pinns Array of casks to print
   def output_print_pin_table(pinns)
     table = self::Table.new
     table.add_header_column ""
@@ -186,7 +188,7 @@ module Formatter
       row = []
       row << self::TableColumn.new(value: "#{(i+1).to_s.rjust(pinns.length.to_s.length)}/#{pinns.length}")
       row << self::TableColumn.new(value: cask.token, color: "green")
-      row << self::TableColumn.new(value: cask.versions.join(","))
+      row << self::TableColumn.new(value: Cask.current_version(cask.token))
       row << self::TableColumn.new(value: cask.version.to_s, color: "magenta")
       table.add_row row
     end
