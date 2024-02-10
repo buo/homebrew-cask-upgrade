@@ -86,6 +86,7 @@ module Bcu
       mac_apps.each do |app|
         data = app.split(/^(\d+)\s+(.+)\s+\((.+)\)$/)
         next if data[2].nil?
+
         token = data[2].downcase.strip
         new_version = mas_outdated[token]
         mas_cask = {
