@@ -12,14 +12,14 @@ Homebrew Cask extends [Homebrew](http://brew.sh) and brings its elegance, simpli
 
 ## Installation
 
-```
+```shell
 brew tap buo/cask-upgrade
 ```
 
 ### Verification of installation
 In order to simply verify that `brew cu` is correctly installed, you can simply run `brew tap` command and see if the repo is included:
 
-```bash
+```shell
 > brew tap
 buo/cask-upgrade
 homebrew/bundle
@@ -37,14 +37,14 @@ brew untap buo/cask-upgrade
 
 Upgrade outdated apps:
 
-```
+```shell
 brew cu
 ```
 
 Upgrade a specific app:
 
-```
-brew cu [CASK]
+```bash
+brew shell [CASK]
 ```
 
 While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
@@ -64,7 +64,7 @@ Please note, that if you update the apps using their auto-update functionality, 
 
 ### Options
 
-```
+```text
 Usage: brew cu [command=run] [CASK] [options]
 Commands:
     run         Default command, doesn't have to be specified. Executes cask upgrades.
@@ -91,7 +91,7 @@ Options:
 ```
 
 Display usage instructions:
-```sh
+```shell
 brew help cu
 ```
 
@@ -117,13 +117,13 @@ NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updat
 ### Export / Import pinned apps
 
 In order to export backup of your pinned casks into a file, simply pass `--export` option to the `pinned` command.
-```sh
+```shell
 brew cu pinned --export my-backup-filename.txt
 ```
 **Note**: Versions, in which were casks pinned, are not exported as it isn’t possible to install a specific version afterwards. 
 
 In order to load the configuration back, use `--load` option.
-```sh
+```shell
 brew cu pinned --load my-backup-filename.txt
 ```
 **Note**: Loading the configuration will **replace** current values.
