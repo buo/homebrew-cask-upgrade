@@ -85,22 +85,21 @@ module Bcu
 
       mac_apps.each do |app|
         data = app.split(/^(\d+)\s+(.+)\s+\((.+)\)$/)
-        unless data[2].nil?
-            token = data[2].downcase.strip
-            new_version = mas_outdated[token]
-            mas_cask = {
-                cask: nil,
-                name: data[2],
-                token: token,
-                version: new_version.nil? ? data[3] : new_version,
-                current: data[3],
-                outdated?: !new_version.nil?,
-                auto_updates: false,
-                mas: true,
-                mas_id: data[1].strip,
-            }
-            installed.push(mas_cask)
-        end
+        next if data[2].nil?
+        token = data[2].downcase.strip
+        new_version = mas_outdated[token]
+        mas_cask = {
+          cask:         nil,
+          name:         data[2],
+          token:        token,
+          version:      new_version.nil? ? data[3] : new_version,
+          current:      data[3],
+          outdated?:    !new_version.nil?,
+          auto_updates: false,
+          mas:          true,
+          mas_id:       data[1].strip,
+        }
+        installed.push(mas_cask)
       end
 
       installed.sort_by! { |cask| cask[:token] }
