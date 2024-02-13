@@ -44,7 +44,7 @@ brew cu
 Upgrade a specific app:
 
 ```bash
-brew shell [CASK]
+brew cu [CASK]
 ```
 
 While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
