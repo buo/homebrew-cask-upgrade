@@ -23,7 +23,7 @@ module Formatter
     end
 
     def add_header_column(value, align = "left")
-      @header << Formatter::TableColumn.new(value: value, align: align)
+      @header << Formatter::TableColumn.new(value:, align:)
     end
 
     def add_row(row)
@@ -149,7 +149,7 @@ module Formatter
       row = []
       row << self::TableColumn.new(value: "#{(i+1).to_s.rjust(apps.length.to_s.length)}/#{apps.length}")
       cask_column_value = app[:mas] ? "#{app[:token]} " : app[:token]
-      row << self::TableColumn.new(value: cask_column_value, color: color)
+      row << self::TableColumn.new(value: cask_column_value, color:)
       if options.verbose
         row << self::TableColumn.new(value: app[:current_full])
         row << self::TableColumn.new(value: app[:version_full], color: "magenta")
@@ -158,7 +158,7 @@ module Formatter
         row << self::TableColumn.new(value: app[:version], color: "magenta")
       end
       row << self::TableColumn.new(value: app[:auto_updates] ? " Y " : "", color: "magenta")
-      row << self::TableColumn.new(value: result, color: color)
+      row << self::TableColumn.new(value: result, color:)
       row << self::TableColumn.new(value: app[:homepage], color: "blue") if options.verbose
 
       table.add_row row

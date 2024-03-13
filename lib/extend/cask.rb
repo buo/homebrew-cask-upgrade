@@ -25,7 +25,7 @@ module Cask
       begin
         cask = load_cask(token)
         {
-          cask:               cask,
+          cask:,
           name:               cask.name.first,
           token:              cask.token,
           version_full:       cask.version.to_s,
@@ -43,7 +43,7 @@ module Cask
         {
           cask:               nil,
           name:               nil,
-          token:              token,
+          token:,
           version_full:       nil,
           version:            nil,
           current_full:       current_version.to_s,

@@ -92,7 +92,7 @@ module Bcu
         mas_cask = {
           cask:         nil,
           name:         data[2],
-          token:        token,
+          token:,
           version:      new_version.nil? ? data[3] : new_version,
           current:      data[3],
           outdated?:    !new_version.nil?,
