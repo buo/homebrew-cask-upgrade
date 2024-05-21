@@ -68,9 +68,9 @@ Please note, that if you update the apps using their auto-update functionality, 
 Usage: brew cu [command=run] [CASK] [options]
 Commands:
     run         Default command, doesn't have to be specified. Executes cask upgrades.
-    pin         Pin the current app version, preventing it from being 
+    pin         Pin the current app version, preventing it from being
                 upgraded when issuing the `brew cu` command. See also `unpin`.
-    unpin       Unpin the current app version, allowing them to be 
+    unpin       Unpin the current app version, allowing them to be
                 upgraded by `brew cu` command. See also `pin`.
     pinned      Print all pinned apps and its version. See also `pin`.
 
@@ -87,7 +87,7 @@ Options:
     -v, --verbose         Make output more verbose.
         --no-quarantine   Pass --no-quarantine option to `brew cask install`.
     -i, --interactive     Running update in interactive mode
-        --include-mas     (Experimental) Include applications from Mac App Store.    
+        --include-mas     (Experimental) Include applications from Mac App Store.
 ```
 
 Display usage instructions:
@@ -99,7 +99,7 @@ brew help cu
 By adding `--include-mas` parameter to the `brew cu` command, we use [mas](https://github.com/mas-cli/mas/) cli tool to manage
 upgrades for Mac App Store applications as well.
 
-**Note:** This feature is highly experimental and we don't guarantee it's functionality. Use at your own risk. 
+**Note:** This feature is highly experimental and we don't guarantee it's functionality. Use at your own risk.
 
 ### Interactive mode
 
@@ -120,7 +120,7 @@ In order to export backup of your pinned casks into a file, simply pass `--expor
 ```shell
 brew cu pinned --export my-backup-filename.txt
 ```
-**Note**: Versions, in which were casks pinned, are not exported as it isn’t possible to install a specific version afterwards. 
+**Note**: Versions, in which were casks pinned, are not exported as it isn’t possible to install a specific version afterwards.
 
 In order to load the configuration back, use `--load` option.
 ```shell
