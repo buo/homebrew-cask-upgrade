@@ -29,8 +29,8 @@ jobs:
 
       - name: Setup Homebrew Tap
         run: |
-            mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-            cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+            mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+            cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Run Brew Cask Upgrade
         run: brew cu -y -a --no-brew-update
@@ -55,8 +55,8 @@ jobs:
 
       - name: Setup Homebrew Tap
         run: |
-          mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-          cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Verify cask is reporting outdated
         run: brew cu --all --no-brew-update google-chrome --report-only || test $? -eq 1
@@ -90,8 +90,8 @@ jobs:
 
       - name: Setup Homebrew Tap
         run: |
-          mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-          cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Pin google-chrome
         run: brew cu pin google-chrome
@@ -122,14 +122,14 @@ jobs:
 
       - name: Setup Homebrew Tap
         run: |
-          mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-          cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Setup backup file
-        run: echo "google-chrome" > /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
+        run: echo "google-chrome" > /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
 
       - name: Import backup file
-        run: brew cu pinned --load /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
+        run: brew cu pinned --load /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
 
       - name: Verify exported file is as expected
-        run: cd /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade && cmp pinned backup.txt
+        run: cd /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade && cmp pinned backup.txt

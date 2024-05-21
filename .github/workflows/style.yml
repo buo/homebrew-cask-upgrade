@@ -35,8 +35,8 @@ jobs:
 
       - name: Setup Homebrew Tap
         run: |
-            mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
-            cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+            mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+            cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
       - name: Style check
         run: brew style --display-cop-names buo/homebrew-cask-upgrade
