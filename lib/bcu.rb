@@ -14,7 +14,6 @@ require "extend/formatter"
 require "extend/cask"
 require "extend/version"
 require "fileutils"
-require "set"
 require "shellwords"
 
 module Bcu
