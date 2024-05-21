@@ -27,7 +27,14 @@ jobs:
             brew update
             brew --version
 
-      - name: Setup Homebrew Tap
+      - name: Setup Homebrew Tap (pre-Sonoma)
+        if: matrix.os != 'macos-14'
+        run: |
+            mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+            cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
+
+      - name: Setup Homebrew Tap (Sonoma)
+        if: matrix.os == 'macos-14'
         run: |
             mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
