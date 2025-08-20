@@ -13,7 +13,8 @@ jobs:
   upgrade:
     strategy:
       matrix:
-        os: 
+        os:
+         - macos-13
          - macos-14
          - macos-15
     runs-on: ${{ matrix.os }}
@@ -27,13 +28,13 @@ jobs:
             brew --version
 
       - name: Setup Homebrew Tap (pre-Sonoma)
-        if: matrix.os != 'macos-14'
+        if: matrix.os == 'macos-13'
         run: |
             mkdir -p /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /usr/local/Homebrew/Library/Taps/buo/homebrew-cask-upgrade
 
-      - name: Setup Homebrew Tap (Sonoma)
-        if: matrix.os == 'macos-14'
+      - name: Setup Homebrew Tap (Sonoma and above)
+        if: matrix.os != 'macos-13'
         run: |
             mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
             cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
@@ -48,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: 
-          - macos-14
+          - macos-15
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -83,7 +84,7 @@ jobs:
     strategy:
       matrix:
         os: 
-          - macos-14
+          - macos-15
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -115,7 +116,7 @@ jobs:
     strategy:
       matrix:
         os: 
-          - macos-14
+          - macos-15
     runs-on: ${{ matrix.os }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
