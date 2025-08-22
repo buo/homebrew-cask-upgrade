@@ -14,7 +14,7 @@ module Bcu
 
     def run_process(options)
       unless options.quiet
-        ohai "Options"
+        # ohai "Options"
         auto_update_message = Formatter.colorize(options.all, options.all ? "green" : "red")
         puts "Include auto-update (-a): #{auto_update_message}"
         latest_message = Formatter.colorize(options.force, options.force ? "green" : "red")
@@ -24,14 +24,14 @@ module Bcu
       end
 
       unless options.no_brew_update
-        ohai "Updating Homebrew"
+        # ohai "Updating Homebrew"
         puts Cask.brew_update(options.verbose).stdout
       end
 
       installed = Cask.installed_apps(options)
       include_mas_applications installed if options.include_mas
 
-      ohai "Finding outdated apps"
+      # ohai "Finding outdated apps"
       outdated, state_info = find_outdated_apps(installed, options)
       Formatter.print_app_table(installed, state_info, options) unless options.quiet
       if outdated.empty?
@@ -39,7 +39,7 @@ module Bcu
         return
       end
 
-      ohai "Found outdated apps"
+      #ohai "Found outdated apps"
       Formatter.print_app_table(outdated, state_info, options)
       printf "\n"
 
@@ -133,7 +133,7 @@ module Bcu
     end
 
     def upgrade(app, options)
-      ohai "Upgrading #{app[:token]} to #{app[:version]}"
+      # ohai "Upgrading #{app[:token]} to #{app[:version]}"
       installation_successful = install app, options
 
       installation_cleanup app, options if installation_successful && !app[:mas]
@@ -159,7 +159,7 @@ module Bcu
     end
 
     def installation_cleanup(app, options)
-      ohai "Cleaning up old versions" if options.verbose
+      # ohai "Cleaning up old versions" if options.verbose
       # Remove the old versions.
       app[:installed_versions].each do |version|
         system "rm", "-rf", "#{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" if version != "latest"
