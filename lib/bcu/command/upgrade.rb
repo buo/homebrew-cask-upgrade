@@ -4,6 +4,8 @@ require "bcu/module/pin"
 
 module Bcu
   class Upgrade < Command
+    include Utils::Output::Mixin
+
     def process(_args, options)
       return run_process(options) if $stdout.tty?
 
