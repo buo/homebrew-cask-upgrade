@@ -4,6 +4,7 @@ require "optparse"
 
 module Bcu
   class << self
+    include Utils::Output::Mixin
     attr_accessor :options
   end
 
