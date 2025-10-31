@@ -38,6 +38,7 @@ module Bcu
       Formatter.print_app_table(installed, state_info, options) unless options.quiet
       if outdated.empty?
         puts "No outdated apps found." if options.quiet
+        cleanup(options, true)
         return
       end
 
@@ -74,10 +75,16 @@ module Bcu
         end
       end
 
-      system "brew", "cleanup", options.verbose ? "--verbose": "" if options.cleanup && cleanup_necessary
+      cleanup(options, cleanup_necessary)
     end
 
     private
+
+    def cleanup(options, cleanup_necessary)
+      ohai "Running cleanup"
+      verbose_flag = options.verbose ? "--verbose" : ""
+      system "brew cleanup #{verbose_flag}" if options.cleanup && cleanup_necessary
+    end
 
     def include_mas_applications(installed)
       result = IO.popen(%w[mas list]).read
