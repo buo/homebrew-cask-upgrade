@@ -81,12 +81,12 @@ module Bcu
     private
 
     def cleanup(options, cleanup_necessary)
-      if options.cleanup && cleanup_necessary
-        ohai "Running cleanup"
-        verbose_flag = options.verbose ? "--verbose" : ""
-        cmd = "brew cleanup #{verbose_flag}"
-        system cmd.to_s
-      end
+      return unless options.cleanup && cleanup_necessary
+
+      ohai "Running cleanup"
+      verbose_flag = options.verbose ? "--verbose" : ""
+      cmd = "brew cleanup #{verbose_flag}"
+      system cmd.to_s
     end
 
     def include_mas_applications(installed)
