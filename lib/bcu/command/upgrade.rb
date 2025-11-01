@@ -81,7 +81,8 @@ module Bcu
     private
 
     def cleanup(options, cleanup_necessary)
-      return unless options.cleanup && cleanup_necessary
+      should_cleanup = options.cleanup && cleanup_necessary
+      return unless should_cleanup
 
       ohai "Running cleanup"
       verbose_flag = options.verbose ? "--verbose" : ""
