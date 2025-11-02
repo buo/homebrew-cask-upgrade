@@ -75,7 +75,9 @@ module Cask
 
   # Retrieves currently installed versions on the machine.
   def self.installed_versions(token)
-    Dir["#{CASKROOM}/#{token}/*"].map { |e| File.basename e }
+    Dir["#{CASKROOM}/#{token}/*"]
+      .map { |e| File.basename e }
+      .reject { |v| v.start_with?(".") } # Filter out hidden files like .metadata
   end
 
   def self.brew_update(verbose)
