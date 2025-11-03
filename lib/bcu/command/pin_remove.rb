@@ -10,12 +10,11 @@ module Bcu
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.unpin if pin.nil?
 
-        remove_pin pin
+        remove_pin_instance pin
       end
 
-      private
-
-      def remove_pin(cask)
+      # Class method to remove a pin - can be called from other classes
+      def self.remove_pin(cask)
         return run_remove_pin(cask) if $stdout.tty?
 
         redirect_stdout($stderr) do
@@ -23,7 +22,13 @@ module Bcu
         end
       end
 
-      def run_remove_pin(cask)
+      private
+
+      def remove_pin_instance(cask)
+        self.class.remove_pin(cask)
+      end
+
+      def self.run_remove_pin(cask)
         unless Pin.pinned.include? cask
           puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}"
           return
