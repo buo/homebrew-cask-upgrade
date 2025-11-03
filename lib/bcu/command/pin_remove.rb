@@ -22,12 +22,6 @@ module Bcu
         end
       end
 
-      private
-
-      def remove_pin_instance(cask)
-        self.class.remove_pin(cask)
-      end
-
       def self.run_remove_pin(cask)
         unless Pin.pinned.include? cask
           puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}"
@@ -43,6 +37,13 @@ module Bcu
         end
 
         puts "Unpinned: #{Tty.green}#{cask}#{Tty.reset}"
+      end
+      private_class_method :run_remove_pin
+
+      private
+
+      def remove_pin_instance(cask)
+        self.class.remove_pin(cask)
       end
     end
   end
