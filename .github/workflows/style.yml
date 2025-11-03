@@ -20,7 +20,7 @@ jobs:
   # This workflow contains a job called "style-check"
   style-check:
     # The type of runner that the job will run on
-    runs-on: macos-14
+    runs-on: macos-26
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
