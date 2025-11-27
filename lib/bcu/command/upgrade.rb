@@ -94,6 +94,8 @@ module Bcu
       result = IO.popen(%w[mas list]).read
       mac_apps = result.split("\n")
 
+      region = IO.popen(%w[mas region]).read.strip.downcase
+
       mas_outdated = mas_load_outdated
 
       mac_apps.each do |app|
@@ -102,16 +104,21 @@ module Bcu
 
         token = data[2].downcase.strip
         new_version = mas_outdated[token]
+        mas_id = data[1].strip
         mas_cask = {
-          cask:         nil,
-          name:         data[2],
+          cask:               nil,
+          name:               data[2],
           token:,
-          version:      new_version.nil? ? data[3] : new_version,
-          current:      data[3],
-          outdated?:    !new_version.nil?,
-          auto_updates: false,
-          mas:          true,
-          mas_id:       data[1].strip,
+          version_full:       new_version.nil? ? data[3] : new_version,
+          version:            new_version.nil? ? data[3] : new_version,
+          current_full:       data[3],
+          current:            data[3],
+          outdated?:          !new_version.nil?,
+          auto_updates:       false,
+          homepage:           "https://apps.apple.com/" + region + "/app/id" + mas_id,
+          installed_versions: [data[3]],
+          mas:                true,
+          mas_id:             mas_id,
         }
         installed.push(mas_cask)
       end
