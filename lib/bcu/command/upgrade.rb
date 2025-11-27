@@ -115,7 +115,7 @@ module Bcu
           current:            data[3],
           outdated?:          !new_version.nil?,
           auto_updates:       false,
-          homepage:           "https://apps.apple.com/" + region + "/app/id" + mas_id,
+          homepage:           "https://apps.apple.com/#{region}/app/id#{mas_id}",
           installed_versions: [data[3]],
           mas:                true,
           mas_id:             mas_id,
