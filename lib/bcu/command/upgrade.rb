@@ -66,13 +66,9 @@ module Bcu
 
       if options.interactive
         for_upgrade = to_upgrade_interactively outdated, options, state_info
-        for_upgrade.each do |app|
-          upgrade app, options
-        end
+        upgrade for_upgrade, options
       else
-        outdated.each do |app|
-          upgrade app, options
-        end
+        upgrade outdated, options
       end
 
       cleanup(options, cleanup_necessary)
@@ -145,25 +141,53 @@ module Bcu
       for_upgrade
     end
 
-    def upgrade(app, options)
-      ohai "Upgrading #{app[:token]} to #{app[:version]}"
-      installation_successful = install app, options
+    def upgrade(apps, options)
+      if apps.length > 1
+        ohai "Upgrading #{apps.length} apps"
+        if options.verbose
+          apps.each do |app|
+            puts "#{app[:token]} #{app[:current]} -> #{app[:version]}"
+          end
+        end
+      else
+        ohai "Upgrading #{apps[0][:token]} to #{apps[0][:version]}"
+      end
 
-      installation_cleanup app, options if installation_successful && !app[:mas]
+      installation_successful = install apps, options
+      return unless installation_successful
+
+      ohai "Cleaning up old versions" if options.verbose
+      apps.each do |app|
+        installation_cleanup app, options unless app[:mas]
+      end
     end
 
-    def install(app, options)
-      verbose_flag = options.verbose ? "--verbose" : ""
+    def install(apps, options)
+      verbose_flag = options.verbose ? " --verbose" : ""
+
+      # Split MAS and Homebrew apps
+      mas_apps = apps.select { |app| app[:mas] }
+      brew_apps = apps.reject { |app| app[:mas] }
 
       begin
-        if app[:mas]
-          cmd = "mas upgrade #{app[:mas_id]}"
-        else
-          # Force to install the latest version.
-          app_str = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
-          cmd = "brew reinstall #{options.install_options} #{app_str} --force " + verbose_flag
+        mas_cmd = nil
+        unless mas_apps.empty?
+          mas_ids = mas_apps.map { |app| app[:mas_id] }.join(" ")
+          mas_cmd = "mas upgrade#{verbose_flag} #{mas_ids}"
         end
-        success = system cmd.to_s
+
+        brew_cmd = nil
+        unless brew_apps.empty?
+          # Force to install the latest version.
+          brew_ids = brew_apps.map do |app|
+            app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
+          end.join(" ")
+          brew_cmd = "brew reinstall #{options.install_options} #{brew_ids} --force#{verbose_flag}"
+        end
+
+        success = true
+        success &&= system mas_cmd.to_s if mas_cmd
+        success &&= system brew_cmd.to_s if brew_cmd
       rescue
         success = false
       end
@@ -172,7 +196,6 @@ module Bcu
     end
 
     def installation_cleanup(app, options)
-      ohai "Cleaning up old versions" if options.verbose
       # Remove the old versions.
       app[:installed_versions].each do |version|
         system "rm", "-rf", "#{CASKROOM}/#{app[:token]}/#{Shellwords.escape(version)}" if version != "latest"
