@@ -142,6 +142,8 @@ module Bcu
     end
 
     def upgrade(apps, options)
+      return if apps.blank?
+
       if apps.length > 1
         ohai "Upgrading #{apps.length} apps"
         if options.verbose
