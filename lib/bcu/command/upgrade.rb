@@ -195,8 +195,12 @@ module Bcu
         end
 
         success = true
-        success &&= system mas_cmd.to_s if mas_cmd
         success &&= system brew_cmd.to_s if brew_cmd
+
+        if mas_cmd && success
+          ohai "Upgrading Mac App Store apps" if options.verbose
+          success &&= system mas_cmd.to_s
+        end
       rescue
         success = false
       end
