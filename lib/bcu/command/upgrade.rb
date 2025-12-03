@@ -265,7 +265,7 @@ module Bcu
 
     def parse_mas_app(app)
       match = app.strip.split(/^(\d+)\s+(.+?)\s+\((.+)\)$/)
-      version_upgrade = match[3].split(" -> ") 
+      version_upgrade = match[3].split(" -> ")
       if version_upgrade.length == 2
         installed_version = version_upgrade[0]
         version = version_upgrade[1]
@@ -274,10 +274,10 @@ module Bcu
         version = nil
       end
       {
-        id: match[1],
-        name: match[2].downcase.strip, 
+        id:                match[1],
+        name:              match[2].downcase.strip,
         installed_version: installed_version,
-        new_version: version
+        new_version:       version,
       }
     end
 
