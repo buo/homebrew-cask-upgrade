@@ -95,30 +95,27 @@ module Bcu
       mas_outdated = mas_load_outdated
 
       mac_apps.each do |app|
-        data = app.split(/^(\d+)\s+(.+)\s+\((.+)\)$/)
-        next if data[2].nil?
+        data = parse_mas_app app
+        next if data[:name].nil?
 
-        token = data[2].downcase.strip
-        new_version = mas_outdated[token]
-        mas_id = data[1].strip
+        new_version = mas_outdated[data[:name]]
         mas_cask = {
           cask:               nil,
-          name:               data[2],
-          token:,
-          version_full:       new_version.nil? ? data[3] : new_version,
-          version:            new_version.nil? ? data[3] : new_version,
-          current_full:       data[3],
-          current:            data[3],
+          name:               data[:name],
+          token:              data[:name],
+          version_full:       new_version.nil? ? data[:installed_version] : new_version,
+          version:            new_version.nil? ? data[:installed_version] : new_version,
+          current_full:       data[:installed_version],
+          current:            data[:installed_version],
           outdated?:          !new_version.nil?,
           auto_updates:       false,
-          homepage:           "https://apps.apple.com/#{region}/app/id#{mas_id}",
-          installed_versions: [data[3]],
+          homepage:           "https://apps.apple.com/#{region}/app/id#{data[:id]}",
+          installed_versions: [data[:installed_version]],
           mas:                true,
-          mas_id:             mas_id,
+          mas_id:             data[:id],
         }
         installed.push(mas_cask)
       end
-
       installed.sort_by! { |cask| cask[:token] }
     end
 
@@ -260,10 +257,28 @@ module Bcu
       mac_apps = result.split("\n")
       outdated = {}
       mac_apps.each do |app|
-        data = app.split(/^(\d+)\s+(.+)\s+\((.+) -> (.+)\)$/)
-        outdated[data[2].downcase.strip] = data[4]
+        match = parse_mas_app app
+        outdated[match[:name]] = match[:new_version] if match[:new_version]
       end
       outdated
+    end
+
+    def parse_mas_app(app)
+      match = app.strip.split(/^(\d+)\s+(.+?)\s+\((.+)\)$/)
+      version_upgrade = match[3].split(" -> ") 
+      if version_upgrade.length == 2
+        installed_version = version_upgrade[0]
+        version = version_upgrade[1]
+      else
+        installed_version = match[3]
+        version = nil
+      end
+      {
+        id: match[1],
+        name: match[2].downcase.strip, 
+        installed_version: installed_version,
+        new_version: version
+      }
     end
 
     def install_empty_message(cask_searched)
