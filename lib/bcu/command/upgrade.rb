@@ -90,7 +90,8 @@ module Bcu
       result = IO.popen(%w[mas list]).read
       mac_apps = result.split("\n")
 
-      region = IO.popen(%w[mas region]).read.strip.downcase
+      region = IO.popen(%w[mas config]).read.lines
+                 .find { |l| l.start_with?("region") }.split.last.downcase
 
       mas_outdated = mas_load_outdated
 
