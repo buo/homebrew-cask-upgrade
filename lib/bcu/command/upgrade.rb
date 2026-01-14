@@ -64,14 +64,21 @@ module Bcu
       # In interactive flow we're not sure if we need to clean up
       cleanup_necessary = !options.interactive
 
-      if options.interactive
-        for_upgrade = to_upgrade_interactively outdated, options, state_info
-        upgrade for_upgrade, options
-      else
-        upgrade outdated, options
-      end
+      result = if options.interactive
+                 for_upgrade = to_upgrade_interactively outdated, options, state_info
+                 upgrade for_upgrade, options
+               else
+                 upgrade outdated, options
+               end
 
       cleanup(options, cleanup_necessary)
+
+      # Exit with error code if any installations failed
+      return if result[:failed].empty?
+
+      failed_names = result[:failed].map { |app| app[:token] }.join(", ")
+      onoe "Failed to upgrade: #{failed_names}"
+      exit 1
     end
 
     private
@@ -147,7 +154,7 @@ module Bcu
     end
 
     def upgrade(apps, options)
-      return if apps.blank?
+      return { successful: [], failed: [] } if apps.blank?
 
       if apps.length > 1
         ohai "Upgrading #{apps.length} apps"
@@ -160,13 +167,17 @@ module Bcu
         ohai "Upgrading #{apps[0][:token]} to #{apps[0][:version]}"
       end
 
-      installation_successful = install apps, options
-      return unless installation_successful
+      result = install apps, options
 
-      ohai "Cleaning up old versions" if options.verbose
-      apps.each do |app|
-        installation_cleanup app unless app[:mas]
+      # Only clean up successfully installed apps
+      unless result[:successful].empty?
+        ohai "Cleaning up old versions" if options.verbose
+        result[:successful].each do |app|
+          installation_cleanup app unless app[:mas]
+        end
       end
+
+      result
     end
 
     def install(apps, options)
@@ -176,34 +187,53 @@ module Bcu
       mas_apps = apps.select { |app| app[:mas] }
       brew_apps = apps.reject { |app| app[:mas] }
 
-      begin
-        mas_cmd = nil
-        unless mas_apps.empty?
-          mas_ids = mas_apps.map { |app| app[:mas_id] }.join(" ")
-          mas_cmd = "mas upgrade#{verbose_flag} #{mas_ids}"
-        end
+      successful_apps = []
+      failed_apps = []
 
-        brew_cmd = nil
-        unless brew_apps.empty?
-          # Force to install the latest version.
-          brew_ids = brew_apps.map do |app|
-            app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
-          end.join(" ")
-          brew_cmd = "brew reinstall #{options.install_options} #{brew_ids} --force#{verbose_flag}"
+      unless brew_apps.empty?
+        # Pre-fetch all casks in parallel to speed up downloads
+        brew_ids = brew_apps.map do |app|
+          app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
         end
+        colored_tokens = brew_apps.map { |app| Formatter.colorize(app[:token], "green") }
+        tokens_list = if colored_tokens.length > 1
+                        "#{colored_tokens[0..-2].join(", ")} and #{colored_tokens[-1]}"
+                      else
+                        colored_tokens.first
+                      end
+        ohai "Fetching downloads for: #{tokens_list}"
+        fetch_cmd = "brew fetch --cask #{brew_ids.join(" ")}#{verbose_flag}"
+        system fetch_cmd.to_s
 
-        success = true
-        success &&= system brew_cmd.to_s if brew_cmd
+        # Install each cask individually to handle partial failures
+        # Successfully fetched casks will use the cache
+        brew_apps.each do |app|
+          brew_id = app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
+          brew_cmd = "brew reinstall #{options.install_options} #{brew_id} --force#{verbose_flag}"
 
-        if mas_cmd && success
-          ohai "Upgrading Mac App Store apps" if options.verbose
-          success &&= system mas_cmd.to_s
+          if system brew_cmd.to_s
+            successful_apps << app
+          else
+            failed_apps << app
+            onoe "Failed to upgrade #{app[:token]}"
+          end
         end
-      rescue
-        success = false
       end
 
-      success
+      # Install MAS apps individually as well
+      mas_apps.each do |app|
+        ohai "Upgrading Mac App Store app: #{app[:token]}" if options.verbose
+        mas_cmd = "mas upgrade#{verbose_flag} #{app[:mas_id]}"
+
+        if system mas_cmd.to_s
+          successful_apps << app
+        else
+          failed_apps << app
+          onoe "Failed to upgrade #{app[:token]}"
+        end
+      end
+
+      { successful: successful_apps, failed: failed_apps }
     end
 
     def installation_cleanup(app)
