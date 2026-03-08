@@ -201,7 +201,6 @@ module Bcu
                       else
                         colored_tokens.first
                       end
-        ohai "Fetching downloads for: #{tokens_list}"
         fetch_cmd = "brew fetch --cask #{brew_ids.join(" ")}#{verbose_flag}"
         system fetch_cmd.to_s
 
