@@ -65,11 +65,11 @@ module Bcu
       cleanup_necessary = !options.interactive
 
       result = if options.interactive
-                 for_upgrade = to_upgrade_interactively outdated, options, state_info
-                 upgrade for_upgrade, options
-               else
-                 upgrade outdated, options
-               end
+        for_upgrade = to_upgrade_interactively outdated, options, state_info
+        upgrade for_upgrade, options
+      else
+        upgrade outdated, options
+      end
 
       cleanup(options, cleanup_necessary)
 
@@ -195,12 +195,6 @@ module Bcu
         brew_ids = brew_apps.map do |app|
           app[:tap].nil? ? app[:token] : "#{app[:tap]}/#{app[:token]}"
         end
-        colored_tokens = brew_apps.map { |app| Formatter.colorize(app[:token], "green") }
-        tokens_list = if colored_tokens.length > 1
-                        "#{colored_tokens[0..-2].join(", ")} and #{colored_tokens[-1]}"
-                      else
-                        colored_tokens.first
-                      end
         fetch_cmd = "brew fetch --cask #{brew_ids.join(" ")}#{verbose_flag}"
         system fetch_cmd.to_s
 
