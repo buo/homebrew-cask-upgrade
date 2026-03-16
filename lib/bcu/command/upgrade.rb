@@ -184,8 +184,7 @@ module Bcu
       verbose_flag = options.verbose ? " --verbose" : ""
 
       # Split MAS and Homebrew apps
-      mas_apps = apps.select { |app| app[:mas] }
-      brew_apps = apps.reject { |app| app[:mas] }
+      mas_apps, brew_apps = apps.partition { |app| app[:mas] }
 
       successful_apps = []
       failed_apps = []
