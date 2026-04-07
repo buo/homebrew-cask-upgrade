@@ -62,16 +62,16 @@ You can use glob patterns to upgrade multiple casks at once. The following patte
 
 ```bash
 # Correct - quoted
-brew cu 'cl*'
+brew cu 'firefox*'
 
 # Correct - escaped
-brew cu cl\*
+brew cu firefox\*
 
 # Also works in zsh
-noglob brew cu cl*
+noglob brew cu firefox*
 
-# Incorrect - shell will try to expand cl* before passing to brew
-brew cu cl*
+# Incorrect - shell will try to expand firefox* before passing to brew
+brew cu firefox*
 ```
 
 [![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)

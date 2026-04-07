@@ -12,7 +12,7 @@
 #:      to upgrade multiple apps (e.g., `brew cu 'flash-*'`
 #:      to upgrade all flash-related casks).
 #:      **Important:** Always quote or escape patterns to prevent
-#:      shell expansion (e.g., `brew cu 'cl*'` or `brew cu cl\*`).
+#:      shell expansion (e.g., `brew cu 'firefox*'` or `brew cu firefox\*`).
 #:
 #:   `cu pin` CASK
 #:      Pin the current CASK version, preventing it from being
