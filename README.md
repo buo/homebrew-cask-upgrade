@@ -50,7 +50,29 @@ brew cu [CASK]
 While running the `brew cu` command without any other further options, the script automatically runs `brew update` to get
 latest versions of all the installed casks (this can be disabled, see options below).
 
-It is also possible to use `*` to install multiple casks at once, i.e. `brew cu flash-*` to install all casks starting with `flash-` prefix.
+### Glob Patterns
+
+You can use glob patterns to upgrade multiple casks at once. The following patterns are supported:
+
+- `*` - matches any characters (e.g., `brew cu 'flash-*'` upgrades all casks starting with `flash-`)
+- `?` - matches a single character (e.g., `brew cu 'app?'` matches `app1`, `app2`, etc.)
+- `[abc]` - matches any character in the brackets (e.g., `brew cu 'app[123]'`)
+
+**Important:** Always **quote** or escape glob patterns to prevent shell expansion:
+
+```bash
+# Correct - quoted
+brew cu 'cl*'
+
+# Correct - escaped
+brew cu cl\*
+
+# Also works in zsh
+noglob brew cu cl*
+
+# Incorrect - shell will try to expand cl* before passing to brew
+brew cu cl*
+```
 
 [![asciicast](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW.png)](https://asciinema.org/a/DlXUmiFFVnDhIDe2tCGo3ecLW)
 
