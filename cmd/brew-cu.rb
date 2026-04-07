@@ -66,8 +66,6 @@
 #:    All unknown options will be considered as `N`
 #:
 
-require "pathname"
-
 $LOAD_PATH.unshift(File.expand_path("../../lib", Pathname.new(__FILE__).realpath))
 
 require "bcu"
