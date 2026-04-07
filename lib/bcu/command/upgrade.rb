@@ -34,7 +34,7 @@ module Bcu
       include_mas_applications installed if options.include_mas
 
       ohai "Finding outdated apps"
-      outdated, state_info = find_outdated_apps(installed, options)
+      outdated, state_info, installed = find_outdated_apps(installed, options)
       Formatter.print_app_table(installed, state_info, options) unless options.quiet
       if outdated.empty?
         puts "No outdated apps found." if options.quiet
@@ -243,7 +243,12 @@ module Bcu
         installed = installed.select do |app|
           found = false
           options.casks.each do |arg|
-            found = true if app[:token] == arg || (arg.end_with?("*") && app[:token].start_with?(arg.slice(0..-2)))
+            # Support full glob patterns (*, ?, [abc], etc.)
+            if arg == app[:token]
+              found = true
+            elsif arg.match?(/[*?\[\]]/)
+              found = true if File.fnmatch(arg, app[:token], File::FNM_EXTGLOB)
+            end
           end
           found
         end
@@ -272,7 +277,7 @@ module Bcu
         end
       end
 
-      [outdated, state_info]
+      [outdated, state_info, installed]
     end
 
     def mas_load_outdated
@@ -306,7 +311,7 @@ module Bcu
 
     def install_empty_message(cask_searched)
       if cask_searched.length == 1
-        if cask_searched[0].end_with? "*"
+        if cask_searched[0].include?("*") || cask_searched[0].include?("?") || cask_searched[0].include?("[")
           "#{Tty.red}No Cask matching \"#{cask_searched[0]}\" is installed.#{Tty.reset}"
         else
           "#{Tty.red}Cask \"#{cask_searched[0]}\" is not installed.#{Tty.reset}"
