@@ -1,5 +1,6 @@
 .fleet
 .idea
+.claude/settings.local.json
 *.iml
 *.gem
 pinned
