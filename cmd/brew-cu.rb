@@ -8,11 +8,11 @@
 #:      Upgrade every outdated app installed by `brew cask`.
 #:
 #:   `cu` CASK [`options`]
-#:      Upgrade a specific app. You can use glob patterns
-#:      to upgrade multiple apps (e.g., `brew cu 'flash-*'`
-#:      to upgrade all flash-related casks).
-#:      **Important:** Always quote or escape patterns to prevent
-#:      shell expansion (e.g., `brew cu 'firefox*'` or `brew cu firefox\*`).
+#:      Upgrade a specific app.
+#:      Glob patterns match multiple casks (example: `brew cu 'flash-＊'`).
+#:      In these docs, ＊ means the ASCII asterisk. 
+#:      Quote or escape patterns so the shell does not expand them
+#:      (e.g., `brew cu 'firefox＊'` or `brew cu firefox\＊`).
 #:
 #:   `cu pin` CASK
 #:      Pin the current CASK version, preventing it from being
