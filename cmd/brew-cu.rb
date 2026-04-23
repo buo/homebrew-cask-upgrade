@@ -10,7 +10,7 @@
 #:   `cu` CASK [`options`]
 #:      Upgrade a specific app.
 #:      Glob patterns match multiple casks (example: `brew cu 'flash-＊'`).
-#:      In these docs, ＊ means the ASCII asterisk. 
+#:      In these docs, ＊ means the ASCII asterisk.
 #:      Quote or escape patterns so the shell does not expand them
 #:      (e.g., `brew cu 'firefox＊'` or `brew cu firefox\＊`).
 #:
