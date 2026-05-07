@@ -63,14 +63,8 @@ module Cask
     installed.sort_by { |a| a[:token] }
   end
 
-  # See: https://github.com/buo/homebrew-cask-upgrade/issues/43
   def self.load_cask(token)
-    begin
-      cask = CaskLoader.load(token)
-    rescue NoMethodError
-      cask = Cask.load(token)
-    end
-    cask
+    CaskLoader.load(token)
   end
 
   # Retrieves currently installed versions on the machine.
