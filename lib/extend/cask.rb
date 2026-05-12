@@ -41,7 +41,7 @@ module Cask
           tap:                cask.tap&.name,
           mas:                false,
         }
-      rescue CaskUnavailableError
+      rescue CaskUnavailableError, StandardError
         {
           cask:               nil,
           name:               nil,
