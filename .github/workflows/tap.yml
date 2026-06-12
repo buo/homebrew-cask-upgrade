@@ -1,0 +1,30 @@
+name: Tap
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  upgrade:
+    strategy:
+      matrix:
+        os:
+         - macos-14
+         - macos-15
+         - macos-26
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Brew Update
+        run: |
+            brew update
+            brew --version
+
+      - name: Tap Homebrew Cask Upgrade
+        run: |
+            brew tap buo/cask-upgrade
+            brew trust buo/cask-upgrade
