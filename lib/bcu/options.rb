@@ -135,6 +135,9 @@ module Bcu
       end
     end
 
+    # Dup so OptionParser never mutates a caller-supplied (possibly frozen)
+    # array such as Homebrew's ARGV.
+    args = args.dup
     parser.parse!(args)
 
     if %w[pin unpin pinned livecheck run].include?(args[0])
