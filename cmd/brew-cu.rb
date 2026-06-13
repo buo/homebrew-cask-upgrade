@@ -71,4 +71,16 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", Pathname.new(__FILE__).realpath
 
 require "bcu"
 
-Bcu.process(ARGV)
+# Homebrew loads external Ruby commands in-process via `require`, including
+# during the completion/manpage rebuild that runs on every `brew update`.
+# Without a guard, `Bcu.process` would execute on each `brew update` and, on
+# recent Homebrew, crash with "can't modify frozen Array" because OptionParser
+# mutates the now-frozen ARGV. Only run when actually invoked as `brew cu`.
+invoked_as_cu =
+  if Homebrew.respond_to?(:running_command_with_args)
+    Homebrew.running_command_with_args.split[1] == "cu"
+  else
+    File.basename($PROGRAM_NAME, ".rb") == "brew-cu"
+  end
+
+Bcu.process(ARGV) if invoked_as_cu
