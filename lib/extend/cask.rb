@@ -64,7 +64,7 @@ module Cask
   end
 
   def self.load_cask(token)
-    CaskLoader.load(token)
+    CaskLoader.load_prefer_installed(token)
   end
 
   # Retrieves currently installed versions on the machine.
