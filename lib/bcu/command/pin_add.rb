@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "bcu/compat"
 require "bcu/module/pin"
 
 module Bcu
@@ -18,7 +19,7 @@ module Bcu
       def add_pin(cask_name)
         return run_add_pin(cask_name) if $stdout.tty?
 
-        redirect_stdout($stderr) do
+        Bcu::Compat.redirect_stdout($stderr) do
           run_add_pin(cask_name)
         end
       end

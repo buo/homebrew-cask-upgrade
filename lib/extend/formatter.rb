@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+require "bcu/compat"
+
 module Formatter
   module_function
 
@@ -128,7 +130,7 @@ module Formatter
   def print_app_table(apps, state_info, options)
     return output_print_app_table(apps, state_info, options) if $stdout.tty?
 
-    redirect_stdout($stderr) do
+    Bcu::Compat.redirect_stdout($stderr) do
       output_print_app_table(apps, state_info, options)
     end
   end
@@ -171,7 +173,7 @@ module Formatter
   def print_pin_table(pinns)
     return output_print_pin_table(pinns) if $stdout.tty?
 
-    redirect_stdout($stderr) do
+    Bcu::Compat.redirect_stdout($stderr) do
       output_print_pin_table(pinns)
     end
   end
