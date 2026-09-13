@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "bcu/compat"
 require "bcu/module/pin"
 
 module Bcu
@@ -9,7 +10,7 @@ module Bcu
     def process(_args, options)
       return run_process(options) if $stdout.tty?
 
-      redirect_stdout($stderr) do
+      Bcu::Compat.redirect_stdout($stderr) do
         run_process(options)
       end
     end

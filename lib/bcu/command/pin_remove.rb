@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "bcu/compat"
 require "bcu/module/pin"
 
 module Bcu
@@ -17,7 +18,7 @@ module Bcu
       def self.remove_pin(cask)
         return run_remove_pin(cask) if $stdout.tty?
 
-        redirect_stdout($stderr) do
+        Bcu::Compat.redirect_stdout($stderr) do
           run_remove_pin(cask)
         end
       end
