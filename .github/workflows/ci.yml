@@ -135,5 +135,43 @@ jobs:
       - name: Import backup file
         run: brew cu pinned --load /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
 
-      - name: Verify exported file is as expected
-        run: cd /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade && cmp pinned backup.txt
+      - name: Verify the casks from the backup file are pinned
+        run: |
+          brew list --pinned --cask > actual.txt
+          cmp actual.txt /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/backup.txt
+
+  pin-migration-workflow:
+    strategy:
+      matrix:
+        os:
+          - macos-26
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v7.0.1
+
+      - name: Brew Update
+        run: |
+          brew update
+          brew --version
+
+      - name: Setup Homebrew Tap
+        run: |
+          mkdir -p /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          cp -rf . /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade
+          brew trust buo/cask-upgrade
+
+      - name: Setup legacy pin list
+        run: echo "google-chrome" > /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/pinned
+
+      - name: Run brew cu to trigger the migration
+        run: brew cu pinned
+
+      - name: Verify google-chrome is pinned natively
+        run: |
+          echo "google-chrome" > expected.txt
+          brew list --pinned --cask > actual.txt
+          cmp actual.txt expected.txt
+
+      - name: Verify the legacy pin list was removed
+        run: test ! -e /opt/homebrew/Library/Taps/buo/homebrew-cask-upgrade/pinned

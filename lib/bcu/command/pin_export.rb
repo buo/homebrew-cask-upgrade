@@ -7,11 +7,7 @@ module Bcu
     class Export < Command
       def process(_, options)
         file_name = options.backup_filename
-        File.open(file_name, "w+") do |file|
-          Pin.pinned.each do |cask_name|
-            file.puts cask_name
-          end
-        end
+        File.write(file_name, Pin.pinned_tokens.map { |token| "#{token}\n" }.join)
         puts Formatter.success "Pins exported to #{file_name}"
       end
     end

@@ -4,6 +4,7 @@ $LOAD_PATH.unshift("#{HOMEBREW_REPOSITORY}/Library/Homebrew/cask/lib")
 
 require "bcu/options"
 require "bcu/command/all"
+require "bcu/module/pin"
 # Causing following issue:
 # Error: No such file or directory @ rb_sysopen
 #  - /opt/homebrew/Library/Homebrew/vendor/bundle/ruby/2.6.0/gems/addressable-2.8.0/data/unicode.data
@@ -19,6 +20,11 @@ require "shellwords"
 module Bcu
   def self.process(args)
     parse!(args)
+
+    unless defined?(HOMEBREW_PINNED_CASKS)
+      odie "brew cu requires Homebrew 5.1.12 or newer for cask pinning. Run `brew update` and try again."
+    end
+    Bcu::Pin.migrate_legacy_pins
 
     command = resolve_command options
     command.process args, options

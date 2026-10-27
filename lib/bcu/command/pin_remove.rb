@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "bcu/compat"
 require "bcu/module/pin"
 
 module Bcu
@@ -11,40 +10,7 @@ module Bcu
         # TODO: If we used deprecated --pin option, the value is not any more in the args
         pin = options.unpin if pin.nil?
 
-        remove_pin_instance pin
-      end
-
-      # Class method to remove a pin - can be called from other classes
-      def self.remove_pin(cask)
-        return run_remove_pin(cask) if $stdout.tty?
-
-        Bcu::Compat.redirect_stdout($stderr) do
-          run_remove_pin(cask)
-        end
-      end
-
-      def self.run_remove_pin(cask)
-        unless Pin.pinned.include? cask
-          puts "Not pinned: #{Tty.green}#{cask}#{Tty.reset}"
-          return
-        end
-
-        Pin.pinned.delete(cask)
-
-        File.open(PINS_FILE, "w") do |f|
-          Pin.pinned.each do |csk|
-            f.puts(csk)
-          end
-        end
-
-        puts "Unpinned: #{Tty.green}#{cask}#{Tty.reset}"
-      end
-      private_class_method :run_remove_pin
-
-      private
-
-      def remove_pin_instance(cask)
-        self.class.remove_pin(cask)
+        exit 1 unless Pin.unpin(pin)
       end
     end
   end

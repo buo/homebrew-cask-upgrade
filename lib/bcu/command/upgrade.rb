@@ -140,10 +140,7 @@ module Bcu
           if app[:mas]
             onoe "Pinning is not yet supported for MAS applications."
           else
-            cmd = Bcu::Pin::Add.new
-            args = []
-            args[1] = app[:token]
-            cmd.process args, options
+            Pin.pin(app[:token])
           end
         end
 
@@ -259,7 +256,7 @@ module Bcu
 
       installed.each do |app|
         version_latest = (app[:version] == "latest")
-        if Pin.pinned.include?(app[:token])
+        if app[:cask]&.pinned?
           state_info[app] = "pinned"
         elsif (options.force && version_latest && app[:auto_updates] && options.all) ||
               (options.force && version_latest && !app[:auto_updates])

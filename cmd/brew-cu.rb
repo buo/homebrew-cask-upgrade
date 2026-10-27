@@ -15,17 +15,17 @@
 #:      (e.g., `brew cu 'firefox＊'` or `brew cu firefox\＊`).
 #:
 #:   `cu pin` CASK
-#:      Pin the current CASK version, preventing it from being
-#:      upgraded when running the `brew cu` command. See also `unpin`.
+#:      Pin the current CASK version with `brew pin --cask`, preventing it
+#:      from being upgraded by `brew cu` and `brew upgrade`. See also `unpin`.
 #:
 #:   `cu unpin` CASK
-#:      Unpin specified CASK, allowing them to be
-#:      upgraded by `brew cu` command. See also `pin`.
+#:      Unpin specified CASK with `brew unpin --cask`, allowing it to be
+#:      upgraded again. See also `pin`.
 #:
 #:   `cu pinned`
-#:      Lists all CASKs that have been pinned. Add `--export FILENAME`
-#:      option to export the configuration to a file and `--load` to
-#:      load it back.
+#:      Lists all pinned CASKs with `brew list --pinned --cask`. Add
+#:      `--export FILENAME` option to export the pinned casks to a file
+#:      and `--load FILENAME` to pin them again.
 #:
 #:`OPTIONS`:
 #:
