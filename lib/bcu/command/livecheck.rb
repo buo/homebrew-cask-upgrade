@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "bcu/compat"
-require "bcu/module/pin"
 
 module Bcu
   class Livecheck < Command

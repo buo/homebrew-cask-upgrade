@@ -90,11 +90,12 @@ Please note, that if you update the apps using their auto-update functionality, 
 Usage: brew cu [command=run] [CASK] [options]
 Commands:
     run         Default command, doesn't have to be specified. Executes cask upgrades.
-    pin         Pin the current app version, preventing it from being
-                upgraded when issuing the `brew cu` command. See also `unpin`.
-    unpin       Unpin the current app version, allowing them to be
-                upgraded by `brew cu` command. See also `pin`.
-    pinned      Print all pinned apps and its version. See also `pin`.
+    pin         Pin the current app version (`brew pin --cask`), preventing it
+                from being upgraded by `brew cu` and `brew upgrade`. See also `unpin`.
+    unpin       Unpin the app (`brew unpin --cask`), allowing it to be
+                upgraded again. See also `pin`.
+    pinned      Print all pinned apps and their pinned version
+                (`brew list --pinned --cask --versions`). See also `pin`.
 
 Options:
     -a, --all             Include apps that auto-update in the upgrade.
@@ -133,8 +134,12 @@ For every cask it is then possible to use following options:
 
 ### Version pinning
 
-Pinned apps will not be updated by `brew cu` until they are unpinned.
-NB: version pinning in `brew cu` will not prevent `brew cask upgrade` from updating pinned apps.
+`brew cu` uses Homebrew's native cask pinning, so `brew cu pin <cask>` is the same as `brew pin --cask <cask>`.
+Pinned apps will not be updated by `brew cu` or `brew upgrade` until they are unpinned.
+
+Older versions of `brew cu` kept their own list of pinned casks. The first time you run `brew cu` after updating,
+every cask from that list is pinned with `brew pin --cask` and the old list is removed.
+Casks that can no longer be pinned (e.g. because they were uninstalled) are reported so you can pin them again.
 
 ### Export / Import pinned apps
 
@@ -144,7 +149,7 @@ brew cu pinned --export my-backup-filename.txt
 ```
 **Note**: Versions, in which were casks pinned, are not exported as it isn’t possible to install a specific version afterwards.
 
-In order to load the configuration back, use `--load` option.
+In order to load the configuration back, use `--load` option. It pins every cask listed in the file with `brew pin --cask`.
 ```shell
 brew cu pinned --load my-backup-filename.txt
 ```
